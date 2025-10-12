@@ -17,6 +17,7 @@ struct CalendarView: View {
     @StateObject var proxy: CalendarViewProxy = .init()
     @State var selectedDate: Date?
     @State var displayedMonth: DateComponents = calendar.dateComponents([.year, .month], from: Date())
+    @State var daySheetIsPresented: Bool = false
     
     var currentMonthLabel: String {
         let df = DateFormatter()
@@ -78,6 +79,8 @@ struct CalendarView: View {
 
                     Button {
                         selectedDate = date
+                        daySheetIsPresented = true
+                        
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
@@ -106,7 +109,14 @@ struct CalendarView: View {
                     selectedDate = Date()
                     scrollToMonthAndUpdateState(dateContainingMonth: selectedDate!, animated: false)
                 }
-                
+                .sheet(isPresented: $daySheetIsPresented) {
+                    if #available(iOS 16, *) {
+                        CalendarDayShiftView(date: $selectedDate)
+                            .presentationDetents([.fraction(0.3)])
+                    } else {
+                        CalendarDayShiftView(date: $selectedDate)
+                    }
+                }
                 
                 RoundedRectangle(cornerRadius: 2)
                     .foregroundStyle(.tint)
@@ -166,5 +176,6 @@ private struct PrevMonthButton: View {
 }
 
 #Preview {
-    CalendarView()
+    ContentView()
+//    CalendarView()
 }
