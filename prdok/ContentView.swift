@@ -24,6 +24,12 @@ struct ContentView: View {
                     Label("Kalendář", systemImage: "calendar")
                 }
                 .tag(1)
+            
+            ScanQRView()
+                .tabItem {
+                    Label("scan qr", systemImage: "square")
+                }
+                .tag(2)
         }
         .tabTint(brandColor)
     }
