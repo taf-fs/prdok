@@ -10,18 +10,32 @@ import CodeScanner
 import AVFoundation
 
 struct ScanQRView: View {
+    @State private var scanResult: String? = nil
+    
     var body: some View {
-        CodeScannerView(codeTypes: [.qr]) { response in
-            switch response {
-            case .success(let result):
-                print("Found code: \(result.string)")
-            case .failure(let error):
-                print(error.localizedDescription)
+        VStack {
+            Text("please scan qr code text")
+            
+            CodeScannerView(codeTypes: [.qr]) { response in
+                switch response {
+                case .success(let result):
+                    print("Found code: \(result.string)")
+                    scanResult = result.string
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            .frame(maxWidth: 300, maxHeight: 300)
+            .border(Color.gray)
+            
+            if (scanResult != nil) {
+                Text("\(String(describing: scanResult))")                
             }
         }
+        
     }
 }
 
 #Preview {
-    ScanQRView()
+    ContentView(selectedTab: 2)
 }

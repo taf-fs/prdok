@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab: Int = 1
+    @State var selectedTab: Int = 1
     private let brandColor = Color(red: 80/255, green: 40/255, blue: 12/255)
 
     var body: some View {
