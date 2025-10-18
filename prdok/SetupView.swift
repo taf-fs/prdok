@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SetupView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State private var isSheetPresented = false
+    
     var isDarkMode: Bool {
         return colorScheme == .dark
     }
@@ -33,7 +35,7 @@ struct SetupView: View {
             
             Spacer()
             
-            Text("K získání přístupu do aplikace, je třeba spárovat aplikaci se zaměstnaneckým webem.")
+            Text("K získání přístupu do aplikace, je třeba propojit aplikaci se zaměstnaneckým webem.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -41,7 +43,7 @@ struct SetupView: View {
             Button {
                 // TODO: logic
             } label: {
-                Text("Spárovat přes QR kód")
+                Text("Propojit přes zaměstnanecký odkaz")
                     .bold()
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
@@ -54,9 +56,9 @@ struct SetupView: View {
             }
             
             Button {
-                // TODO: logic
+                isSheetPresented = true
             } label: {
-                Text("Spárovat přes zaměstnanecký odkaz")
+                Text("Propojit přes QR kód")
                     .bold()
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
@@ -73,8 +75,12 @@ struct SetupView: View {
         .padding(.horizontal)
         .padding(.bottom, 32)
         .padding(.top, 128)
+        .sheet(isPresented: $isSheetPresented) {
+            ScanQRView()
+        }
     }
 }
+
 
 #Preview {
     SetupView()
