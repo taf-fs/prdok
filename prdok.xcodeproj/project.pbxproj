@@ -15,9 +15,22 @@
 		638A58B12E9BD8E90040E591 /* prdok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prdok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		63A323EB2EA4693300B9ED5A /* Exceptions for "prdok" folder in "prdok" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 638A58B02E9BD8E90040E591 /* prdok */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		638A58B32E9BD8E90040E591 /* prdok */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				63A323EB2EA4693300B9ED5A /* Exceptions for "prdok" folder in "prdok" target */,
+			);
 			path = prdok;
 			sourceTree = "<group>";
 		};
@@ -100,6 +113,7 @@
 			knownRegions = (
 				en,
 				Base,
+				cs,
 			);
 			mainGroup = 638A58A82E9BD8E90040E591;
 			minimizedProjectReferenceProxies = 1;
@@ -197,6 +211,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -253,6 +268,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -267,6 +283,7 @@
 				DEVELOPMENT_TEAM = 88F2QNB8PZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = prdok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to scan QR codes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -305,6 +322,7 @@
 				DEVELOPMENT_TEAM = 88F2QNB8PZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = prdok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to scan QR codes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
