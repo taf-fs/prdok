@@ -12,6 +12,14 @@ import AVFoundation
 struct ScanQRView: View {
     @Environment(\.dismiss) var dismiss
     @State private var scanResult: String? = nil
+    @Environment(\.colorScheme) var colorScheme
+    
+    private var gradientColor: Color {
+        if colorScheme == .dark {
+            return Color.black.opacity(0.8)
+        }
+        return Color.white.opacity(0.8)
+    }
     
     private let boxSize: CGFloat = 320
     private let boxRadius: CGFloat = 22
@@ -40,7 +48,7 @@ struct ScanQRView: View {
                         .fill(.thinMaterial)
                         .ignoresSafeArea()
                     RadialGradient(
-                        gradient: Gradient(colors: [.clear, Color.black.opacity(0.8)]),
+                        gradient: Gradient(colors: [.clear, gradientColor]),
                         center: .center,
                         startRadius: 100,
                         endRadius: 600
@@ -59,7 +67,7 @@ struct ScanQRView: View {
                 ScannerCorners(cornerRadius: boxRadius,
                                cornerLength: 42,
                                insetForStroke: 0)
-                .stroke(Color.primary, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                .stroke(Color.white, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
                 .frame(width: boxSize, height: boxSize)
                 .offset(y: -toolbarOffset / 2)
 
