@@ -49,12 +49,33 @@ class PairingManager {
     }
     
     // TODO: find a way to save the key and also how to get id and ids from the link or the QR code
-    // probably define some static vars that a function will assign values to
-    func getInfoFromLink() {}
-    func getInfoFromQR() {}
+    // probably define some private vars that a function will assign values to
+    
+    func getInfoFromLink(_ link: String) {
+        guard
+            let components = URLComponents(string: link),
+            let items = components.queryItems,
+            let parsedId = items.first(where: { $0.name == "id" })?.value,
+            let parsedIds = items.first(where: { $0.name == "ids" })?.value,
+            !id.isEmpty, !ids.isEmpty
+        else {
+            // Optionally log a warning here
+            return
+        }
+
+        self.id = parsedId
+        self.ids = parsedIds
+    }
+
+    
+    func getInfoFromQR(_ codeContent: String) {
+        let parameters = codeContent.split(separator: "|")
+        self.id = String(parameters[3])
+        self.ids = String(parameters[4])
+    }
     
     
-    private func requestKey() {
+    private func requestAndSaveKey() {
         let url = URL(string: "https://server.com/hello.php")! // hardcoding this for now
         
         let bodyString = [
