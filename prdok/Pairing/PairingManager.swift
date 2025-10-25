@@ -12,22 +12,19 @@ import Foundation
 class PairingManager {
     static let shared = PairingManager()
     
-    private var id: String = ""
-    private var ids: String = ""
-    
-    enum pairingType {
-        case qr
-        case link
+    enum PairingError: Error {
+        case invalidURL
+        case invalidResponse
+        case missingKeyInResponse
+        case invalidLink
+        case invalidQR
     }
     
     /// validateQR() checks whether the parameter scanned from the QR code on the employee link conforms to the format specified on the
     /// backend: `zapp|klic|cp_zamestnanci|44|77yGdor8El|cp`
     func validateQR(_ codeContent: String) -> Bool {
         let parameters = codeContent.split(separator: "|")
-        if parameters.count == 6 {
-            return true
-        }
-        return false
+        return parameters.count == 6
     }
     
     /// validateLink checks whether the link provided by the user is a valid URL, and contains the parameters id, ids, provoz.
@@ -37,97 +34,139 @@ class PairingManager {
             let url = URL(string: link),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let queryItems = components.queryItems
-        else {
-            // not a valid url or no query items
-            return false
-        }
+        else { return false }
         
         let includedParameters = Set(queryItems.map { $0.name })
-        let requiredParameters: Set<String> = ["id", "ids", "provoz"]
-        
-        return requiredParameters.isSubset(of: includedParameters)
+        return ["id", "ids", "provoz"].allSatisfy(includedParameters.contains)
     }
-    
-    // TODO: find a way to save the key and also how to get id and ids from the link or the QR code
-    // probably define some private vars that a function will assign values to
-    
-    func getInfoFromLink(_ link: String) {
+        
+    // MARK: - Parsing
+    /// parseLink(_:) extracts the "id" and "ids" query parameters from a link.
+    ///
+    /// - Parameter link: A full URL string expected to contain `id` and `ids` as query items.
+    /// - Returns: A tuple `(id, ids)` if both parameters are present and non-empty; otherwise `nil`.
+    /// - Note: Call `validateLink(_:)` before using this method to quickly rule out malformed links.
+    private func parseLink(_ link: String) -> (id: String, ids: String)? {
         guard
             let components = URLComponents(string: link),
             let items = components.queryItems,
-            let parsedId = items.first(where: { $0.name == "id" })?.value,
-            let parsedIds = items.first(where: { $0.name == "ids" })?.value,
+            let id = items.first(where: { $0.name == "id" })?.value,
+            let ids = items.first(where: { $0.name == "ids" })?.value,
             !id.isEmpty, !ids.isEmpty
-        else {
-            // Optionally log a warning here
-            return
-        }
-
-        self.id = parsedId
-        self.ids = parsedIds
+        else { return nil }
+        return (id, ids)
     }
 
-    
-    func getInfoFromQR(_ codeContent: String) {
-        let parameters = codeContent.split(separator: "|")
-        self.id = String(parameters[3])
-        self.ids = String(parameters[4])
+    /// parseQR(_:) parses the employee QR payload and extracts the `id` and `ids` fields.
+    ///
+    /// Expected format (6 pipe-separated parts): `zapp|klic|cp_zamestnanci|id|ids|cp`
+    ///
+    /// - Parameter content: The raw string scanned from the QR code.
+    /// - Returns: A tuple `(id, ids)` if the content is valid; otherwise `nil`.
+    /// - SeeAlso: `validateQR(_:)`
+    private func parseQR(_ content: String) -> (id: String, ids: String)? {
+        guard validateQR(content) else { return nil }
+        let parts = content.split(separator: "|")
+        // format: zapp|klic|cp_zamestnanci|id|ids|cp
+        return (String(parts[3]), String(parts[4]))
     }
     
-    
-    private func requestAndSaveKey() {
-        let url = URL(string: "https://server.com/hello.php")! // hardcoding this for now
-        
-        let bodyString = [
-            "klic=nemamklic123", // backend returns the key in the JSON response if key doesn't exist
-            "akce=init",
-            "parametr=",
-            "provoz=cp" // also hardcoded for now
-        ].joined(separator: "&")
-        let bodyData = bodyString.data(using: .utf8)
+    // MARK: Networking (async)
+    /// requestAndSaveKey() initializes and persists a pairing key by calling the backend.
+    ///
+    /// Performs a POST to the pairing endpoint with form URL-encoded parameters. On success, the response JSON
+    /// is parsed for `ulozsi.klic`. The key is saved to `UserDefaults` under the key `"klic"` and also returned.
+    ///
+    /// - Returns: The pairing key string returned by the server.
+    /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx HTTP responses;
+    ///           `PairingError.missingKeyInResponse` if the expected key is absent from the JSON.
+    private func requestAndSaveKey() async throws -> String {
+        guard let url = URL(string: "https://server.com/hello.php") else { throw PairingError.invalidURL } // harcoded for now
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = bodyData
         
-        // TODO: perform the request
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Request failed:", error ?? "Unknown error")
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-               let ulozsi = json["ulozsi"] as? [String: Any],
-               let klic = ulozsi["klic"] as? String {
-                
-                UserDefaults.standard.setValue(klic, forKey: "klic")
-                print("Persisted klic: \(klic)")
-            } else {
-                print("Failed to parse JSON or find klic")
-            }
+        let bodyString = [
+            "klic=nemamklic123", // server returns the key to save when key doesn't exist in DB
+            "akce=init",
+            "parametr=",
+            "provoz=cp" // also hardcode
+        ].joined(separator: "&")
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw PairingError.invalidResponse
         }
+
+        let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        let ulozsi = obj?["ulozsi"] as? [String: Any]
+        guard let key = ulozsi?["klic"] as? String, !key.isEmpty else {
+            throw PairingError.missingKeyInResponse
+        }
+
+        UserDefaults.standard.setValue(key, forKey: "klic")
+        return key
     }
     
-    private func connectKeyToAccount(url: URL, bodyData: Data?) {
-        let url = URL(string: "https://server.com/hello.php")! // hardcoding this for now
-        let key = UserDefaults.standard.string(forKey: "klic")! // assuming that klic was already obtained
-        
-        // TODO: check whether we have the required key, id, ids
+    /// connectKeyToAccount(id:ids:key:) links the previously obtained pairing key to a specific account on the backend.
+    ///
+    /// Builds and posts the expected `parametr` payload using the provided values and treats any 2xx HTTP status as success.
+    /// The response body is not inspected.
+    ///
+    /// - Parameters:
+    ///   - id: Employee identifier parsed from a link or QR.
+    ///   - ids: Secret token or secondary identifier parsed from a link or QR.
+    ///   - key: Pairing key previously obtained via `requestAndSaveKey()`.
+    /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx responses.
+    private func connectKeyToAccount(id: String, ids: String, key: String) async throws {
+        guard let url = URL(string: "https://server.com/hello.php") else { throw PairingError.invalidURL }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
         let bodyString = [
             "klic=\(key)",
             "akce=propojit_klicem",
-            "parametr=zapp|\(key)|cp_zamestnanci|\(id)|\(ids)|cp", // akce=propojit_klicem is the only case where parametr is used
-            "provoz=cp" // also hardcoded for now
+            "parametr=zapp|\(key)|cp_zamestnanci|\(id)|\(ids)|cp",
+            "provoz=cp"
         ].joined(separator: "&")
-        let bodyData = bodyString.data(using: .utf8)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = bodyData
-        
-        // TODO: the request
+        request.httpBody = bodyString.data(using: .utf8)
+
+        // for now, fact that the request succeeded at the HTTP level is good enough, no need to work with the response data
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw PairingError.invalidResponse
+        }
+    }
+    
+    // MARK: - "Public" API
+    /// connectAccountUsingLink(_:) validates a link, requests/obtains a pairing key, and associates it with the account.
+    ///
+    /// - Parameter link: A URL string that includes `id`, `ids`, and `provoz` query parameters.
+    /// - Throws: `PairingError.invalidLink` if validation or parsing fails; any error thrown by `requestAndSaveKey()`
+    ///           or `connectKeyToAccount(id:ids:key:)`.
+    func connectAccountUsingLink(_ link: String) async throws {
+        guard validateLink(link), let parsed = parseLink(link) else {
+            throw PairingError.invalidLink
+        }
+        let key = try await requestAndSaveKey()
+        try await connectKeyToAccount(id: parsed.id, ids: parsed.ids, key: key)
+    }
+    
+    /// connectAccountUsingQR(_:) validates a QR payload, requests/obtains a pairing key, and associates it with the account.
+    ///
+    /// - Parameter codeContent: The raw QR string `zapp|klic|cp_zamestnanci|id|ids|cp`.
+    /// - Throws: `PairingError.invalidQR` if validation fails; any error thrown by `requestAndSaveKey()`
+    ///           or `connectKeyToAccount(id:ids:key:)`.
+    func connectAccountUsingQR(_ codeContent: String) async throws {
+        guard let parsed = parseQR(codeContent) else {
+            throw PairingError.invalidQR
+        }
+        let key = try await requestAndSaveKey()
+        try await connectKeyToAccount(id: parsed.id, ids: parsed.ids, key: key)
     }
 }
+
