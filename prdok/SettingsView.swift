@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
-    @State private var isLoading = false
+    @State private var isUnpairingInProgress = false
     
     var body: some View {
         ZStack {
@@ -19,8 +19,8 @@ struct SettingsView: View {
                 List {
                     Button {
                         Task {
-                            isLoading = true
-                            defer { isLoading = false }
+                            isUnpairingInProgress = true
+                            defer { isUnpairingInProgress = false }
                             do {
                                 try await PairingManager.shared.unpairDevice()
                                 UserDefaults.standard.set(false, forKey: "setupCompleted")
@@ -43,14 +43,8 @@ struct SettingsView: View {
             .alert(alertMessage, isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
             }
-            if isLoading {
-                Color.black.opacity(0.6)
-                    .ignoresSafeArea()
-                
-                VStack {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                }
+            if isUnpairingInProgress {
+                LoadingScreenView()
             }
 
         }

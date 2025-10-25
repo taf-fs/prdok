@@ -241,7 +241,7 @@ extension PairingManager.PairingError: LocalizedError {
         case .invalidQR:
             return NSLocalizedString("The QR code does not match the expected format.", comment: "Invalid QR error")
         case .missingCredentials:
-            return NSLocalizedString("The credentials required to unpair device are missing", comment: "Missing Credentials")
+            return NSLocalizedString("The credentials required to unpair the device are missing", comment: "Missing Credentials")
         }
     }
 }

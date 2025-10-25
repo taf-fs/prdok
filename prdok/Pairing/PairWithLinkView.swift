@@ -89,14 +89,7 @@ struct PairWithLinkView: View {
                 Button("OK", role: .cancel) { }
             }
             if isLoading {
-                Color.black.opacity(0.6)
-                    .ignoresSafeArea()
-                
-                VStack {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: isDarkMode ? .white : .black))
-                    Text("Propojuji")
-                }
+                LoadingScreenView(text: "Propojuji")
             }
         }
     }
