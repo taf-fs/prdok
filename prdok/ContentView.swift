@@ -8,30 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var selectedTab: Int = 1
-    private let brandColor = Color(red: 80/255, green: 40/255, blue: 12/255)
+    @AppStorage("setupCompleted") private var setupCompleted = false
+    @State private var selectedTab = 0
+    private let brandColor = Color("cpCream")
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            TodayView()
-                .tabItem {
-                    Label("Dnes", systemImage: "clock")
-                }
-                .tag(0)
+        ZStack {
+            if !setupCompleted {
+                SetupView()
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            } else {
+                TabView(selection: $selectedTab) {
+                    TodayView()
+                        .tabItem { Label("Today", systemImage: "clock") }
+                        .tag(0)
 
-            CalendarView()
-                .tabItem {
-                    Label("Kalendář", systemImage: "calendar")
+                    CalendarView()
+                        .tabItem { Label("Kalendář", systemImage: "calendar") }
+                        .tag(1)
+
+                    SettingsView()
+                        .tabItem { Label("Settings", systemImage: "gear") }
                 }
-                .tag(1)
-            
-            ScanQRView()
-                .tabItem {
-                    Label("scan qr", systemImage: "square")
-                }
-                .tag(2)
+                .tabTint(brandColor)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
-        .tabTint(brandColor)
+        .animation(.easeInOut, value: setupCompleted)
     }
 }
 

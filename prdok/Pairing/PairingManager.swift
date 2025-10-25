@@ -18,6 +18,7 @@ class PairingManager {
         case missingKeyInResponse
         case invalidLink
         case invalidQR
+        case missingCredentials
     }
     
     /// validateQR() checks whether the parameter scanned from the QR code on the employee link conforms to the format specified on the
@@ -78,10 +79,10 @@ class PairingManager {
     /// is parsed for `ulozsi.klic`. The key is saved to `UserDefaults` under the key `"klic"` and also returned.
     ///
     /// - Returns: The pairing key string returned by the server.
-    /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx HTTP responses;
+    /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx responses;
     ///           `PairingError.missingKeyInResponse` if the expected key is absent from the JSON.
     private func requestAndSaveKey() async throws -> String {
-        guard let url = URL(string: "https://server.com/hello.php") else { throw PairingError.invalidURL } // harcoded for now
+        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL } // harcoded for now
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -107,6 +108,7 @@ class PairingManager {
         }
 
         UserDefaults.standard.setValue(key, forKey: "klic")
+        print("Received and saving key: \(key) to UserDefaults")
         return key
     }
     
@@ -121,7 +123,7 @@ class PairingManager {
     ///   - key: Pairing key previously obtained via `requestAndSaveKey()`.
     /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx responses.
     private func connectKeyToAccount(id: String, ids: String, key: String) async throws {
-        guard let url = URL(string: "https://server.com/hello.php") else { throw PairingError.invalidURL }
+        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -140,6 +142,52 @@ class PairingManager {
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
             throw PairingError.invalidResponse
         }
+        
+        UserDefaults.standard.setValue(id, forKey: "id")
+        UserDefaults.standard.setValue(ids, forKey: "ids")
+        print("Connected device to account and set employee credentials to UserDefaults")
+    }
+    
+    /// Unpairs the currently paired device from the employee account and clears local credentials.
+    ///
+    /// Sends a POST request with the `odparovat` action and the current `klic`, `id`, and `ids` values.
+    /// On a successful 2xx  response, removes the corresponding keys from `UserDefaults`.
+    ///
+    /// - Throws: `PairingError.missingCredentials` if any of the required values are absent in `UserDefaults`;
+    ///           `PairingError.invalidURL` if the endpoint URL is invalid;
+    ///           `PairingError.invalidResponse` if the server responds with a non-2xx status code.
+    private func unpairDeviceFromAccount() async throws {
+        guard
+            let key = UserDefaults.standard.string(forKey: "klic"),
+            let id = UserDefaults.standard.string(forKey: "id"),
+            let ids = UserDefaults.standard.string(forKey: "ids")
+        else {
+            throw PairingError.missingCredentials
+        }
+        
+        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        let bodyString = [
+            "klic=\(key)",
+            "akce=odparovat",
+            "parametr=zapp|\(key)|cp_zamestnanci|\(id)|\(ids)|cp",
+            "provoz=cp"
+        ].joined(separator: "&")
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw PairingError.invalidResponse
+        }
+        
+        UserDefaults.standard.removeObject(forKey: "klic")
+        UserDefaults.standard.removeObject(forKey: "id")
+        UserDefaults.standard.removeObject(forKey: "ids")
+        print("Removed employee credentials and device key from account.")
     }
     
     // MARK: - "Public" API
@@ -168,5 +216,32 @@ class PairingManager {
         let key = try await requestAndSaveKey()
         try await connectKeyToAccount(id: parsed.id, ids: parsed.ids, key: key)
     }
+    
+    /// Unpairs the device from the currently connected account.
+    ///
+    /// Convenience wrapper that invokes the internal unpairing routine and propagates any errors.
+    ///
+    /// - Throws: Any error thrown by `unpairDeviceFromAccount()`.
+    func unpairDevice() async throws {
+        try await unpairDeviceFromAccount()
+    }
 }
 
+extension PairingManager.PairingError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return NSLocalizedString("The URL provided is invalid.", comment: "Invalid URL error")
+        case .invalidResponse:
+            return NSLocalizedString("The server response was invalid.", comment: "Invalid response error")
+        case .missingKeyInResponse:
+            return NSLocalizedString("The server response is missing the expected key.", comment: "Missing key in response error")
+        case .invalidLink:
+            return NSLocalizedString("The employee link appears to be malformed.", comment: "Invalid link error")
+        case .invalidQR:
+            return NSLocalizedString("The QR code does not match the expected format.", comment: "Invalid QR error")
+        case .missingCredentials:
+            return NSLocalizedString("The credentials required to unpair device are missing", comment: "Missing Credentials")
+        }
+    }
+}

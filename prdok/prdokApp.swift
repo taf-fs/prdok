@@ -11,8 +11,7 @@ import SwiftUI
 struct prdokApp: App {
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            SetupView()
+            ContentView()
         }
     }
 }
