@@ -30,7 +30,7 @@ struct SettingsView: View {
                             }
                         }
                     } label: {
-                        Text("Unpair device")
+                        Text("settings.unpair")
                     }
                     
 //                    Button {

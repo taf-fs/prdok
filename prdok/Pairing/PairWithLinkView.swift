@@ -27,7 +27,7 @@ struct PairWithLinkView: View {
                 Spacer()
                 
                 Group {
-                    Text("tvůj zaměstnanecký odkaz?")
+                    Text("connect.link.prompt")
                         .font(.system(.title))
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -65,7 +65,7 @@ struct PairWithLinkView: View {
                         }
                     }
                 } label: {
-                    Text("Propojit")
+                    Text("connect.link.button.connect")
                         .bold()
                         .padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
@@ -89,7 +89,7 @@ struct PairWithLinkView: View {
                 Button("OK", role: .cancel) { }
             }
             if isLoading {
-                LoadingScreenView(text: "Propojuji")
+                LoadingScreenView(text: "loading.connecting")
             }
         }
     }

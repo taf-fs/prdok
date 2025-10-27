@@ -19,11 +19,11 @@ struct SetupView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Vítej v aplikaci")
+                Text("setup.welcome.title")
                     .font(.system(.subheadline))
                     .foregroundStyle(.secondary)
                 
-                Text("Prdok_")
+                Text("setup.app.name")
                     .font(.system(.largeTitle, design: .monospaced))
                     .fontWeight(.semibold)
                 
@@ -37,7 +37,7 @@ struct SetupView: View {
                 
                 Spacer()
                 
-                Text("K získání přístupu do aplikace, je třeba propojit aplikaci se zaměstnaneckým webem.")
+                Text("setup.access.instructions")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -46,7 +46,7 @@ struct SetupView: View {
                     Button { // wrote it like this in case i want to add more logic
                         isActive = true
                     } label: {
-                        Text("Propojit přes zaměstnanecký odkaz")
+                        Text("setup.connect.link")
                             .bold()
                             .padding(.vertical, 8)
                             .frame(maxWidth: .infinity)
@@ -64,7 +64,7 @@ struct SetupView: View {
                     Button {
                         isSheetPresented = true
                     } label: {
-                        Text("Propojit přes QR kód")
+                        Text("setup.connect.qr")
                             .bold()
                             .padding(.vertical, 8)
                             .frame(maxWidth: .infinity)

@@ -16,7 +16,6 @@ class PairingManager {
         case invalidURL
         case invalidResponse
         case missingKeyInResponse
-        case invalidLink
         case invalidQR
         case missingCredentials
     }
@@ -194,11 +193,11 @@ class PairingManager {
     /// connectAccountUsingLink(_:) validates a link, requests/obtains a pairing key, and associates it with the account.
     ///
     /// - Parameter link: A URL string that includes `id`, `ids`, and `provoz` query parameters.
-    /// - Throws: `PairingError.invalidLink` if validation or parsing fails; any error thrown by `requestAndSaveKey()`
+    /// - Throws: `PairingError.invalidURL` if validation or parsing fails; any error thrown by `requestAndSaveKey()`
     ///           or `connectKeyToAccount(id:ids:key:)`.
     func connectAccountUsingLink(_ link: String) async throws {
         guard validateLink(link), let parsed = parseLink(link) else {
-            throw PairingError.invalidLink
+            throw PairingError.invalidURL
         }
         let key = try await requestAndSaveKey()
         try await connectKeyToAccount(id: parsed.id, ids: parsed.ids, key: key)
@@ -231,17 +230,15 @@ extension PairingManager.PairingError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return NSLocalizedString("The URL provided is invalid.", comment: "Invalid URL error")
+            return NSLocalizedString("pairingerror.invalidURL", comment: "Invalid URL error")
         case .invalidResponse:
-            return NSLocalizedString("The server response was invalid.", comment: "Invalid response error")
+            return NSLocalizedString("pairingerror.invalidResponse", comment: "Invalid response error")
         case .missingKeyInResponse:
-            return NSLocalizedString("The server response is missing the expected key.", comment: "Missing key in response error")
-        case .invalidLink:
-            return NSLocalizedString("The employee link appears to be malformed.", comment: "Invalid link error")
+            return NSLocalizedString("pairingerror.missingkey", comment: "Missing key in response error")
         case .invalidQR:
-            return NSLocalizedString("The QR code does not match the expected format.", comment: "Invalid QR error")
+            return NSLocalizedString("pairingerror.invalidQR", comment: "Invalid QR error")
         case .missingCredentials:
-            return NSLocalizedString("The credentials required to unpair the device are missing", comment: "Missing Credentials")
+            return NSLocalizedString("pairingerror.unpair.missingCredentials", comment: "Missing Credentials")
         }
     }
 }

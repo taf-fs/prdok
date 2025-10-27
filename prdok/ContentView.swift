@@ -20,15 +20,15 @@ struct ContentView: View {
             } else {
                 TabView(selection: $selectedTab) {
                     TodayView()
-                        .tabItem { Label("Today", systemImage: "clock") }
+                        .tabItem { Label("tabitem.today", systemImage: "clock") }
                         .tag(0)
 
                     CalendarView()
-                        .tabItem { Label("Kalendář", systemImage: "calendar") }
+                        .tabItem { Label("tabitem.calendar", systemImage: "calendar") }
                         .tag(1)
 
                     SettingsView()
-                        .tabItem { Label("Settings", systemImage: "gear") }
+                        .tabItem { Label("tabitem.settings", systemImage: "gear") }
                 }
                 .tabTint(brandColor)
                 .transition(.move(edge: .bottom).combined(with: .opacity))

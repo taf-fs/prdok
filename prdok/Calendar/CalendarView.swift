@@ -22,7 +22,7 @@ struct CalendarView: View {
     var currentMonthLabel: String {
         let df = DateFormatter()
         df.calendar = calendar
-        df.locale = Locale(identifier: "cs_CZ")
+        df.locale = Locale.current
         df.setLocalizedDateFormatFromTemplate("MMMMy")
         let date = calendar.date(from: displayedMonth)!
         return df.string(from: date)
@@ -31,7 +31,7 @@ struct CalendarView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                Text("Kalendář směn_")
+                Text("calendar.title")
                     .font(.system(.largeTitle, design: .monospaced))
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -134,8 +134,7 @@ struct CalendarView: View {
     
     func dayOfWeekName(index: Int) -> String {
         let formatter = DateFormatter()
-        // hardcoded czech locale
-        formatter.locale = Locale(identifier: "cs_CZ")
+        formatter.locale = Locale.current
         let names = formatter.weekdaySymbols ?? []
         guard names.indices.contains(index) else {
             return "error"

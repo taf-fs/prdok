@@ -13,7 +13,7 @@ struct CalendarDayShiftView: View {
     
     var fulldate: String {
         let df = DateFormatter()
-        df.locale = Locale(identifier: "cs_CZ")
+        df.locale = Locale.current
         df.setLocalizedDateFormatFromTemplate("dMMMMY")
         return df.string(from: date!)
     }

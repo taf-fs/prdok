@@ -73,7 +73,7 @@ struct ScanQRView: View {
 
                 
                 VStack {
-                    Text("Namiř fotoaparát na QR kód na zaměstnaneckém webu.")
+                    Text("connect.qr.instructions")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .offset(y: -(boxSize/2 + toolbarOffset))
@@ -91,7 +91,7 @@ struct ScanQRView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .title) {
-                    Text("Propojit přes QR kód")
+                    Text("connect.qr.toolbar.title")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(role: .destructive) {

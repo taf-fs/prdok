@@ -1,0 +1,352 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%lld" : {
+      "shouldTranslate" : false
+    },
+    "calendar.title" : {
+      "comment" : "Calendar title",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalendář směn_"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift calendar_"
+          }
+        }
+      }
+    },
+    "connect.link.button.connect" : {
+      "comment" : "Connect button label",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect"
+          }
+        }
+      }
+    },
+    "connect.link.prompt" : {
+      "comment" : "Employee link prompt",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tvůj zaměstnanecký odkaz?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your employee link?"
+          }
+        }
+      }
+    },
+    "connect.qr.instructions" : {
+      "comment" : "Connect with QR instructions",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamiř fotoaparátem na QR kód na zaměstnaneckém webu."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Point your camera at the QR code on the staff website"
+          }
+        }
+      }
+    },
+    "connect.qr.toolbar.title" : {
+      "comment" : "Connect with QR view toolbar title",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit pomocí QR"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect using QR"
+          }
+        }
+      }
+    },
+    "https://..." : {
+      "shouldTranslate" : false
+    },
+    "lorem ipsum" : {
+      "shouldTranslate" : false
+    },
+    "OK" : {
+      "shouldTranslate" : false
+    },
+    "pairingerror.invalidQR" : {
+      "comment" : "Invalid QR error",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načtený QR kód je neplatný."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The scanned QR code is invalid."
+          }
+        }
+      }
+    },
+    "pairingerror.invalidResponse" : {
+      "comment" : "Invalid response error",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se připojit účet, odpověď serveru je neplatná."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to connect the account, the server’s response is invalid."
+          }
+        }
+      }
+    },
+    "pairingerror.invalidURL" : {
+      "comment" : "Invalid URL error",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadaný odkaz je neplatný."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The entered link is invalid."
+          }
+        }
+      }
+    },
+    "pairingerror.missingkey" : {
+      "comment" : "Missing key in response error",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se připojit účet, server nepodal klíč."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server failed to include a key in the response."
+          }
+        }
+      }
+    },
+    "pairingerror.unpair.missingCredentials" : {
+      "comment" : "Missing Credentials",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se připojit účet, zařízení chybí dostatečné údaje."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to unpair, the device is missing credentials."
+          }
+        }
+      }
+    },
+    "settings" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "settings.unpair" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpárovat zařízení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpair device"
+          }
+        }
+      }
+    },
+    "setup.access.instructions" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "K získání přístupu do aplikace, je třeba propojit aplikaci se zaměstnaneckým webem."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To access the app, you need to connect the device with the staff website."
+          }
+        }
+      }
+    },
+    "setup.app.name" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prdok_"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prdok_"
+          }
+        }
+      }
+    },
+    "setup.connect.link" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit přes zaměstnanecký odkaz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect using employee link"
+          }
+        }
+      }
+    },
+    "setup.connect.qr" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit přes QR kód"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect using QR code"
+          }
+        }
+      }
+    },
+    "setup.welcome.title" : {
+      "comment" : "Always is followed by the app name.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vítej v aplikaci"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to"
+          }
+        }
+      }
+    },
+    "tabitem.calendar" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalendář"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        }
+      }
+    },
+    "tabitem.settings" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "tabitem.today" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        }
+      }
+    },
+    "Your id: %@" : {
+
+    }
+  },
+  "version" : "1.1"
+}
