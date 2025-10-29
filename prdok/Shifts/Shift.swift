@@ -54,3 +54,32 @@ struct RawShift: Decodable {
         case doTime = "do" // "do" is a reserved word in Swift, so map it
     }
 }
+
+
+// example server response:
+//
+//{
+//    "smeny":{
+//        "dochazka":[
+//            {
+//                "kdy":"2025-10-04",
+//                "od":"16:01:00",
+//                "do":"24:58:00"
+//            }
+//        ],
+//        "plan":[
+//            {
+//                "kdy":"2025-10-04",
+//                "od":"16:00:00",
+//                "do":"25:00:00"
+//            }
+//        ],
+//        "moznosti":[
+//            {
+//                "kdy":"2025-10-04",
+//                "od":"16:00:00",
+//                "do":"25:00:00"
+//            }
+//        ]
+//    }
+//}
