@@ -238,7 +238,7 @@ extension PairingManager.PairingError: LocalizedError {
         case .invalidQR:
             return NSLocalizedString("pairingerror.invalidQR", comment: "Invalid QR error")
         case .missingCredentials:
-            return NSLocalizedString("pairingerror.unpair.missingCredentials", comment: "Missing Credentials")
+            return NSLocalizedString("pairingerror.missingCredentials", comment: "Missing Credentials")
         }
     }
 }

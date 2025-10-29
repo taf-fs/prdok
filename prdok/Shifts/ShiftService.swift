@@ -14,13 +14,18 @@ struct ShiftService {
         return formatter.string(from: date)
     }
     
-    
+    /// fetchShifts(date:) calls the backend for the shift data specified by the `kdy` parameter, which can be either in the format "yyyy", "yyyy-MM" and "yyyy-MM-dd.
+    /// **For now it's always requesting a year worth of shift data.**
+    ///
+    /// - Parameters:
+    ///   - date: Date the function should fetch year/month/day worth of  shifts from.
+    ///
     static func fetchShifts(date: Date) async throws -> [Shift] {
         guard let key = UserDefaults.standard.string(forKey: "klic") else {
             throw PairingManager.PairingError.missingCredentials
         }
         guard let when = formatDateToYearString(date: date) else {
-            throw ParseError.invalidDate(date)
+            throw FetchShiftError.invalidDate(date)
         }
         guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
@@ -48,9 +53,7 @@ struct ShiftService {
     }
 }
 
-
-// TODO: get rid of this
-enum ParseError: Error, LocalizedError {
+enum FetchShiftError: Error, LocalizedError {
     case invalidDate(Date)
 
     var errorDescription: String? {
