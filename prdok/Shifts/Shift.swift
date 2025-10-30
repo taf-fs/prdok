@@ -29,6 +29,14 @@ struct Shift: Identifiable, Codable, Hashable {
     var dayStart: Date {
         Calendar(identifier: .gregorian).startOfDay(for: start)
     }
+    
+    var timeRangeString: String {
+        let df = DateFormatter()
+        df.dateFormat = "HH:mm"
+        let startHour = df.string(from: start)
+        let endHour = df.string(from: end)
+        return "\(startHour) - \(endHour)"
+    }
 }
 
 // MARK: - Incoming JSON DTOs
