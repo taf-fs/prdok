@@ -1,8 +1,31 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@" : {
+
+    },
+    "%@ → %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ → %2$@"
+          }
+        }
+      }
+    },
     "%lld" : {
       "shouldTranslate" : false
+    },
+    "calendar.force.refresh.month" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualizovat měsíc"
+          }
+        }
+      }
     },
     "calendar.title" : {
       "comment" : "Calendar title",
@@ -20,6 +43,57 @@
           }
         }
       }
+    },
+    "calendarDayDetails.actual.shift" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proběhlá směna"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actual shift"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.offered.shift" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabídnutá směna"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offered shift"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.planned.shift" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naplánovaná směna"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planned shift"
+          }
+        }
+      }
+    },
+    "Clear all cache" : {
+
     },
     "connect.link.button.connect" : {
       "comment" : "Connect button label",
@@ -89,11 +163,23 @@
         }
       }
     },
+    "Error: %@" : {
+
+    },
+    "Fetch" : {
+
+    },
     "https://..." : {
       "shouldTranslate" : false
     },
-    "lorem ipsum" : {
-      "shouldTranslate" : false
+    "Loading…" : {
+
+    },
+    "No shifts loaded" : {
+
+    },
+    "No upcoming planned shifts" : {
+
     },
     "OK" : {
       "shouldTranslate" : false
@@ -149,6 +235,9 @@
         }
       }
     },
+    "pairingerror.missingCredentials" : {
+      "comment" : "Missing Credentials"
+    },
     "pairingerror.missingkey" : {
       "comment" : "Missing key in response error",
       "localizations" : {
@@ -166,22 +255,8 @@
         }
       }
     },
-    "pairingerror.unpair.missingCredentials" : {
-      "comment" : "Missing Credentials",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nepodařilo se připojit účet, zařízení chybí dostatečné údaje."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to unpair, the device is missing credentials."
-          }
-        }
-      }
+    "select.year" : {
+
     },
     "settings" : {
       "localizations" : {
@@ -296,6 +371,25 @@
         }
       }
     },
+    "shifts" : {
+
+    },
+    "shiftsListWebView.presentView.button" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kdo je na směně"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Who’s on the shift"
+          }
+        }
+      }
+    },
     "tabitem.calendar" : {
       "localizations" : {
         "cs" : {
@@ -344,8 +438,39 @@
         }
       }
     },
-    "Your id: %@" : {
-
+    "today.countdown.shift.currentEnd" : {
+      "comment" : "Always followed by the time countdown.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čas do konce směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift ends in"
+          }
+        }
+      }
+    },
+    "today.countdown.shift.nextStart" : {
+      "comment" : "Always followed by the time countdown.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čas do začátku další směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next shift is in"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
