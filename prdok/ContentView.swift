@@ -29,8 +29,11 @@ struct ContentView: View {
 
                     SettingsView()
                         .tabItem { Label("tabitem.settings", systemImage: "gear") }
+                    
+                    TempShiftView()
+                        .tabItem { Label("shifts", systemImage: "calendar") }
                 }
-                .tabTint(brandColor)
+//                .tabTint(brandColor)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }

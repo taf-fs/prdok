@@ -31,6 +31,7 @@ struct SettingsView: View {
                         }
                     } label: {
                         Text("settings.unpair")
+                            .foregroundStyle(.red)
                     }
                     
 //                    Button {
