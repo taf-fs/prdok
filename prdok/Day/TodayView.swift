@@ -20,9 +20,11 @@ final class TodayViewModel: ObservableObject {
         isLoading = true
         Task {
             do {
-                let result = try await repo.getShifts(for: date)
+                let currentMonthShifts = try await repo.getShifts(for: date)
+                let nextMonthShifts = try await repo.getShifts(for: Calendar.current.date(byAdding: .month, value: 1, to: date)!)
                 await MainActor.run {
-                    self.shifts = result
+                    self.shifts.append(contentsOf: currentMonthShifts)
+                    self.shifts.append(contentsOf: nextMonthShifts)
                     self.isLoading = false
                 }
             } catch {
@@ -33,50 +35,6 @@ final class TodayViewModel: ObservableObject {
             }
         }
     }
-}
-
-extension Collection where Element == Shift {
-    /// Returns an ongoing planned shift at `now` if any.
-    func ongoingShift(at now: Date = Date()) -> Shift? {
-        return self
-            .filter { $0.kind == .planned && $0.start <= now && now < $0.end }
-            .first
-    }
-
-    /// Returns the next planned shift strictly after `now`.
-    func nextPlannedShift(after now: Date = Date()) -> Shift? {
-        self
-            .filter { $0.kind == .planned && $0.start > now }
-            .min(by: { $0.start < $1.start })
-    }
-}
-
-func currentDayAndMonth(_ now: Date = Date()) -> String {
-    let df = DateFormatter()
-    df.locale = Locale.current
-    df.dateFormat = "d. MMMM"
-    return df.string(from: now)
-}
-
-/// Formats a remaining interval like "2 hours" or " 13 minutes".
-func timeRemainingString(until target: Date, from now: Date = Date()) -> String {
-    let interval = max(0, target.timeIntervalSince(now))
-    let oneHour: TimeInterval = 60 * 60
-    let oneDay: TimeInterval = 24 * oneHour
-
-    let formatter = DateComponentsFormatter()
-    formatter.unitsStyle = .full
-    formatter.maximumUnitCount = 1 // ensure only a single unit is shown
-
-    if interval >= oneDay {
-        formatter.allowedUnits = [.day]
-    } else if interval >= oneHour {
-        formatter.allowedUnits = [.hour]
-    } else {
-        formatter.allowedUnits = [.minute]
-    }
-
-    return formatter.string(from: interval) ?? "0m"
 }
 
 struct TodayView: View {
@@ -138,11 +96,17 @@ struct TodayView: View {
                 .frame(height: proxy.size.height * 0.6, alignment: .top)
                 .frame(maxWidth: .infinity)
                 .background(
-                    Color.yellow.opacity(0.1)
+                    Color.accentColor.opacity(0.1)
                         .ignoresSafeArea(edges: .top)
                 )
                 .sheet(isPresented: $showWebView) {
-                    ShiftsListWebView(date: selectedDate)
+                    if vm.shifts.ongoingShift() != nil {
+                        ShiftsListWebView(date: Date())
+                    } else if let nextPlannedShift = vm.shifts.nextPlannedShift() {
+                        ShiftsListWebView(date: nextPlannedShift.start)
+                    } else {
+                        ShiftsListWebView(date: Date())
+                    }
                 }
                 if let error = vm.error {
                     Text("Error: \(error)")
@@ -206,6 +170,50 @@ private struct ShiftCountdownBlock: View {
                 .font(.system(.caption, design: .monospaced))
                 .fontWeight(.bold)
         }
+    }
+}
+
+private func currentDayAndMonth(_ now: Date = Date()) -> String {
+    let df = DateFormatter()
+    df.locale = Locale.current
+    df.dateFormat = "d. MMMM"
+    return df.string(from: now)
+}
+
+/// Formats a remaining interval like "2 hours" or " 13 minutes".
+private func timeRemainingString(until target: Date, from now: Date = Date()) -> String {
+    let interval = max(0, target.timeIntervalSince(now))
+    let oneHour: TimeInterval = 60 * 60
+    let oneDay: TimeInterval = 24 * oneHour
+
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = .full
+    formatter.maximumUnitCount = 1 // ensure only a single unit is shown
+
+    if interval >= oneDay {
+        formatter.allowedUnits = [.day]
+    } else if interval >= oneHour {
+        formatter.allowedUnits = [.hour]
+    } else {
+        formatter.allowedUnits = [.minute]
+    }
+
+    return formatter.string(from: interval) ?? "0m"
+}
+
+extension Collection where Element == Shift {
+    /// Returns an ongoing planned shift at `now` if any.
+    func ongoingShift(at now: Date = Date()) -> Shift? {
+        return self
+            .filter { $0.kind == .planned && $0.start <= now && now < $0.end }
+            .first
+    }
+
+    /// Returns the next planned shift strictly after `now`.
+    func nextPlannedShift(after now: Date = Date()) -> Shift? {
+        self
+            .filter { $0.kind == .planned && $0.start > now }
+            .min(by: { $0.start < $1.start })
     }
 }
 
