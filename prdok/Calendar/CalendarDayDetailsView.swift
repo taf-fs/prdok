@@ -20,16 +20,13 @@ final class CalendarDayDetailsViewModel: ObservableObject {
         guard let date else { return }
         let calendar = Calendar.current
         let dayStart = calendar.startOfDay(for: date)
-        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else { return }
 
         Task {
             self.shifts = try await repo.getShifts(for: date)
-            print("loaded \(shifts.count) shifts for \(dayStart)–\(dayEnd).")
 
-            // Match any shift that intersects the selected day's interval [dayStart, dayEnd)
-            self.offeredShift = shifts.first(where: { $0.kind == .offered && $0.start < dayEnd && $0.end > dayStart })
-            self.plannedShift = shifts.first(where: { $0.kind == .planned && $0.start < dayEnd && $0.end > dayStart })
-            self.actualShift = shifts.first(where: { $0.kind == .actual && $0.start < dayEnd && $0.end > dayStart })
+            self.offeredShift = shifts.first(where: { $0.kind == .offered && calendar.startOfDay(for: $0.start) == dayStart })
+            self.plannedShift = shifts.first(where: { $0.kind == .planned && calendar.startOfDay(for: $0.start) == dayStart })
+            self.actualShift = shifts.first(where: { $0.kind == .actual && calendar.startOfDay(for: $0.start) == dayStart })
         }
     }
 }
