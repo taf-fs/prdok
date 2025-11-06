@@ -18,6 +18,7 @@ class PairingManager {
         case missingKeyInResponse
         case invalidQR
         case missingCredentials
+        case missingSkladnik
     }
     
     /// validateQR() checks whether the parameter scanned from the QR code on the employee link conforms to the format specified on the
@@ -105,9 +106,15 @@ class PairingManager {
         guard let key = ulozsi?["klic"] as? String, !key.isEmpty else {
             throw PairingError.missingKeyInResponse
         }
+        
+        guard let skladnik = ulozsi?["lidauths"] as? String else {
+            throw PairingError.missingSkladnik
+        }
 
         UserDefaults.standard.setValue(key, forKey: "klic")
+        UserDefaults.standard.setValue(skladnik, forKey: "skladnik")
         print("Received and saving key: \(key) to UserDefaults")
+        print("Received and saving skladnik: \(key) to UserDefaults")
         return key
     }
     
@@ -239,6 +246,8 @@ extension PairingManager.PairingError: LocalizedError {
             return NSLocalizedString("pairingerror.invalidQR", comment: "Invalid QR error")
         case .missingCredentials:
             return NSLocalizedString("pairingerror.missingCredentials", comment: "Missing Credentials")
+        case .missingSkladnik:
+            return NSLocalizedString("pairingerror.missingSkladnik", comment: "Missing Skladnik")
         }
     }
 }

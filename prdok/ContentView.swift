@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("setupCompleted") private var setupCompleted = false
+    @AppStorage("setupCompleted") private var setupCompleted = false // false only when value doesn't exist
     @State private var selectedTab = 0
     private let brandColor = Color("cpCream")
 
@@ -27,11 +27,14 @@ struct ContentView: View {
                         .tabItem { Label("tabitem.calendar", systemImage: "calendar") }
                         .tag(1)
 
+                    EbonyWebView()
+                        .tabItem { Label("tabitem.ebony", systemImage: "list.bullet.rectangle") }
+                    
                     SettingsView()
                         .tabItem { Label("tabitem.settings", systemImage: "gear") }
                     
-                    TempShiftView()
-                        .tabItem { Label("shifts", systemImage: "calendar") }
+//                    TempShiftView()
+//                        .tabItem { Label("shifts", systemImage: "calendar") }
                 }
 //                .tabTint(brandColor)
                 .transition(.move(edge: .bottom).combined(with: .opacity))

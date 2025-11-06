@@ -255,6 +255,9 @@
         }
       }
     },
+    "pairingerror.missingSkladnik" : {
+      "comment" : "Missing Skladnik"
+    },
     "select.year" : {
 
     },
@@ -402,6 +405,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calendar"
+          }
+        }
+      }
+    },
+    "tabitem.ebony" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eBony"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eBony"
           }
         }
       }
