@@ -33,6 +33,9 @@ struct ContentView: View {
                     SettingsView()
                         .tabItem { Label("tabitem.settings", systemImage: "gear") }
                     
+                    LinksView()
+                        .tabItem { Label("tabitem.links", systemImage: "links")}
+                    
 //                    TempShiftView()
 //                        .tabItem { Label("shifts", systemImage: "calendar") }
                 }
