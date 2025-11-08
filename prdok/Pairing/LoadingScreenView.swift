@@ -21,6 +21,7 @@ struct LoadingScreenView: View {
             VStack {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: isDarkMode ? .white : .black))
+                    .controlSize(.large)
                 if let loadingText = text {
                     Text(loadingText)
                 }

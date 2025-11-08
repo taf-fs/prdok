@@ -8,7 +8,39 @@
 import SwiftUI
 import WebKit
 
+struct EbonyWebScreen: View {
+    @State var isPageLoaded: Bool = false
+    
+    var body: some View {
+        ZStack {
+            if #available(iOS 26, *) {
+                Color(red: 255/255, green: 255/255, blue: 179/255)
+                    .ignoresSafeArea(.container, edges: isPageLoaded ? .top : .all)
+                EbonyWebView(isPageLoaded: $isPageLoaded)
+                    .background(.clear)
+                    .ignoresSafeArea(.container, edges: .bottom)
+            } else {
+                Color(red: 255/255, green: 255/255, blue: 179/255)
+                    .ignoresSafeArea()
+                EbonyWebView(isPageLoaded: $isPageLoaded)
+                    .background(.clear)
+            }
+            
+            ZStack {
+                Color(red: 255/255, green: 255/255, blue: 179/255)
+                    .ignoresSafeArea(.container, edges: .bottom)
+                ProgressView()
+                    .controlSize(.large)
+            }
+            .opacity(isPageLoaded ? 0 : 1)
+            .animation(.easeOut(duration: 0.3), value: isPageLoaded)
+            .allowsHitTesting(!isPageLoaded) // so the tap pass through
+        }
+    }
+}
+
 struct EbonyWebView: UIViewRepresentable {
+    @Binding var isPageLoaded: Bool
     @AppStorage("skladnik") private var skladnik: String?
     
     func getURL() -> URL {
@@ -19,8 +51,13 @@ struct EbonyWebView: UIViewRepresentable {
         }
     }
     
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
         webView.allowsBackForwardNavigationGestures = true
         webView.load(URLRequest(url: getURL()))
         return webView
@@ -33,7 +70,23 @@ struct EbonyWebView: UIViewRepresentable {
             webView.load(URLRequest(url: getURL()))
         }
     }
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
+        var parent: EbonyWebView
+        
+        init(_ parent: EbonyWebView) {
+            self.parent = parent
+        }
+        
+        // ✅ Called when the page finishes loading
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+            withAnimation {
+                parent.isPageLoaded = true
+            }
+        }
+    }
 }
 #Preview {
-    EbonyWebView()
+    EbonyWebScreen()
 }

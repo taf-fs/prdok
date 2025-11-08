@@ -7,9 +7,17 @@
 
 import SwiftUI
 
+enum ContentTab {
+    case today
+    case calendar
+    case ebony
+    case links
+    case settings
+}
+
 struct ContentView: View {
     @AppStorage("setupCompleted") private var setupCompleted = false // false only when value doesn't exist
-    @State private var selectedTab = 0
+    @State private var selectedTab: ContentTab = .today
     private let brandColor = Color("cpCream")
 
     var body: some View {
@@ -21,24 +29,28 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     TodayView()
                         .tabItem { Label("tabitem.today", systemImage: "clock") }
-                        .tag(0)
+                        .tag(ContentTab.today)
 
                     CalendarView()
                         .tabItem { Label("tabitem.calendar", systemImage: "calendar") }
-                        .tag(1)
+                        .tag(ContentTab.calendar)
 
-                    EbonyWebView()
+                    EbonyWebScreen()
                         .tabItem { Label("tabitem.ebony", systemImage: "list.bullet.rectangle") }
+                        .tag(ContentTab.ebony)
+                    
+                    LinksView()
+                        .tabItem { Label("tabitem.links", systemImage: "link")}
+                        .tag(ContentTab.links)
                     
                     SettingsView()
                         .tabItem { Label("tabitem.settings", systemImage: "gear") }
-                    
-                    LinksView()
-                        .tabItem { Label("tabitem.links", systemImage: "links")}
+                        .tag(ContentTab.settings)
                     
 //                    TempShiftView()
 //                        .tabItem { Label("shifts", systemImage: "calendar") }
                 }
+                .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : nil)
 //                .tabTint(brandColor)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
