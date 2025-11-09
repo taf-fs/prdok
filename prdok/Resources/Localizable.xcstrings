@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@" : {
-
+      "shouldTranslate" : false
     },
     "%@ → %@" : {
       "localizations" : {
@@ -12,20 +12,44 @@
             "value" : "%1$@ → %2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld" : {
       "shouldTranslate" : false
+    },
+    "bootstrap.loading" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připravuji relaci…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing session…"
+          }
+        }
+      }
     },
     "calendar.force.refresh.month" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Aktualizovat měsíc"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh month"
+          }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "calendar.title" : {
       "comment" : "Calendar title",
@@ -93,7 +117,7 @@
       }
     },
     "Clear all cache" : {
-
+      "shouldTranslate" : false
     },
     "connect.link.button.connect" : {
       "comment" : "Connect button label",
@@ -164,22 +188,128 @@
       }
     },
     "Error: %@" : {
-
+      "shouldTranslate" : false
     },
     "Fetch" : {
-
+      "shouldTranslate" : false
     },
     "https://..." : {
       "shouldTranslate" : false
     },
-    "Loading…" : {
-
+    "link.contacts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
+          }
+        }
+      }
+    },
+    "link.employeeWeb" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaměstnanecký web"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Employee site"
+          }
+        }
+      }
+    },
+    "link.forum" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fórum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Employee forum"
+          }
+        }
+      }
+    },
+    "link.meetingMinutes" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zápisy z porad"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting minutes"
+          }
+        }
+      }
+    },
+    "link.notImplementedYet" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funkce ještě není implementována"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not implemented yet"
+          }
+        }
+      }
+    },
+    "link.waiter" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online vrchní"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online waiter"
+          }
+        }
+      }
+    },
+    "links.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odkazy"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Links"
+          }
+        }
+      }
     },
     "No shifts loaded" : {
-
-    },
-    "No upcoming planned shifts" : {
-
+      "shouldTranslate" : false
     },
     "OK" : {
       "shouldTranslate" : false
@@ -236,7 +366,21 @@
       }
     },
     "pairingerror.missingCredentials" : {
-      "comment" : "Missing Credentials"
+      "comment" : "Missing Credentials",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "K odpárování nebyly nalezeny potřebné údaje."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The credentials required to unpair are missing."
+          }
+        }
+      }
     },
     "pairingerror.missingkey" : {
       "comment" : "Missing key in response error",
@@ -256,10 +400,24 @@
       }
     },
     "pairingerror.missingSkladnik" : {
-      "comment" : "Missing Skladnik"
+      "comment" : "Missing Skladnik",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server nepodal skladníka v odpovědi."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The skladnik was not included in the response."
+          }
+        }
+      }
     },
     "select.year" : {
-
+      "shouldTranslate" : false
     },
     "settings" : {
       "localizations" : {
@@ -374,9 +532,6 @@
         }
       }
     },
-    "shifts" : {
-
-    },
     "shiftsListWebView.presentView.button" : {
       "localizations" : {
         "cs" : {
@@ -425,6 +580,22 @@
         }
       }
     },
+    "tabitem.links" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odkazy"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Links"
+          }
+        }
+      }
+    },
     "tabitem.settings" : {
       "localizations" : {
         "cs" : {
@@ -453,6 +624,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Today"
+          }
+        }
+      }
+    },
+    "today.countdown.loading" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načítání směn…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading shifts…"
           }
         }
       }
@@ -487,6 +674,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next shift is in"
+          }
+        }
+      }
+    },
+    "today.noUpcomingShifts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádné naplánováné směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No upcoming planned shifts"
           }
         }
       }
