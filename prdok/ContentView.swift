@@ -17,6 +17,7 @@ enum ContentTab {
 
 struct ContentView: View {
     @AppStorage("setupCompleted") private var setupCompleted = false // false only when value doesn't exist
+    @AppStorage("needsToBootstrap") private var needsToBootstrap = false
     @State private var selectedTab: ContentTab = .today
     private let brandColor = Color("cpCream")
 
@@ -53,6 +54,9 @@ struct ContentView: View {
                 .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : nil)
 //                .tabTint(brandColor)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                .fullScreenCover(isPresented: $needsToBootstrap) {
+                    BootstrapCover(isPresented: $needsToBootstrap)
+                }
             }
         }
         .animation(.easeInOut, value: setupCompleted)

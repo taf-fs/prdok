@@ -59,6 +59,7 @@ struct PairWithLinkView: View {
                             // TODO: consider putting a second or something of delay here, ProgressView flashes so fast maybe it's bad ux
                             try await PairingManager.shared.connectAccountUsingLink(employeeLink)
                             UserDefaults.standard.set(true, forKey: "setupCompleted")
+                            UserDefaults.standard.set(true, forKey: "needsToBootstrap")
                         } catch {
                             alertMessage = error.localizedDescription
                             showAlert = true
