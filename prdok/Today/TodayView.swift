@@ -66,9 +66,9 @@ struct TodayView: View {
                                 rangeText: next.timeRangeString,
                                 now: now)
                         } else if vm.isLoading {
-                            ProgressView("Loading…")
+                            ProgressView("today.countdown.loading")
                         } else {
-                            Text("No upcoming planned shifts")
+                            Text("today.noUpcomingShifts")
                                 .foregroundStyle(.secondary)
                         }
                     }
