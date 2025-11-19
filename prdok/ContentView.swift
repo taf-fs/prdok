@@ -27,35 +27,41 @@ struct ContentView: View {
                 SetupView()
                     .transition(.move(edge: .top).combined(with: .opacity))
             } else {
-                TabView(selection: $selectedTab) {
-                    TodayView()
-                        .tabItem { Label("tabitem.today", systemImage: "clock") }
-                        .tag(ContentTab.today)
-
-                    CalendarView()
-                        .tabItem { Label("tabitem.calendar", systemImage: "calendar") }
-                        .tag(ContentTab.calendar)
-
-                    EbonyWebScreen()
-                        .tabItem { Label("tabitem.ebony", systemImage: "list.bullet.rectangle") }
-                        .tag(ContentTab.ebony)
-                    
-                    LinksView()
-                        .tabItem { Label("tabitem.links", systemImage: "link")}
-                        .tag(ContentTab.links)
-                    
-                    SettingsView()
-                        .tabItem { Label("tabitem.settings", systemImage: "gear") }
-                        .tag(ContentTab.settings)
-                    
-//                    TempShiftView()
-//                        .tabItem { Label("shifts", systemImage: "calendar") }
-                }
-                .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : nil)
-//                .tabTint(brandColor)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .fullScreenCover(isPresented: $needsToBootstrap) {
-                    BootstrapCover(isPresented: $needsToBootstrap)
+                ZStack {
+                    TabView(selection: $selectedTab) {
+                        TodayView()
+                            .tabItem { Label("tabitem.today", systemImage: "clock") }
+                            .tag(ContentTab.today)
+                        
+                        CalendarView()
+                            .tabItem { Label("tabitem.calendar", systemImage: "calendar") }
+                            .tag(ContentTab.calendar)
+                        
+                        EbonyWebScreen()
+                            .tabItem { Label("tabitem.ebony", systemImage: "list.bullet.rectangle") }
+                            .tag(ContentTab.ebony)
+                        
+                        LinksView()
+                            .tabItem { Label("tabitem.links", systemImage: "link")}
+                            .tag(ContentTab.links)
+                        
+                        SettingsView()
+                            .tabItem { Label("tabitem.settings", systemImage: "gear") }
+                            .tag(ContentTab.settings)
+                        
+                        //                    TempShiftView()
+                        //                        .tabItem { Label("shifts", systemImage: "calendar") }
+                    }
+                    .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : nil)
+                    //                .tabTint(brandColor)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .fullScreenCover(isPresented: $needsToBootstrap) {
+                        BootstrapCover(isPresented: $needsToBootstrap)
+                    }
+                    if needsToBootstrap {
+                        Color(.systemBackground)
+                            .ignoresSafeArea()
+                    }
                 }
             }
         }
