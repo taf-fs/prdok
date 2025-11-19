@@ -35,12 +35,14 @@ final class CalendarDayDetailsViewModel: ObservableObject {
 struct CalendarDayDetailsView: View {
     @StateObject var vm = CalendarDayDetailsViewModel()
     @Binding var date: Date?
+    @State var isSheetPresented: Bool = false
     
     var fulldate: String {
         let df = DateFormatter()
         df.locale = Locale.current
         df.setLocalizedDateFormatFromTemplate("dMMMMY")
-        return df.string(from: date!)
+        guard let date else { return "-" }
+        return df.string(from: date)
     }
     var body: some View {
         VStack(spacing: 20) {
@@ -48,21 +50,47 @@ struct CalendarDayDetailsView: View {
                 .font(.system(.title2, design: .monospaced))
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            
             Divider()
+            
             Text("calendarDayDetails.offered.shift")
             Text(vm.offeredShift?.timeRangeString ?? "-")
+            
             Divider()
+            
             Text("calendarDayDetails.planned.shift")
             Text(vm.plannedShift?.timeRangeString ?? "-")
+            
             Divider()
+            
             Text("calendarDayDetails.actual.shift")
             Text(vm.actualShift?.timeRangeString ?? "-")
-            Spacer()
+            
+            HStack {
+                Button("calendarDayDetails.plan.shift") {
+                    // plan the shift
+                }
+                .buttonStyle(.borderedProminent)
+                Button("calendarDayDetails.show.webWiew") {
+                    isSheetPresented = true
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            if #unavailable(iOS 16) {
+                Spacer()
+            }
                 
         }
         .padding(24)
-        .padding(.top, 24)
         .frame(maxWidth: .infinity)
+        .sheet(isPresented: $isSheetPresented) {
+            if let date {
+                ShiftsListWebView(date: date)
+            } else {
+                // fallback
+                Text("No date selected")
+            }
+        }
         .onAppear {
             vm.fetchShift(date: date)
         }
@@ -70,11 +98,28 @@ struct CalendarDayDetailsView: View {
 }
 
 
+// A wrapper just for previewing the sheet presentation style
+private struct CalendarDayDetailsSheetPreviewContainer: View {
+    @State private var isPresented = true
+    @State private var date: Date? = Date()
+    
+    var body: some View {
+        Color.clear
+            .sheet(isPresented: $isPresented) {
+                if #available(iOS 16, *) {
+                    CalendarDayDetailsView(date: $date)
+                        .presentationDetents([.medium])
+                } else {
+                    CalendarDayDetailsView(date: $date)
+                }
+            }
+    }
+}
+
 // Classic preview compatible with iOS 15+
 struct CalendarDayDetailsViewPreviews: PreviewProvider {
-    @State static var date: Date? = Date()
     static var previews: some View {
-        CalendarDayDetailsView(date: $date)
+        CalendarDayDetailsSheetPreviewContainer()
     }
 }
 

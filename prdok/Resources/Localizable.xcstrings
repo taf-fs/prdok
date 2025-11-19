@@ -100,6 +100,22 @@
         }
       }
     },
+    "calendarDayDetails.plan.shift" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naplánovat směnu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan shift"
+          }
+        }
+      }
+    },
     "calendarDayDetails.planned.shift" : {
       "localizations" : {
         "cs" : {
@@ -112,6 +128,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Planned shift"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.show.webWiew" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit směnu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show shift"
           }
         }
       }
@@ -307,6 +339,9 @@
           }
         }
       }
+    },
+    "No date selected" : {
+
     },
     "No shifts loaded" : {
       "shouldTranslate" : false
