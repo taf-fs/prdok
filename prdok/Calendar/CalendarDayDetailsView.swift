@@ -9,9 +9,10 @@ import SwiftUI
 import Combine
 
 final class CalendarDayDetailsViewModel: ObservableObject {
-    @Published var offeredShift: Shift?
-    @Published var plannedShift: Shift?
-    @Published var actualShift: Shift?
+    @Published var offeredShifts: [Shift] = []
+    @Published var plannedShifts: [Shift] = []
+    @Published var actualShifts: [Shift] = []
+    
     
     var shifts: [Shift] = []
     let repo = ShiftRepository()
@@ -20,13 +21,26 @@ final class CalendarDayDetailsViewModel: ObservableObject {
         guard let date else { return }
         let calendar = Calendar.current
         let dayStart = calendar.startOfDay(for: date)
-
+        
         Task {
-            self.shifts = try await repo.getShifts(for: date)
-
-            self.offeredShift = shifts.first(where: { $0.kind == .offered && calendar.startOfDay(for: $0.start) == dayStart })
-            self.plannedShift = shifts.first(where: { $0.kind == .planned && calendar.startOfDay(for: $0.start) == dayStart })
-            self.actualShift = shifts.first(where: { $0.kind == .actual && calendar.startOfDay(for: $0.start) == dayStart })
+            do {
+                let allShifts = try await repo.getShifts(for: date)
+                await MainActor.run {
+                    self.shifts = allShifts
+                    
+                    self.offeredShifts = allShifts.filter {
+                        $0.kind == .offered && $0.dayStart == dayStart
+                    }
+                    self.plannedShifts = allShifts.filter {
+                        $0.kind == .planned && $0.dayStart == dayStart
+                    }
+                    self.actualShifts = allShifts.filter {
+                        $0.kind == .actual && $0.dayStart == dayStart
+                    }
+                }
+            } catch {
+                // TODO: you may want some error handling here
+            }
         }
     }
 }
@@ -52,19 +66,18 @@ struct CalendarDayDetailsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Divider()
+                        
+            ShiftIndicatorView(
+                title: "calendarDayDetails.offered.shift",
+                shifts: vm.offeredShifts)
             
-            Text("calendarDayDetails.offered.shift")
-            Text(vm.offeredShift?.timeRangeString ?? "-")
+            ShiftIndicatorView(
+                title: "calendarDayDetails.planned.shift",
+                shifts: vm.plannedShifts)
             
-            Divider()
-            
-            Text("calendarDayDetails.planned.shift")
-            Text(vm.plannedShift?.timeRangeString ?? "-")
-            
-            Divider()
-            
-            Text("calendarDayDetails.actual.shift")
-            Text(vm.actualShift?.timeRangeString ?? "-")
+            ShiftIndicatorView(
+                title: "calendarDayDetails.actual.shift",
+                shifts: vm.actualShifts)
             
             HStack {
                 Button("calendarDayDetails.plan.shift") {
@@ -79,7 +92,6 @@ struct CalendarDayDetailsView: View {
             if #unavailable(iOS 16) {
                 Spacer()
             }
-                
         }
         .padding(24)
         .frame(maxWidth: .infinity)
@@ -96,7 +108,6 @@ struct CalendarDayDetailsView: View {
         }
     }
 }
-
 
 // A wrapper just for previewing the sheet presentation style
 private struct CalendarDayDetailsSheetPreviewContainer: View {
@@ -122,4 +133,3 @@ struct CalendarDayDetailsViewPreviews: PreviewProvider {
         CalendarDayDetailsSheetPreviewContainer()
     }
 }
-
