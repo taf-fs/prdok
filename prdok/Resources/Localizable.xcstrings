@@ -38,6 +38,7 @@
       }
     },
     "calendar.force.refresh.month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

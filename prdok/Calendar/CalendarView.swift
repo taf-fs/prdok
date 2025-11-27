@@ -97,6 +97,14 @@ struct CalendarView: View {
                                 scrollToMonthAndUpdateState(dateContainingMonth: target)
                             }
                         }
+                        RefreshMonthButton {
+                            Task {
+                                if let date = calendar.date(from: displayedMonth) {
+                                    try await vm.repo.refresh(for: date)
+                                    vm.loadShiftsForYear(dateContainingYear: date)
+                                }
+                            }
+                        }
                     }
                 }
                 
@@ -161,15 +169,7 @@ struct CalendarView: View {
                     .frame(maxHeight: 2)
                 
                 Spacer()
-                Button("calendar.force.refresh.month") {
-                    Task {
-                        if let date = calendar.date(from: displayedMonth) {
-                            try await vm.repo.refresh(for: date)
-                            vm.loadShiftsForYear(dateContainingYear: date)
-                        }
-                    }
-                }
-                Spacer()
+                
             }
             .padding(.horizontal, 12)
             .padding(.top, 24)
@@ -266,6 +266,18 @@ private struct PrevMonthButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "chevron.left")
+                .frame(width: 35, height: 35)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct RefreshMonthButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "arrow.clockwise")
                 .frame(width: 35, height: 35)
         }
         .buttonStyle(.plain)
