@@ -66,6 +66,7 @@ struct ShiftTimelineLayout {
 struct ShiftIndicatorView: View {
     let title: LocalizedStringKey
     let shifts: [Shift]
+    let color: Color
     
     private let layout = ShiftTimelineLayout()
     
@@ -81,7 +82,7 @@ struct ShiftIndicatorView: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.secondary)
+                    .fill(Color.secondary.opacity(0.2))
                 
                 if shifts.isEmpty {
                     Text("–")
@@ -93,7 +94,8 @@ struct ShiftIndicatorView: View {
                         ForEach(shifts) { shift in
                             ShiftIndicatorPillView(
                                 shift: shift,
-                                layout: layout
+                                layout: layout,
+                                color: color
                             )
                         }
                     }
@@ -107,6 +109,7 @@ struct ShiftIndicatorView: View {
 struct ShiftIndicatorPillView: View {
     let shift: Shift
     let layout: ShiftTimelineLayout
+    let color: Color
     
     var body: some View {
         GeometryReader { geo in
@@ -118,7 +121,7 @@ struct ShiftIndicatorPillView: View {
             let pillWidth = max((endNorm - startNorm) * totalWidth, 40)
             
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.primary)
+                .fill(color)
                 .frame(width: pillWidth, height: geo.size.height)
                 .position(
                     x: pillX + pillWidth / 2,
@@ -128,7 +131,6 @@ struct ShiftIndicatorPillView: View {
             Text(shift.timeRangeString)
                 .font(.system(.footnote, design: .monospaced))
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
                 .frame(width: pillWidth)
                 .position(
                     x: pillX + pillWidth / 2,
@@ -147,6 +149,9 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
         cal.date(bySettingHour: h, minute: m, second: 0, of: base)!
     }
     
+    private static let exampleShifts0: [Shift] = [
+        Shift(kind: .offered, start: at(7), end: at(23))]
+    
     private static let exampleShifts: [Shift] = [
         Shift(kind: .offered, start: at(7), end: at(11)),        // flush left
         Shift(kind: .offered, start: at(16),    end: at(17,40)),    // middle
@@ -158,15 +163,18 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
         VStack(spacing: 24) {
             ShiftIndicatorView(
                 title: "Zadaná možnost",
-                shifts: [exampleShifts[0]]
+                shifts: exampleShifts0,
+                color: Color(red: 102/255, green: 1, blue: 51/255)
             )
             ShiftIndicatorView(
                 title: "Více možností",
-                shifts: exampleShifts
+                shifts: exampleShifts,
+                color: Color(red: 102/255, green: 1, blue: 51/255)
             )
             ShiftIndicatorView(
                 title: "Bez směny",
-                shifts: []
+                shifts: [],
+                color: Color(red: 102/255, green: 1, blue: 51/255)
             )
         }
         .padding()

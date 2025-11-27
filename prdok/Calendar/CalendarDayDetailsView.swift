@@ -60,24 +60,32 @@ struct CalendarDayDetailsView: View {
     }
     var body: some View {
         VStack(spacing: 20) {
-            Text(fulldate)
-                .font(.system(.title2, design: .monospaced))
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Divider()
-                        
+            if #available(iOS 26, *) {
+                Text(fulldate)
+                    .font(.system(.title2, design: .monospaced))
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(fulldate)
+                    .font(.system(.title2, design: .monospaced))
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 32)
+            }
             ShiftIndicatorView(
                 title: "calendarDayDetails.offered.shift",
-                shifts: vm.offeredShifts)
-            
+                shifts: vm.offeredShifts,
+                color: Color(red: 102/255, green: 1, blue: 51/255, opacity: 0.5))
+                
             ShiftIndicatorView(
                 title: "calendarDayDetails.planned.shift",
-                shifts: vm.plannedShifts)
+                shifts: vm.plannedShifts,
+                color: Color(red: 76/255, green: 196/255, blue: 23/255, opacity: 0.5))
             
             ShiftIndicatorView(
                 title: "calendarDayDetails.actual.shift",
-                shifts: vm.actualShifts)
+                shifts: vm.actualShifts,
+                color: Color(red: 189/255, green: 183/255, blue: 107/255, opacity: 0.5))
             
             HStack {
                 Button("calendarDayDetails.plan.shift") {
