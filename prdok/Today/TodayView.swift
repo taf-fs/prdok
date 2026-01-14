@@ -41,13 +41,14 @@ struct TodayView: View {
     @StateObject private var vm = TodayViewModel()
     @State var selectedDate: Date = Date()
     @State private var showWebView = false
+    @Binding var selectedTab: ContentTab
     
     var body: some View {
         GeometryReader { proxy in
             VStack(spacing: 20) {
                 ZStack {
                     VStack(spacing: 40) {
-                        TopDateBar()
+                        TopDateBar(selectedTab: $selectedTab)
                         
                         Spacer()
                         
@@ -132,6 +133,8 @@ struct TodayView: View {
 }
 
 private struct TopDateBar: View {
+    @Binding var selectedTab: ContentTab
+    
     var body: some View {
         HStack {
             Button {
@@ -151,7 +154,7 @@ private struct TopDateBar: View {
             Spacer()
             
             Button {
-                // go to calendarview
+                selectedTab = .calendar
             } label: {
                 Image(systemName: "calendar")
                     .font(.system(.title))
@@ -166,6 +169,7 @@ private struct ShiftCountdownBlock: View {
     let target: Date
     let rangeText: String
     let now: Date
+    let testDate = Calendar.current.date(from: DateComponents(year: 2024, month: 12, day: 9))!
 
     var body: some View {
         VStack(spacing: 16) {
@@ -176,18 +180,33 @@ private struct ShiftCountdownBlock: View {
             Text("\(timeRemainingString(until: target, from: now))")
                 .font(.system(.largeTitle, design: .serif))
                 .fontWeight(.bold)
-            Text(rangeText)
-                .font(.system(.caption, design: .monospaced))
-                .fontWeight(.bold)
+            
+            VStack(spacing: 4) {
+                Text(targetDayAndMonth(target))
+                //                    .fontWeight(.bold)
+                    .font(.system(.caption, design: .monospaced))
+                Text(rangeText)
+                    .fontWeight(.bold)
+                    .font(.system(.caption, design: .monospaced))
+            }
         }
     }
 }
+
+
 
 private func currentDayAndMonth(_ now: Date = Date()) -> String {
     let df = DateFormatter()
     df.locale = Locale.current
     df.dateFormat = "d. MMMM"
     return df.string(from: now)
+}
+
+private func targetDayAndMonth(_ date: Date) -> String {
+    let df = DateFormatter()
+    df.locale = Locale.current
+    df.dateFormat = "dd.MM."
+    return df.string(from: date)
 }
 
 /// Formats a remaining interval like "2 hours" or " 13 minutes".
@@ -228,5 +247,5 @@ extension Collection where Element == Shift {
 }
 
 #Preview {
-    TodayView()
+    ContentView()
 }

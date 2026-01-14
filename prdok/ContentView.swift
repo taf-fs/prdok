@@ -29,7 +29,7 @@ struct ContentView: View {
             } else {
                 ZStack {
                     TabView(selection: $selectedTab) {
-                        TodayView()
+                        TodayView(selectedTab: $selectedTab)
                             .tabItem { Label("tabitem.today", systemImage: "clock") }
                             .tag(ContentTab.today)
                         
