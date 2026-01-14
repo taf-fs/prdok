@@ -63,7 +63,7 @@ struct ShiftParser {
             }
             end = nextDayEnd
         }
-
+        
         return (start, end)
     }
     
@@ -78,7 +78,12 @@ struct ShiftParser {
                 endString: raw.doTime,
                 timeZone: serverTimeZone
             )
-            return Shift(kind: kind, start: start, end: end)
+            
+            guard let id = Int(raw.id) else {
+                throw ShiftParseError.couldNotParseID(id: raw.id)
+            }
+            
+            return Shift(id: id, kind: kind, start: start, end: end)
         }
         
         var shifts: [Shift] = []
@@ -94,6 +99,7 @@ enum ShiftParseError: Error, LocalizedError {
     case invalidTime(String)
     case invalidDate(y: Int, m: Int, d: Int)
     case couldNotComposeDate(day: String, time: String)
+    case couldNotParseID(id: String)
     
     var errorDescription: String? {
         switch self {
@@ -101,6 +107,7 @@ enum ShiftParseError: Error, LocalizedError {
         case .invalidTime(let t): return "Invalid time format: \(t)"
         case .invalidDate(let y, let m, let d): return "Invalid date: \(y)-\(m)-\(d)"
         case .couldNotComposeDate(let d, let t): return "Could not compose date from \(d) \(t)"
+        case .couldNotParseID(let id): return "Could not parse id \(id)"
         }
     }
 }

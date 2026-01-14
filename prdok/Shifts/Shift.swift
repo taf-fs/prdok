@@ -14,12 +14,12 @@ enum ShiftKind: String, Codable, Hashable {
 }
 
 struct Shift: Identifiable, Codable, Hashable {
-    let id: UUID
+    let id: Int
     let kind: ShiftKind
     let start: Date
     let end: Date
     
-    init(id: UUID = UUID(), kind: ShiftKind, start: Date, end: Date) {
+    init(id: Int, kind: ShiftKind, start: Date, end: Date) {
         self.id = id
         self.kind = kind
         self.start = start
@@ -52,11 +52,13 @@ struct SmenyGroups: Decodable {
 }
 
 struct RawShift: Decodable {
+    let id: String    // ID of the shift received from the server
     let kdy: String   // "yyyy-MM-dd"
     let od: String    // "HH:mm:ss"
     let doTime: String
 
     enum CodingKeys: String, CodingKey {
+        case id
         case kdy
         case od
         case doTime = "do" // "do" is a reserved word in Swift, so map it
@@ -70,6 +72,7 @@ struct RawShift: Decodable {
 //    "smeny":{
 //        "dochazka":[
 //            {
+//                "id":"73084",
 //                "kdy":"2025-10-04",
 //                "od":"16:01:00",
 //                "do":"24:58:00"
@@ -77,6 +80,7 @@ struct RawShift: Decodable {
 //        ],
 //        "plan":[
 //            {
+//                "id":"73085",
 //                "kdy":"2025-10-04",
 //                "od":"16:00:00",
 //                "do":"25:00:00"
@@ -84,6 +88,7 @@ struct RawShift: Decodable {
 //        ],
 //        "moznosti":[
 //            {
+//                "id":"73086",
 //                "kdy":"2025-10-04",
 //                "od":"16:00:00",
 //                "do":"25:00:00"
