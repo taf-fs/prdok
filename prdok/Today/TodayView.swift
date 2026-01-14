@@ -44,75 +44,85 @@ struct TodayView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack {
-                VStack(spacing: 40) {
-                    TopDateBar()
-
-                    Spacer()
-                    
-                    TimelineView(.periodic(from: .now, by: 60)) { context in
-                        let now = context.date
+            VStack(spacing: 20) {
+                ZStack {
+                    VStack(spacing: 40) {
+                        TopDateBar()
                         
-                        if let current = vm.shifts.ongoingShift(at: now) {
-                            ShiftCountdownBlock(
-                                contextKey: "today.countdown.shift.currentEnd",
-                                target: current.end,
-                                rangeText: current.timeRangeString,
-                                now: now)
-                        } else if let next = vm.shifts.nextPlannedShift(after: now) {
-                            ShiftCountdownBlock(
-                                contextKey: "today.countdown.shift.nextStart",
-                                target: next.start,
-                                rangeText: next.timeRangeString,
-                                now: now)
-                        } else if vm.isLoading {
-                            ProgressView("today.countdown.loading")
+                        Spacer()
+                        
+                        TimelineView(.periodic(from: .now, by: 60)) { context in
+                            let now = context.date
+                            
+                            if let current = vm.shifts.ongoingShift(at: now) {
+                                ShiftCountdownBlock(
+                                    contextKey: "today.countdown.shift.currentEnd",
+                                    target: current.end,
+                                    rangeText: current.timeRangeString,
+                                    now: now)
+                            } else if let next = vm.shifts.nextPlannedShift(after: now) {
+                                ShiftCountdownBlock(
+                                    contextKey: "today.countdown.shift.nextStart",
+                                    target: next.start,
+                                    rangeText: next.timeRangeString,
+                                    now: now)
+                            } else if vm.isLoading {
+                                ProgressView("today.countdown.loading")
+                            } else {
+                                Text("today.noUpcomingShifts")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        
+                        Button {
+                            showWebView = true
+                        } label: {
+                            Text("shiftsListWebView.presentView.button")
+                                .font(.system(.footnote))
+                                .fontWeight(.semibold)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 40)
+                                .foregroundStyle(.background)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(.primary)
+                                        .tint(.primary)
+                                }
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.top, 16)
+                    .padding(.horizontal, 16)
+                    .frame(height: proxy.size.height * 0.6, alignment: .top)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        Color.accentColor.opacity(0.1)
+                            .ignoresSafeArea(edges: .top)
+                    )
+                    .sheet(isPresented: $showWebView) {
+                        if vm.shifts.ongoingShift() != nil {
+                            ShiftsListWebView(date: Date())
+                        } else if let nextPlannedShift = vm.shifts.nextPlannedShift() {
+                            ShiftsListWebView(date: nextPlannedShift.start)
                         } else {
-                            Text("today.noUpcomingShifts")
-                                .foregroundStyle(.secondary)
+                            ShiftsListWebView(date: Date())
                         }
                     }
-                    
-                    Button {
-                        showWebView = true
-                    } label: {
-                        Text("shiftsListWebView.presentView.button")
-                            .font(.system(.caption))
-                            .fontWeight(.semibold)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 40)
-                            .foregroundStyle(.background)
-                            .background {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(.primary)
-                                    .tint(.primary)
-                            }
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.top, 16)
-                .padding(.horizontal, 16)
-                .frame(height: proxy.size.height * 0.6, alignment: .top)
-                .frame(maxWidth: .infinity)
-                .background(
-                    Color.accentColor.opacity(0.1)
-                        .ignoresSafeArea(edges: .top)
-                )
-                .sheet(isPresented: $showWebView) {
-                    if vm.shifts.ongoingShift() != nil {
-                        ShiftsListWebView(date: Date())
-                    } else if let nextPlannedShift = vm.shifts.nextPlannedShift() {
-                        ShiftsListWebView(date: nextPlannedShift.start)
-                    } else {
-                        ShiftsListWebView(date: Date())
+                    if let error = vm.error {
+                        Text("Error: \(error)")
+                            .foregroundStyle(.red)
                     }
                 }
-                if let error = vm.error {
-                    Text("Error: \(error)")
-                        .foregroundStyle(.red)
-                }
-
+                
+                PauseTimerView()
+                    .padding(.horizontal, 16)
+                
+//                Text("Tvoje další směny")
+//                    .font(.system(.headline, design: .serif))
+//                    .fontWeight(.semibold)
+                
+                Spacer()
             }
         }
         .task {
@@ -218,20 +228,5 @@ extension Collection where Element == Shift {
 }
 
 #Preview {
-    let now = Date()
-    let weekAfterNow = Calendar.current.date(byAdding: .day, value: 90, to: now)!
-
-    VStack(spacing: 12) {
-        HStack {
-            Text(currentDayAndMonth())
-                .font(.system(.body, design: .monospaced))
-        }
-        
-        ShiftCountdownBlock(
-            contextKey: "Další směna je za",
-            target: weekAfterNow,
-            rangeText: "asdf - adsf ",
-            now: now)
-    }
-    
+    TodayView()
 }
