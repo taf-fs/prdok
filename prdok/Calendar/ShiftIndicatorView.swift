@@ -150,13 +150,13 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
     }
     
     private static let exampleShifts0: [Shift] = [
-        Shift(kind: .offered, start: at(7), end: at(23))]
+        Shift(id: 1, kind: .offered, start: at(7), end: at(23))]
     
     private static let exampleShifts: [Shift] = [
-        Shift(kind: .offered, start: at(7), end: at(11)),        // flush left
-        Shift(kind: .offered, start: at(16),    end: at(17,40)),    // middle
-        Shift(kind: .offered, start: at(17,59),    end: at(18,40)),         // to 01:00
-        Shift(kind: .offered, start: at(20),    end: at(3))          // after 1:00, clamped
+        Shift(id: 2, kind: .offered, start: at(7),     end: at(11)),       // flush left
+        Shift(id: 3, kind: .offered, start: at(16),    end: at(17,40)),    // middle
+        Shift(id: 4, kind: .offered, start: at(17,59), end: at(18,40)),    // to 01:00
+        Shift(id: 5, kind: .offered, start: at(20),    end: at(3))         // after 1:00, clamped
     ]
     
     static var previews: some View {
