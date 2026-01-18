@@ -49,6 +49,7 @@ final class CalendarViewModel: ObservableObject {
 }
 
 struct CalendarView: View {
+
     @State var calendarStartBound = calendar.date(byAdding: .year, value: -1, to: Date())!
     @State var calendarEndBound = calendar.date(byAdding: .year, value: 1, to: Date())!
     
@@ -58,6 +59,7 @@ struct CalendarView: View {
     @State var selectedDate: Date?
     @State var displayedMonth: DateComponents = calendar.dateComponents([.year, .month], from: Date())
     @State var daySheetIsPresented: Bool = false
+    @State var offerShiftSheetIsPresented: Bool = false
     
     var currentMonthLabel: String {
         let df = DateFormatter()
@@ -164,9 +166,22 @@ struct CalendarView: View {
                     }
                 }
                 
-                RoundedRectangle(cornerRadius: 2)
-                    .foregroundStyle(.tint)
-                    .frame(maxHeight: 2)
+
+                
+                HStack {
+                    Button("navolit směny") {
+                        offerShiftSheetIsPresented = true
+                    }
+                    
+                    Button("nahrát do kalendáře") {}
+                }
+                .buttonStyle(.borderedProminent)
+                .sheet(isPresented: $offerShiftSheetIsPresented) {
+                    if let displayedMonth = calendar.date(from: displayedMonth) {
+                        OfferShiftsFromMonthView(displayedMonth: displayedMonth)
+                    } // vic confusing uz to nejde
+                }
+                .aspectRatio(7, contentMode: .fit)
                 
                 Spacer()
                 
@@ -284,7 +299,7 @@ private struct RefreshMonthButton: View {
     }
 }
 
-private extension Collection where Element == Shift {
+extension Collection where Element == Shift {
     func plannedDaySet(using calendar: Calendar) -> Set<Date> {
         Set(self.filter { $0.kind == .planned }.map { calendar.startOfDay(for: $0.start) })
     }
