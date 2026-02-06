@@ -92,12 +92,12 @@ struct OfferShiftsFromMonthView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Text("začátek")
+                    Text("shiftOffer.picker.start")
                         .frame(maxWidth: .infinity)
                         .font(.system(.callout, design: .serif))
                         .foregroundStyle(.primary.opacity(0.6))
                     Spacer()
-                    Text("konec")
+                    Text("shiftOffer.picker.end")
                         .frame(maxWidth: .infinity)
                         .font(.system(.callout, design: .serif))
                         .foregroundStyle(.primary.opacity(0.6))
@@ -134,6 +134,7 @@ struct OfferShiftsFromMonthView: View {
             // SUBMIT SHIFTS BUTTON
             Button {
                 // TODO: dismiss sheet and submit shifts
+                dismiss()
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)

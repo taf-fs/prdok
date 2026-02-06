@@ -4,6 +4,9 @@
     "–" : {
 
     },
+    "(%@)" : {
+
+    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -18,8 +21,21 @@
       },
       "shouldTranslate" : false
     },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
     "%lld" : {
       "shouldTranslate" : false
+    },
+    "%lld min" : {
+
     },
     "bootstrap.loading" : {
       "localizations" : {
@@ -223,6 +239,9 @@
         }
       }
     },
+    "End" : {
+
+    },
     "Error: %@" : {
       "shouldTranslate" : false
     },
@@ -231,6 +250,9 @@
     },
     "https://..." : {
       "shouldTranslate" : false
+    },
+    "konec" : {
+
     },
     "link.contacts" : {
       "localizations" : {
@@ -343,6 +365,12 @@
           }
         }
       }
+    },
+    "nahrát do kalendáře" : {
+
+    },
+    "navolit směny" : {
+
     },
     "No date selected" : {
 
@@ -474,6 +502,102 @@
         }
       }
     },
+    "settings.alert.notisDenied.button.cancel" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "settings.alert.notisDenied.button.openSettings" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít Nastavení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "settings.alert.notisDenied.message" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chceš-li dostávat oznámení, povol je pro tuto aplikaci v Nastavení."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications Disabled"
+          }
+        }
+      }
+    },
+    "settings.alert.notisDenied.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Oznámení nepovolena"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To receive notifications, enable them for this app in Settings."
+          }
+        }
+      }
+    },
+    "settings.notifications.toggle" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zasílat oznámení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Notifications"
+          }
+        }
+      }
+    },
+    "settings.sectionHeader.notifications" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oznámení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
+    },
     "settings.unpair" : {
       "localizations" : {
         "cs" : {
@@ -586,6 +710,9 @@
           }
         }
       }
+    },
+    "Start" : {
+
     },
     "tabitem.calendar" : {
       "localizations" : {
@@ -732,6 +859,12 @@
           }
         }
       }
+    },
+    "začátek" : {
+
+    },
+    "zapsat směnu" : {
+
     }
   },
   "version" : "1.1"
