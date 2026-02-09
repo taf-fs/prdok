@@ -251,9 +251,6 @@
     "https://..." : {
       "shouldTranslate" : false
     },
-    "konec" : {
-
-    },
     "link.contacts" : {
       "localizations" : {
         "cs" : {
@@ -377,6 +374,12 @@
     },
     "No shifts loaded" : {
       "shouldTranslate" : false
+    },
+    "notification.pause.finish.body" : {
+      "comment" : "Pause timer finish notification body"
+    },
+    "notification.pause.finish.title" : {
+      "comment" : "Pause timer finish notification title"
     },
     "OK" : {
       "shouldTranslate" : false
@@ -695,6 +698,12 @@
         }
       }
     },
+    "shiftOffer.picker.end" : {
+
+    },
+    "shiftOffer.picker.start" : {
+
+    },
     "shiftsListWebView.presentView.button" : {
       "localizations" : {
         "cs" : {
@@ -859,9 +868,6 @@
           }
         }
       }
-    },
-    "začátek" : {
-
     },
     "zapsat směnu" : {
 
