@@ -26,7 +26,9 @@ struct PauseTimerView: View {
     }
 }
 
-struct TimerButton: View {
+
+// deprecating this fow now
+private struct TimerButton: View {
     let id: Int
     let length: Int // minutes
     @Binding var activeId: Int? // controls the parent HStack
