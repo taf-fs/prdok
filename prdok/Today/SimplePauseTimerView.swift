@@ -25,7 +25,7 @@ struct SimplePauseTimerView: View {
         .aspectRatio(7, contentMode: .fit)
     }
 }
-
+// TODO: make timer persist through app kills and launches
 private struct TimerButton: View {
     let id: Int
     let length: Int // minutes
@@ -55,7 +55,7 @@ private struct TimerButton: View {
                             if isNotificationTimeTextShown {
                                 HStack {
                                     Image(systemName: "bell")
-                                    Text("Oznámení nastaveno na \(endDate.formatted(date: .omitted, time: .shortened))")
+                                    Text("simplePause.notification.endTime \(endDate.formatted(date: .omitted, time: .shortened))")
                                         .font(.headline)
                                 }
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -63,7 +63,7 @@ private struct TimerButton: View {
                             } else {
                                 HStack {
                                     Image(systemName: "checkmark")
-                                    Text("Oznámení se pošle za \(length) min")
+                                    Text("simplePause.notification.set \(length)")
                                         .font(.headline)
                                 }
                                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -113,14 +113,16 @@ private struct TimerButton: View {
     // MARK: - Logic
     
     private func startTimer() {
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-            activeId = id
-            isActivated = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                withAnimation {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation {
+                if isActivated {
                     isNotificationTimeTextShown = true
                 }
             }
+        }
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+            activeId = id
+            isActivated = true
             timerEndDate = Date().addingTimeInterval(TimeInterval(durationSeconds))
         }
         // If user had enabled a notification previously and restarts, clear it.
@@ -132,7 +134,6 @@ private struct TimerButton: View {
             activeId = nil
             isActivated = false
             timerEndDate = nil
-            
             isNotificationTimeTextShown = false
         }
         cancelScheduledNotification()

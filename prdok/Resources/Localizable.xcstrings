@@ -53,24 +53,6 @@
         }
       }
     },
-    "calendar.force.refresh.month" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Aktualizovat měsíc"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh month"
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
     "calendar.title" : {
       "comment" : "Calendar title",
       "localizations" : {
@@ -720,6 +702,38 @@
         }
       }
     },
+    "simplePause.notification.endTime %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oznámení nastaveno na %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification set on %@"
+          }
+        }
+      }
+    },
+    "simplePause.notification.set %lld" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oznámení se pošle za %lld min"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification set %lld mins from now"
+          }
+        }
+      }
+    },
     "Start" : {
 
     },
@@ -825,7 +839,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čas do konce směny"
+            "value" : "Směna končí za"
           }
         },
         "en" : {
@@ -842,13 +856,61 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čas do začátku další směny"
+            "value" : "Příští směna je v"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next shift is in"
+          }
+        }
+      }
+    },
+    "today.countdown.shift.nextStart.soon" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Příští směna je"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next shift is"
+          }
+        }
+      }
+    },
+    "today.countdown.today" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dnes"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "today"
+          }
+        }
+      }
+    },
+    "today.countdown.tomorrow" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zítra"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tomorrow"
           }
         }
       }

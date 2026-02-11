@@ -57,13 +57,13 @@ struct TodayView: View {
                             
                             if let current = vm.shifts.ongoingShift(at: now) {
                                 ShiftCountdownBlock(
-                                    contextKey: "today.countdown.shift.currentEnd",
+                                    isShiftUpcoming: false,
                                     target: current.end,
                                     rangeText: current.timeRangeString,
                                     now: now)
                             } else if let next = vm.shifts.nextPlannedShift(after: now) {
                                 ShiftCountdownBlock(
-                                    contextKey: "today.countdown.shift.nextStart",
+                                    isShiftUpcoming: true,
                                     target: next.start,
                                     rangeText: next.timeRangeString,
                                     now: now)
@@ -165,28 +165,64 @@ private struct TopDateBar: View {
 }
 
 private struct ShiftCountdownBlock: View {
-    let contextKey: LocalizedStringKey
+    let isShiftUpcoming: Bool
     let target: Date
     let rangeText: String
     let now: Date
-    let testDate = Calendar.current.date(from: DateComponents(year: 2024, month: 12, day: 9))!
-
+    let testDate = Calendar.current.date(from: DateComponents(year: 2026, month: 2, day: 12))!
+    
+    func isLaterThanTomorrow(target: Date) -> Bool {
+        // Start of today
+        let startOfToday = calendar.startOfDay(for: now)
+        
+        guard let startOfDayAfterTomorrow = calendar.date(byAdding: .day, value: 2, to: startOfToday) else {
+            return false
+        }
+        
+        return target >= startOfDayAfterTomorrow
+    }
+    
+    func isLaterThanToday(target: Date) -> Bool {
+        let startOfToday = calendar.startOfDay(for: now)
+        
+        guard let startOfDayAfterToday = calendar.date(byAdding: .day, value: 1, to: startOfToday) else {
+            return false
+        }
+        
+        return target >= startOfDayAfterToday
+    }
+    
+    var contextTitle: LocalizedStringKey {
+        if isShiftUpcoming {
+            if isLaterThanTomorrow(target: target) {
+                return "today.countdown.shift.nextStart"
+            } else { return "today.countdown.shift.nextStart.soon" }
+        } else {
+            return "today.countdown.shift.currentEnd"
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
-            Text(contextKey)
-                .font(.system(.caption, design: .monospaced))
-                .fontWeight(.bold)
-            // If `CountdownText` keeps LocalizedStringKey, keep the interpolation:
-            Text("\(timeRemainingString(until: target, from: now))")
-                .font(.system(.largeTitle, design: .serif))
+            Text(contextTitle)
+                .font(.system(.subheadline, design: .monospaced))
                 .fontWeight(.bold)
             
-            VStack(spacing: 4) {
-                Text(targetDayAndMonth(target))
-                //                    .fontWeight(.bold)
-                    .font(.system(.caption, design: .monospaced))
-                Text(rangeText)
+            if !isLaterThanTomorrow(target: target) {
+                Text(isLaterThanToday(target: target) ? "today.countdown.tomorrow" : "today.countdown.today")
+                    .font(.system(.largeTitle, design: .serif))
                     .fontWeight(.bold)
+            } else {
+                Text("\(timeRemainingString(until: target, from: calendar.startOfDay(for: now)))")
+                    .font(.system(.largeTitle, design: .serif))
+                    .fontWeight(.bold)
+            }
+            
+            VStack(spacing: 4) {
+                Text(rangeText)
+                    .font(.system(.caption, design: .monospaced))
+                    .fontWeight(.bold)
+                Text(targetDayAndMonth(target))
                     .font(.system(.caption, design: .monospaced))
             }
         }
