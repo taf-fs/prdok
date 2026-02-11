@@ -116,7 +116,7 @@ struct TodayView: View {
                     }
                 }
                 
-                PauseTimerView()
+                SimplePauseTimerView()
                     .padding(.horizontal, 16)
                 
 //                Text("Tvoje další směny")
