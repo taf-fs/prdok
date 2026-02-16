@@ -64,22 +64,13 @@ struct ShiftTimelineLayout {
 }
 
 struct ShiftIndicatorView: View {
-    let title: LocalizedStringKey
     let shifts: [Shift]
     let color: Color
     
     private let layout = ShiftTimelineLayout()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(title)
-                    .font(.system(.footnote, design: .monospaced))
-                    .fontWeight(.semibold)
-                Spacer()
-                // "Změnit" button can go here later
-            }
-            
+        VStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(Color.secondary.opacity(0.2))
@@ -101,7 +92,7 @@ struct ShiftIndicatorView: View {
                     }
                 }
             }
-            .frame(height: 52)
+            .frame(height: 40)
         }
     }
 }
@@ -161,18 +152,18 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
     
     static var previews: some View {
         VStack(spacing: 24) {
+            Text("Zadaná možnost")
             ShiftIndicatorView(
-                title: "Zadaná možnost",
                 shifts: exampleShifts0,
                 color: Color(red: 102/255, green: 1, blue: 51/255)
             )
+            Text("Více možností")
             ShiftIndicatorView(
-                title: "Více možností",
                 shifts: exampleShifts,
                 color: Color(red: 102/255, green: 1, blue: 51/255)
             )
+            Text("Bez směny")
             ShiftIndicatorView(
-                title: "Bez směny",
                 shifts: [],
                 color: Color(red: 102/255, green: 1, blue: 51/255)
             )

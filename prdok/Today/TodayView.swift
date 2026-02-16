@@ -47,48 +47,51 @@ struct TodayView: View {
         GeometryReader { proxy in
             VStack(spacing: 20) {
                 ZStack {
-                    VStack(spacing: 40) {
+                    VStack(spacing: 0) {
                         TopDateBar(selectedTab: $selectedTab)
                         
                         Spacer()
                         
-                        TimelineView(.periodic(from: .now, by: 60)) { context in
-                            let now = context.date
-                            
-                            if let current = vm.shifts.ongoingShift(at: now) {
-                                ShiftCountdownBlock(
-                                    isShiftUpcoming: false,
-                                    target: current.end,
-                                    rangeText: current.timeRangeString,
-                                    now: now)
-                            } else if let next = vm.shifts.nextPlannedShift(after: now) {
-                                ShiftCountdownBlock(
-                                    isShiftUpcoming: true,
-                                    target: next.start,
-                                    rangeText: next.timeRangeString,
-                                    now: now)
-                            } else if vm.isLoading {
-                                ProgressView("today.countdown.loading")
-                            } else {
-                                Text("today.noUpcomingShifts")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        
-                        Button {
-                            showWebView = true
-                        } label: {
-                            Text("shiftsListWebView.presentView.button")
-                                .font(.system(.footnote))
-                                .fontWeight(.semibold)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 40)
-                                .foregroundStyle(.background)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .fill(.primary)
-                                        .tint(.primary)
+                        VStack(spacing: 20) {
+                            TimelineView(.periodic(from: .now, by: 60)) { context in
+                                let now = context.date
+                                
+                                if let current = vm.shifts.ongoingShift(at: now) {
+                                    ShiftCountdownBlock(
+                                        isShiftUpcoming: false,
+                                        target: current.end,
+                                        rangeText: current.timeRangeString,
+                                        now: now)
+                                } else if let next = vm.shifts.nextPlannedShift(after: now) {
+                                    ShiftCountdownBlock(
+                                        isShiftUpcoming: true,
+                                        target: next.start,
+                                        rangeText: next.timeRangeString,
+                                        now: now)
+                                } else if vm.isLoading {
+                                    ProgressView("today.countdown.loading")
+                                } else {
+                                    Text("today.noUpcomingShifts")
+                                        .foregroundStyle(.secondary)
                                 }
+                            }
+                            
+                            
+                            Button {
+                                showWebView = true
+                            } label: {
+                                Text("shiftsListWebView.presentView.button")
+                                    .font(.system(.footnote))
+                                    .fontWeight(.semibold)
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal, 40)
+                                    .foregroundStyle(.background)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(.primary)
+                                            .tint(.primary)
+                                    }
+                            }
                         }
                         
                         Spacer()
@@ -205,7 +208,7 @@ private struct ShiftCountdownBlock: View {
     var body: some View {
         VStack(spacing: 16) {
             Text(contextTitle)
-                .font(.system(.subheadline, design: .monospaced))
+                .font(.system(.subheadline, design: .serif))
                 .fontWeight(.bold)
             
             if !isLaterThanTomorrow(target: target) {
