@@ -92,12 +92,12 @@ struct OfferShiftsFromMonthView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Text("shiftOffer.picker.start")
+                    Text("shiftMultiOffer.picker.start")
                         .frame(maxWidth: .infinity)
                         .font(.system(.callout, design: .serif))
                         .foregroundStyle(.primary.opacity(0.6))
                     Spacer()
-                    Text("shiftOffer.picker.end")
+                    Text("shiftMultiOffer.picker.end")
                         .frame(maxWidth: .infinity)
                         .font(.system(.callout, design: .serif))
                         .foregroundStyle(.primary.opacity(0.6))
@@ -107,7 +107,7 @@ struct OfferShiftsFromMonthView: View {
             
             // SHIFT HOUR PICKERS
             HStack(spacing: 0) {
-                Picker("Start", selection: $startHour) {
+                Picker("shiftMultiOffer.picker.start", selection: $startHour) {
                     ForEach(7...24, id: \.self) { number in
                         Text(hourString(from: number))
                             .font(.system(.title3, design: .monospaced))
@@ -119,7 +119,7 @@ struct OfferShiftsFromMonthView: View {
                     .foregroundStyle(.primary.opacity(0.7))
                     .frame(maxWidth: 15, maxHeight: 2)
                 
-                Picker("End", selection: $endHour) {
+                Picker("shiftMultiOffer.picker.end", selection: $endHour) {
                     ForEach(8...25, id: \.self) { number in
                         Text(hourString(from: number))
                             .font(.system(.title3, design: .monospaced))
@@ -139,7 +139,7 @@ struct OfferShiftsFromMonthView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .foregroundStyle(.tint.opacity(0.1))
-                    Text("zapsat směnu") // add for multiple shifts text option, also
+                    Text("shiftMultiOffer.submit.button") // add for multiple shifts text option, also
                         .font(.headline)
                         .opacity(selectedDates.isEmpty ? 0.5 : 1)
                         .foregroundStyle(.primary)

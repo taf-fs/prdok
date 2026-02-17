@@ -76,7 +76,7 @@ struct ShiftIndicatorView: View {
                     .fill(Color.secondary.opacity(0.2))
                 
                 if shifts.isEmpty {
-                    Text("–")
+                    Text(verbatim: "–")
                         .font(.system(.footnote, design: .monospaced))
                         .foregroundColor(.primary)
                 } else {

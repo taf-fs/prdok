@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "–" : {
-
-    },
     "(%@)" : {
 
     },
@@ -29,13 +26,15 @@
             "value" : "%1$@, %2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld" : {
       "shouldTranslate" : false
     },
     "%lld min" : {
-
+      "comment" : "Amount of minutes for the notification timer",
+      "shouldTranslate" : false
     },
     "bootstrap.loading" : {
       "localizations" : {
@@ -70,7 +69,7 @@
         }
       }
     },
-    "calendarDayDetails.actual.shift" : {
+    "calendarDayDetails.actualShift.title" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -86,12 +85,47 @@
         }
       }
     },
-    "calendarDayDetails.offered.shift" : {
+    "calendarDayDetails.offeredShift.offerButton" : {
+      "comment" : "Title of a button to extend the sheet to show the picker.",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nabídnutá směna"
+            "value" : "Nabídnout"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offer shift"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.offeredShift.removeButton" : {
+      "comment" : "Title of a button to remove offered shift.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smazat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove shift"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.offeredShift.title" : {
+      "comment" : "this should be just 'offer' or 'navolit'",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabídnutá možnost"
           }
         },
         "en" : {
@@ -102,23 +136,24 @@
         }
       }
     },
-    "calendarDayDetails.plan.shift" : {
+    "calendarDayDetails.offerShift.button" : {
+      "comment" : "submit offered shift button",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Naplánovat směnu"
+            "value" : "Zapsat směnu"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan shift"
+            "value" : "Submit"
           }
         }
       }
     },
-    "calendarDayDetails.planned.shift" : {
+    "calendarDayDetails.plannedShift.title" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -134,18 +169,51 @@
         }
       }
     },
-    "calendarDayDetails.show.webWiew" : {
+    "calendarDayDetails.shiftOffer.picker.end" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zobrazit směnu"
+            "value" : "začátek"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show shift"
+            "value" : "end"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.shiftOffer.picker.start" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "konec"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "start"
+          }
+        }
+      }
+    },
+    "calendarDayDetails.showShiftWebView" : {
+      "comment" : "view/zobrazit",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View"
           }
         }
       }
@@ -220,9 +288,6 @@
           }
         }
       }
-    },
-    "End" : {
-
     },
     "Error: %@" : {
       "shouldTranslate" : false
@@ -349,9 +414,6 @@
 
     },
     "navolit směny" : {
-
-    },
-    "No date selected" : {
 
     },
     "No shifts loaded" : {
@@ -530,7 +592,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notifications Disabled"
+            "value" : "To receive notifications, enable them for this app in Settings."
           }
         }
       }
@@ -539,14 +601,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Oznámení nepovolena"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To receive notifications, enable them for this app in Settings."
+            "value" : "Notifications Disabled"
           }
         }
       }
@@ -680,11 +742,206 @@
         }
       }
     },
-    "shiftOffer.picker.end" : {
-
+    "shiftAction.error.busy" : {
+      "comment" : "User tried to run an action while it is already running.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Počkej než skončí akce."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wait for the action to finish."
+          }
+        }
+      }
     },
-    "shiftOffer.picker.start" : {
-
+    "shiftAction.error.invalidTimeRange" : {
+      "comment" : "Start must be before end.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začátek musí být před koncem."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start must be before end."
+          }
+        }
+      }
+    },
+    "shiftAction.error.noDateSelected" : {
+      "comment" : "No date selected.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebylo vybráno datum."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No date selected."
+          }
+        }
+      }
+    },
+    "shiftAction.error.noOfferedShiftToRemove" : {
+      "comment" : "No offered shift exists for this day.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebyla nalezena směna."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No offered shift found."
+          }
+        }
+      }
+    },
+    "shiftAction.error.serverRejected.prefix" : {
+      "comment" : "Prefix shown before server rejection message.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CZ:"
+          }
+        }
+      }
+    },
+    "shiftAction.error.shiftNotFoundOnServer" : {
+      "comment" : "Shift to remove was not found on server.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Směna nebyla nalezena na serveru."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No offered shift found on the server."
+          }
+        }
+      }
+    },
+    "shiftAction.error.unexpectedServerResponse" : {
+      "comment" : "Unexpected server response.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neočekávána odpověď od serveru."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unexpected server response."
+          }
+        }
+      }
+    },
+    "shiftAction.success.removed" : {
+      "comment" : "Shift removed successfully.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Možnost byla úspěšně smazána."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift removed successfully."
+          }
+        }
+      }
+    },
+    "shiftAction.success.saved" : {
+      "comment" : "Shift saved successfully.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Možnost byla úspěšně zapsána."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift submitted successfully."
+          }
+        }
+      }
+    },
+    "shiftMultiOffer.picker.end" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "konec"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "end"
+          }
+        }
+      }
+    },
+    "shiftMultiOffer.picker.start" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "začátek"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "start"
+          }
+        }
+      }
+    },
+    "shiftMultiOffer.submit.button" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zapsat směnu/směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "submit shift"
+          }
+        }
+      }
     },
     "shiftsListWebView.presentView.button" : {
       "localizations" : {
@@ -733,9 +990,6 @@
           }
         }
       }
-    },
-    "Start" : {
-
     },
     "tabitem.calendar" : {
       "localizations" : {
@@ -856,7 +1110,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Příští směna je v"
+            "value" : "Příští směna je za"
           }
         },
         "en" : {
@@ -930,9 +1184,6 @@
           }
         }
       }
-    },
-    "zapsat směnu" : {
-
     }
   },
   "version" : "1.1"
