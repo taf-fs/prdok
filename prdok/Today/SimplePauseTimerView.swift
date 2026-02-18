@@ -94,7 +94,7 @@ private struct TimerButton: View {
             } else {
                 Button {
                     startTimer()
-                    toggleNotification()
+                    toggleNotification(duration: length)
                 } label: {
                     HStack {
                         Image(systemName: "bell")
@@ -162,8 +162,9 @@ private struct TimerButton: View {
     }
 
     // MARK: - Notification Handling
-
-    private func toggleNotification() {
+    
+    /// `duration` is an Int that represnts the length of the notificaton in mjnutes.
+    private func toggleNotification(duration: Int) {
         if notificationID != nil {
             // Turn off: cancel pending notification
             cancelScheduledNotification()
@@ -174,7 +175,7 @@ private struct TimerButton: View {
                 
                 NotificationManager.shared.getAuthorizationStatus { status in
                     if (status == .authorized && notificationsEnabled == true) { // this is for the edge case, where the user grants access but then manually denies it
-                        scheduleNotification()
+                        scheduleNotification(duration)
                     }
                 }
             }
@@ -184,7 +185,7 @@ private struct TimerButton: View {
     /// Schedule or reschedule the notification to fire at current timerEndDate.
     ///
     /// If the timer is paused (no end date), we skip scheduling – it will be scheduled again on resume. The pause action will also cancel the scheduled notification.
-    private func scheduleNotification() {
+    private func scheduleNotification(_ duration: Int) {
         guard isActivated, let endDate = timerEndDate else { return }
 
 
@@ -195,8 +196,15 @@ private struct TimerButton: View {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString("notification.pause.finish.title", comment: "Pause timer finish notification title")
-        content.body = NSLocalizedString("notification.pause.finish.body", comment: "Pause timer finish notification body")
+        content.title = NSLocalizedString("simplePause.notification.finish.title", comment: "Pause timer finish notification title")
+
+        let bodyFormat = NSLocalizedString(
+            "simplePause.notification.finish.body",
+            comment: "Pause timer finish notification body. Use %d for duration (is in minutes)"
+            // note: this localization implementation doesn't support Czech declensions and singular minute in english. not that the pause timer will ever be a minute anyway
+        )
+        content.body = String(format: bodyFormat, duration)
+
         content.sound = .default
 
         let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],

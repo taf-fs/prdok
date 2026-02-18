@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "(%@)" : {
-
-    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -971,6 +968,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notification set on %@"
+          }
+        }
+      }
+    },
+    "simplePause.notification.finish.body" : {
+      "comment" : "Pause timer finish notification body. Use %d for duration (is in minutes)",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uplynulo %d minut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d minutes have passed."
+          }
+        }
+      }
+    },
+    "simplePause.notification.finish.title" : {
+      "comment" : "Pause timer finish notification title",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Prdok"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prdok"
           }
         }
       }
