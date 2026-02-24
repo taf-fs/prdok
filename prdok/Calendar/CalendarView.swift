@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import HorizonCalendar
+import UIKit
 
 let calendar = Calendar.current
 
@@ -72,8 +73,12 @@ struct CalendarView: View {
     @State private var toastHideTask: Task<Void, Never>?
     @State private var toastPresentationTask: Task<Void, Never>? // serializes hide-show animations to support fast user actions
     
+    @State private var isRefreshingMonth: Bool = false
     
     private let toastTransitionDuration: TimeInterval = 0.2 // duration of the toast hide-show animation.
+    
+    /// UX: ensure the refresh spinner stays visible for at least this long so it doesn't "blink".
+    private let minRefreshSpinnerDuration: Duration = .milliseconds(350)
     
     var currentMonthLabel: String {
         let df = DateFormatter()
@@ -107,6 +112,8 @@ struct CalendarView: View {
                                     scrollToMonthAndUpdateState(dateContainingMonth: target)
                                 }
                             }
+                            .disabled(isRefreshingMonth)
+                            
                             NextMonthButton {
                                 let baseComponents = displayedMonth
                                 if let baseDate = calendar.date(from: baseComponents) {
@@ -114,12 +121,11 @@ struct CalendarView: View {
                                     scrollToMonthAndUpdateState(dateContainingMonth: target)
                                 }
                             }
-                            RefreshMonthButton {
-                                Task {
-                                    if let date = calendar.date(from: displayedMonth) {
-                                        try await vm.repo.refresh(for: date)
-                                        vm.loadShiftsForYear(dateContainingYear: date)
-                                    }
+                            .disabled(isRefreshingMonth)
+                            
+                            RefreshMonthButton(isRefreshing: isRefreshingMonth) {
+                                Task { @MainActor in
+                                    await refreshDisplayedMonth()
                                 }
                             }
                         }
@@ -168,6 +174,7 @@ struct CalendarView: View {
                         }
                         vm.checkYear(displayedMonthAndYear: displayedMonth)
                     }
+                    .disabled(isRefreshingMonth)
                     .onAppear {
                         selectedDate = Date()
                         scrollToMonthAndUpdateState(dateContainingMonth: selectedDate!, animated: false)
@@ -210,7 +217,6 @@ struct CalendarView: View {
                 .padding(.horizontal, 12)
                 .padding(.top, 24)
             }
-            
             if toastIsPresented {
                 ToastBanner(message: toastMessage, isSuccess: toastIsSuccess)
                     .id(toastToken)
@@ -218,6 +224,55 @@ struct CalendarView: View {
                     .padding(.bottom, 12)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
+        }
+    }
+    
+    // MARK: - Refresh
+    
+    @MainActor
+    func refreshDisplayedMonth() async {
+        guard !isRefreshingMonth else { return }
+        guard let date = calendar.date(from: displayedMonth) else { return }
+        
+        let clock = ContinuousClock()
+        let startedAt = clock.now
+        
+        isRefreshingMonth = true
+        defer {
+            isRefreshingMonth = false
+        }
+        
+        do {
+            // Force-refresh the displayed month cache.
+            _ = try await vm.repo.getShifts(for: date, forceRefresh: true)
+            
+            // Then recompute day dots across the year (keeps current behavior consistent).
+            vm.loadShiftsForYear(dateContainingYear: date)
+            
+            // Minimum spinner duration (slow network won't be slowed further).
+            let elapsed = startedAt.duration(to: clock.now)
+            let remaining = minRefreshSpinnerDuration - elapsed
+            if remaining > .zero {
+                try await clock.sleep(for: remaining)
+            }
+            
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            
+        } catch is CancellationError {
+            // Pull-to-refresh / SwiftUI Tasks can be cancelled as the UI changes.
+            // Not a user-visible failure.
+            return
+            
+        } catch {
+            // Minimum spinner duration even on error (optional but keeps UX consistent).
+            let elapsed = startedAt.duration(to: clock.now)
+            let remaining = minRefreshSpinnerDuration - elapsed
+            if remaining > .zero {
+                try? await clock.sleep(for: remaining)
+            }
+            
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            await presentToast(success: false, message: error.localizedDescription)
         }
     }
     
@@ -428,14 +483,23 @@ private struct PrevMonthButton: View {
 }
 
 private struct RefreshMonthButton: View {
+    let isRefreshing: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "arrow.clockwise")
-                .frame(width: 35, height: 35)
+            Group {
+                if isRefreshing {
+                    ProgressView()
+                        .controlSize(.small)
+                } else {
+                    Image(systemName: "arrow.clockwise")
+                }
+            }
+            .frame(width: 35, height: 35)
         }
         .buttonStyle(.plain)
+        .disabled(isRefreshing)
     }
 }
 
@@ -452,3 +516,4 @@ extension Collection where Element == Shift {
 #Preview {
     CalendarView()
 }
+
