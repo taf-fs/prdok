@@ -858,6 +858,108 @@
         }
       }
     },
+    "shiftAction.multiOffer.mutliple.failure" : {
+      "comment" : "Multi-offer failure toast. More than 4 failed. Use %d for number of shifts.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastala chyba při zapsání %d možností."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to offer %d shifts."
+          }
+        }
+      }
+    },
+    "shiftAction.multiOffer.mutliple.success" : {
+      "comment" : "Multi-offer success toast. More than 4 shifts submitted. Use %d for number of shifts successfully offered.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapsáno %d možností."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Successfully offered %d shifts."
+          }
+        }
+      }
+    },
+    "shiftAction.multiOffer.single.failure" : {
+      "comment" : "Multi-offer failure toast. One shift failed. Use %d for number of shifts.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastala chyba při zápisu %d možnosti."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to offer %d shift."
+          }
+        }
+      }
+    },
+    "shiftAction.multiOffer.single.success" : {
+      "comment" : "Multi-offer success toast. One shift submitted. Use %d for number of shifts successfully offered.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapsána %d možnost."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Successfully offered %d shift."
+          }
+        }
+      }
+    },
+    "shiftAction.multiOffer.twoToFour.failure" : {
+      "comment" : "Multi-offer failure toast. 2-4 shifts failed. Use %d for number of shifts.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastala chyba při zápisu %d možností."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to offer %d shifts."
+          }
+        }
+      }
+    },
+    "shiftAction.multiOffer.twoToFour.success" : {
+      "comment" : "Multi-offer success toast. 2-4 shifts submitted. Use %d for number of shifts successfully offered.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapsány %d možnosti."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Successfully offered %d shifts."
+          }
+        }
+      }
+    },
     "shiftAction.success.removed" : {
       "comment" : "Shift removed successfully.",
       "localizations" : {
@@ -924,18 +1026,52 @@
         }
       }
     },
-    "shiftMultiOffer.submit.button" : {
+    "shiftMultiOffer.submit.multiple.button" : {
+      "comment" : "Button to submit multiple shifts. Count of offered shifts more than 1.",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "zapsat směnu/směny"
+            "value" : "Zapsat možnosti"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "submit shift"
+            "value" : "Submit shifts"
+          }
+        }
+      }
+    },
+    "shiftMultiOffer.submit.single.button" : {
+      "comment" : "Button to submit multiple shifts. Count of offered shifts is 1.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapsat možnost"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit shift"
+          }
+        }
+      }
+    },
+    "shiftMultiOffer.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zápis možností"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offer shift"
           }
         }
       }

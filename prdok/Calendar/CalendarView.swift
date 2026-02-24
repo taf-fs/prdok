@@ -195,8 +195,12 @@ struct CalendarView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .sheet(isPresented: $offerShiftSheetIsPresented) {
-                        if let displayedMonth = calendar.date(from: displayedMonth) {
-                            OfferShiftsFromMonthView(displayedMonth: displayedMonth)
+                        
+                        if let displayedMonthDate = calendar.date(from: displayedMonth) {
+                            ShiftMultiOfferView(
+                                displayedMonth: displayedMonthDate,
+                                onToast: handleMultiOfferFinished(success:message:)
+                            )
                         }
                     }
                     .aspectRatio(7, contentMode: .fit)
@@ -234,6 +238,23 @@ struct CalendarView: View {
                 try await vm.repo.refresh(for: selectedDate)
                 vm.loadShiftsForYear(dateContainingYear: selectedDate)
             } catch { // toast for failure to refresh shifts
+                await presentToast(success: false, message: error.localizedDescription)
+            }
+        }
+    }
+    
+    func handleMultiOfferFinished(success: Bool, message: String) {
+        // cancel any hide-show sequence in progress and start a fresh one.
+        toastPresentationTask?.cancel()
+        toastPresentationTask = Task { @MainActor in
+            await presentToast(success: success, message: message)
+            
+            guard success else { return }
+            guard let monthDate = calendar.date(from: displayedMonth) else { return }
+            do {
+                try await vm.repo.refresh(for: monthDate)
+                vm.loadShiftsForYear(dateContainingYear: monthDate)
+            } catch {
                 await presentToast(success: false, message: error.localizedDescription)
             }
         }
