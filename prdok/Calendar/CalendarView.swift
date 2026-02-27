@@ -243,13 +243,13 @@ struct CalendarView: View {
         }
         
         do {
-            // Force-refresh the displayed month cache.
+            // force-refresh the displayed month cache
             _ = try await vm.repo.getShifts(for: date, forceRefresh: true)
             
-            // Then recompute day dots across the year (keeps current behavior consistent).
+            // then recompute day dots across the year (keeps current behavior consistent)
             vm.loadShiftsForYear(dateContainingYear: date)
             
-            // Minimum spinner duration (slow network won't be slowed further).
+            // minimum spinner duration (slow network won't be slowed further)
             let elapsed = startedAt.duration(to: clock.now)
             let remaining = minRefreshSpinnerDuration - elapsed
             if remaining > .zero {
@@ -257,14 +257,9 @@ struct CalendarView: View {
             }
             
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            
-        } catch is CancellationError {
-            // Pull-to-refresh / SwiftUI Tasks can be cancelled as the UI changes.
-            // Not a user-visible failure.
-            return
-            
+                        
         } catch {
-            // Minimum spinner duration even on error (optional but keeps UX consistent).
+            // minimum spinner duration even on error (consistent UX)
             let elapsed = startedAt.duration(to: clock.now)
             let remaining = minRefreshSpinnerDuration - elapsed
             if remaining > .zero {
