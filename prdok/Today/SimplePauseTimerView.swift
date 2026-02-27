@@ -9,7 +9,15 @@ import SwiftUI
 import UserNotifications
 
 struct SimplePauseTimerView: View {
+    // UI-driving state (keeps transitions smooth)
     @State private var activeTimerId: Int? = nil
+
+    // persisted active timer id (0 => none, 1/2 for each timer)
+    @AppStorage("simplePause.activeTimerId") private var storedActiveTimerId: Int = 0
+
+    private var persistedActiveTimerId: Int? {
+        storedActiveTimerId == 0 ? nil : storedActiveTimerId
+    }
 
     var body: some View {
         HStack(spacing: 8) {
@@ -23,23 +31,64 @@ struct SimplePauseTimerView: View {
             }
         }
         .aspectRatio(7, contentMode: .fit)
+        .onAppear {
+            // restore ui
+            activeTimerId = persistedActiveTimerId
+        }
+        .onChange(of: activeTimerId) { newValue in
+            // persist any UI change
+            storedActiveTimerId = newValue ?? 0
+        }
     }
 }
+
 // TODO: make timer persist through app kills and launches
 private struct TimerButton: View {
     let id: Int
     let length: Int // minutes
     @Binding var activeId: Int? // controls the parent HStack
 
-    @State private var isActivated = false
-    @State private var notificationID: String?   // identifier of scheduled notification
-    @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = false
-
-    // for active timer:
-    @State private var timerEndDate: Date? = nil // point of reference for isRunning = true
+    // UI-only state
     @State private var isNotificationTimeTextShown: Bool = false
 
+    // Persisted per-timer state
+    @AppStorage("simplePause.timer1.endDate") private var timer1EndDateTimestamp: Double = 0
+    @AppStorage("simplePause.timer2.endDate") private var timer2EndDateTimestamp: Double = 0
+    @AppStorage("simplePause.timer1.notificationID") private var timer1NotificationID: String = ""
+    @AppStorage("simplePause.timer2.notificationID") private var timer2NotificationID: String = ""
+
+    @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = false
+
     private var durationSeconds: Int { length * 60 }
+
+    // MARK: - Persisted accessors
+
+    private func getStoredEndDate() -> Date? {
+        let ts = (id == 1) ? timer1EndDateTimestamp : timer2EndDateTimestamp
+        guard ts > 0 else { return nil }
+        return Date(timeIntervalSince1970: ts)
+    }
+
+    private func setStoredEndDate(_ date: Date?) {
+        let ts = date?.timeIntervalSince1970 ?? 0
+        if id == 1 { timer1EndDateTimestamp = ts }
+        else { timer2EndDateTimestamp = ts }
+    }
+
+    private func getStoredNotificationID() -> String? {
+        let raw = (id == 1) ? timer1NotificationID : timer2NotificationID
+        return raw.isEmpty ? nil : raw
+    }
+
+    private func setStoredNotificationID(_ value: String?) {
+        let raw = value ?? ""
+        if id == 1 { timer1NotificationID = raw }
+        else { timer2NotificationID = raw }
+    }
+
+    private var isActivated: Bool {
+        activeId == id && getStoredEndDate() != nil
+    }
 
     var body: some View {
         ZStack {
@@ -50,8 +99,7 @@ private struct TimerButton: View {
                     let remaining = remainingSeconds(now: context.date)
 
                     HStack(spacing: 0) {
-                        // note: scrap the countdown idea, just use a simple notification
-                        if let endDate = timerEndDate {
+                        if let endDate = getStoredEndDate() {
                             if isNotificationTimeTextShown {
                                 HStack {
                                     Image(systemName: "bell")
@@ -70,21 +118,18 @@ private struct TimerButton: View {
                                 .frame(maxWidth: .infinity)
                             }
                         }
-                        
-                        HStack(spacing: 0) {
-                            Button {
-                                cancelTimer()
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .font(.caption)
-                                    .opacity(0.5)
-                            }
+
+                        Button {
+                            cancelTimer()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.caption)
+                                .opacity(0.5)
                         }
                         .foregroundColor(.primary)
                     }
                     .padding(.horizontal)
                     .onChange(of: remaining) { newValue in
-                        // timer finish check
                         guard isActivated else { return }
                         if newValue <= 0 {
                             finishTimer()
@@ -108,10 +153,63 @@ private struct TimerButton: View {
             }
         }
         .cornerRadius(15)
+        .onAppear {
+            restoreStateIfNeeded()
+        }
+        .onChange(of: activeId) { _ in
+            if activeId != id {
+                isNotificationTimeTextShown = false
+            }
+        }
+    }
+
+    // MARK: - Restore
+
+    private func restoreStateIfNeeded() {
+        // if this timer has a stored end date, decide whether it's still active.
+        if let endDate = getStoredEndDate() {
+            if endDate <= Date() {
+                clearPersistedState()
+                return
+            }
+
+            // ensure the parent knows this is the active timer (single-active invariant).
+            if activeId != id {
+                // no animation requested on restore
+                activeId = id
+            }
+
+            // same UX as normal timer set
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                withAnimation {
+                    if isActivated {
+                        isNotificationTimeTextShown = true
+                    }
+                }
+            }
+
+            // If we think there's a notification scheduled, verify it still exists.
+            if let notiID = getStoredNotificationID() {
+                UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                    let stillPending = requests.contains(where: { $0.identifier == notiID })
+                    if !stillPending {
+                        DispatchQueue.main.async {
+                            setStoredNotificationID(nil)
+                        }
+                    }
+                }
+            }
+        } else {
+            // no stored end date -> nothing active for this timer
+            // defensively clear any stored notificationID
+            if getStoredNotificationID() != nil {
+                setStoredNotificationID(nil)
+            }
+        }
     }
 
     // MARK: - Logic
-    
+
     private func startTimer() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             withAnimation {
@@ -122,9 +220,9 @@ private struct TimerButton: View {
         }
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             activeId = id
-            isActivated = true
-            timerEndDate = Date().addingTimeInterval(TimeInterval(durationSeconds))
+            setStoredEndDate(Date().addingTimeInterval(TimeInterval(durationSeconds)))
         }
+
         // If user had enabled a notification previously and restarts, clear it.
         cancelScheduledNotification()
     }
@@ -132,49 +230,46 @@ private struct TimerButton: View {
     private func cancelTimer() {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             activeId = nil
-            isActivated = false
-            timerEndDate = nil
+            setStoredEndDate(nil)
             isNotificationTimeTextShown = false
         }
         cancelScheduledNotification()
     }
-    
-    // only gets called when the timer finishes without naturally
+
     private func finishTimer() {
         cancelTimer()
-        // haptic or sound or something in the future if needed
     }
 
     private func remainingSeconds(now: Date = Date()) -> Int {
         guard isActivated else { return durationSeconds }
 
-        if let timerEndDate { // how many secs until timerEndDate
-            return max(0, Int(timerEndDate.timeIntervalSince(now)))
-        } else { // edge case fallback
+        if let endDate = getStoredEndDate() {
+            return max(0, Int(endDate.timeIntervalSince(now)))
+        } else {
             return durationSeconds
         }
     }
 
-    private func timeString(time: Int) -> String {
-        let minutes = time / 60
-        let seconds = time % 60
-        return String(format: "%02d:%02d", minutes, seconds)
+    private func clearPersistedState() {
+        if activeId == id {
+            activeId = nil
+        }
+        setStoredEndDate(nil)
+        setStoredNotificationID(nil)
+        isNotificationTimeTextShown = false
     }
 
     // MARK: - Notification Handling
-    
-    /// `duration` is an Int that represnts the length of the notificaton in mjnutes.
+
     private func toggleNotification(duration: Int) {
-        if notificationID != nil {
-            // Turn off: cancel pending notification
+        if getStoredNotificationID() != nil {
             cancelScheduledNotification()
         } else {
-            // Turn on: request permission then schedule
             NotificationManager.shared.requestAuthorization { granted in
                 notificationsEnabled = granted
-                
+
                 NotificationManager.shared.getAuthorizationStatus { status in
-                    if (status == .authorized && notificationsEnabled == true) { // this is for the edge case, where the user grants access but then manually denies it
+                    if status == .authorized && notificationsEnabled == true {
                         scheduleNotification(duration)
                     }
                 }
@@ -182,16 +277,10 @@ private struct TimerButton: View {
         }
     }
 
-    /// Schedule or reschedule the notification to fire at current timerEndDate.
-    ///
-    /// If the timer is paused (no end date), we skip scheduling – it will be scheduled again on resume. The pause action will also cancel the scheduled notification.
     private func scheduleNotification(_ duration: Int) {
-        guard isActivated, let endDate = timerEndDate else { return }
+        guard isActivated, let endDate = getStoredEndDate() else { return }
 
-
-        // cancel previous one if any
-        if let id = notificationID {
-            print("cancelling notification with the id \(String(describing: notificationID))")
+        if let id = getStoredNotificationID() {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
         }
 
@@ -201,14 +290,11 @@ private struct TimerButton: View {
         let bodyFormat = NSLocalizedString(
             "simplePause.notification.finish.body",
             comment: "Pause timer finish notification body. Use %d for duration (is in minutes)"
-            // note: this localization implementation doesn't support Czech declensions and singular minute in english. not that the pause timer will ever be a minute anyway
         )
         content.body = String(format: bodyFormat, duration)
-
         content.sound = .default
 
-        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
-                                                          from: endDate)
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: endDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
 
         let newID = UUID().uuidString
@@ -220,19 +306,16 @@ private struct TimerButton: View {
                 return
             }
             DispatchQueue.main.async {
-                notificationID = newID
-                print("scheduling notification with the id \(newID)")
+                setStoredNotificationID(newID)
             }
         }
     }
 
-    /// Cancel any pending notification for this timer and clear the flag.
     private func cancelScheduledNotification() {
-        if let id = notificationID {
-            print("cancelling notification with the id \(String(describing: notificationID))")
+        if let id = getStoredNotificationID() {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
         }
-        notificationID = nil
+        setStoredNotificationID(nil)
     }
 }
 
