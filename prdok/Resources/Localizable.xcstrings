@@ -171,7 +171,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "začátek"
+            "value" : "konec"
           }
         },
         "en" : {
@@ -187,7 +187,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "konec"
+            "value" : "začátek"
           }
         },
         "en" : {
@@ -211,6 +211,417 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "View"
+          }
+        }
+      }
+    },
+    "calendarExport.button.add" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "calendarExport.button.sync" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizovat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronize"
+          }
+        }
+      }
+    },
+    "calendarExport.button.sync.footer" : {
+      "comment" : "V kalendáři už jsou uložené směny z této aplikace. Můžeš je synchronizovat.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "V kalendáři už jsou uložené směny z této aplikace. Můžeš je synchronizovat."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are already shifts saved in the calendar from this app. You can synchronize them."
+          }
+        }
+      }
+    },
+    "calendarExport.defaultEventTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "směna cp_"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cp_ shift"
+          }
+        }
+      }
+    },
+    "calendarExport.error.accessDenied" : {
+      "comment" : "Calendar access denied.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přístup ke kalendáři zamítnut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar access denied."
+          }
+        }
+      }
+    },
+    "calendarExport.error.calendarNotWritable" : {
+      "comment" : "Selected calendar is not writable.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chybí oprávnění k zápisu do kalendáře."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar is not writable."
+          }
+        }
+      }
+    },
+    "calendarExport.error.invalidMonthDate" : {
+      "comment" : "Invalid month date.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neplatný měsíc."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid month."
+          }
+        }
+      }
+    },
+    "calendarExport.eventTitle.placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "směna cp_"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cp_ shift"
+          }
+        }
+      }
+    },
+    "calendarExport.isPlanningExportMessage" : {
+      "comment" : "Check in progress.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroluji…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking…"
+          }
+        }
+      }
+    },
+    "calendarExport.loadingCalendars" : {
+      "comment" : "Calendar loading in progress text.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načítám kalendáře..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading calendars…"
+          }
+        }
+      }
+    },
+    "calendarExport.noCalendarsFound" : {
+      "comment" : "No writable calendar found.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebyl nalezen platný kalendář"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No writable calendar found"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.1h" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "1 hodinu předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hour before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.2h" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "2 hodiny předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 hours before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.6h" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "6 hodin předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6 hours before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.12h" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "12 hodin předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 hours before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.24h" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "24 hodin předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "24 hours before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.30min" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minut předem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minutes before"
+          }
+        }
+      }
+    },
+    "calendarExport.notificationOption.none" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bez oznámení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No notification"
+          }
+        }
+      }
+    },
+    "calendarExport.picker.calendar" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalendář"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar"
+          }
+        }
+      }
+    },
+    "calendarExport.picker.notification" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Oznámení"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alert"
+          }
+        }
+      }
+    },
+    "calendarExport.section.calendarSettings.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení kalendáře"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar Settings"
+          }
+        }
+      }
+    },
+    "calendarExport.section.eventName.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Název události"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event Name"
+          }
+        }
+      }
+    },
+    "calendarExport.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahrát do kalendáře"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload shifts"
+          }
+        }
+      }
+    },
+    "calendarExport.toast.addOnly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidáno %d směn."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created %d events."
+          }
+        }
+      }
+    },
+    "calendarExport.toast.sync" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidáno: %d, změněno: %d, smazáno %d."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created: %d, updated: %d, deleted: %d"
           }
         }
       }

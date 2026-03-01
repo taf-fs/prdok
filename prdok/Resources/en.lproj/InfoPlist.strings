@@ -1,0 +1,4 @@
+NSCameraUsageDescription = "Access is needed to scan QR codes.";
+NSCalendarsUsageDescription = "Access is needed to add and sync your planned shifts.";
+NSCalendarsFullAccessUsageDescription = "Access is needed to add and sync your planned shifts.";
+NSCalendarsWriteOnlyAccessUsageDescription = "Access is needed to add and sync your planned shifts.";

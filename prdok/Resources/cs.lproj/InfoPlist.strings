@@ -1,0 +1,4 @@
+NSCameraUsageDescription = "Přístup je požadován pro naskenování QR kódu.";
+NSCalendarsUsageDescription = "Přístup je požadován pro ukládání a synchronizaci tvých plánovaných směn.";
+NSCalendarsFullAccessUsageDescription = "Přístup je požadován pro ukládání a synchronizaci tvých plánovaných směn.";
+NSCalendarsWriteOnlyAccessUsageDescription = "Přístup je požadován pro ukládání a synchronizaci tvých plánovaných směn.";

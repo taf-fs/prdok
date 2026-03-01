@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import HorizonCalendar
 import UIKit
+import EventKit
 
 let calendar = Calendar.current
 
@@ -80,7 +81,15 @@ struct CalendarView: View {
     /// UX: ensure the refresh spinner stays visible for at least this long so it doesn't "blink".
     private let minRefreshSpinnerDuration: Duration = .milliseconds(350)
     
-    var currentMonthLabel: String {
+    // MARK: - Calendar export
+    
+    @State private var exportSheetIsPresented: Bool = false
+    
+    private var displayedMonthDate: Date? {
+        calendar.date(from: displayedMonth)
+    }
+    
+    private var currentMonthLabel: String {
         let df = DateFormatter()
         df.calendar = calendar
         df.locale = Locale.current
@@ -198,17 +207,32 @@ struct CalendarView: View {
                             offerShiftSheetIsPresented = true
                         }
                         
-                        Button("nahrát do kalendáře") {}
+                        Button("nahrát do kalendáře") {
+                            exportSheetIsPresented = true
+                        }
                     }
                     .buttonStyle(.borderedProminent)
                     .sheet(isPresented: $offerShiftSheetIsPresented) {
-                        
                         if let displayedMonthDate = calendar.date(from: displayedMonth) {
                             ShiftMultiOfferView(
                                 displayedMonth: displayedMonthDate,
                                 onToast: handleMultiOfferFinished(success:message:)
                             )
                         }
+                    }
+                    .sheet(isPresented: $exportSheetIsPresented) {
+                        CalendarExportSheetView(
+                            monthLabel: currentMonthLabel,
+                            monthDate: displayedMonthDate,
+                            onDone: { success, message in
+                                exportSheetIsPresented = false
+                                Task { @MainActor in
+                                    UINotificationFeedbackGenerator().notificationOccurred(success ? .success : .error)
+                                    await presentToast(success: success, message: message)
+                                }
+                            }
+                        )
+                        .presentationDetents([.large])
                     }
                     .aspectRatio(7, contentMode: .fit)
                     
