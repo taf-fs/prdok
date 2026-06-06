@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "(%lld planned)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld plán.)"
+          }
+        }
+      }
+    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -629,6 +639,16 @@
     "Clear all cache" : {
       "shouldTranslate" : false
     },
+    "Closing shifts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavíračky"
+          }
+        }
+      }
+    },
     "connect.link.button.connect" : {
       "comment" : "Connect button label",
       "localizations" : {
@@ -693,6 +713,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connect using QR"
+          }
+        }
+      }
+    },
+    "done" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "odp."
           }
         }
       }
@@ -818,23 +848,52 @@
         }
       }
     },
-    "nahrát do kalendáře" : {
-
-    },
-    "navolit směny" : {
-
-    },
     "No shifts loaded" : {
       "shouldTranslate" : false
     },
-    "notification.pause.finish.body" : {
-      "comment" : "Pause timer finish notification body"
+    "off." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nab."
+          }
+        }
+      }
     },
-    "notification.pause.finish.title" : {
-      "comment" : "Pause timer finish notification title"
+    "offer shifts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nabídnout možnosti"
+          }
+        }
+      }
+    },
+    "offered" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nab."
+          }
+        }
+      }
     },
     "OK" : {
       "shouldTranslate" : false
+    },
+    "or" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nebo"
+          }
+        }
+      }
     },
     "pairingerror.invalidQR" : {
       "comment" : "Invalid QR error",
@@ -1541,7 +1600,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Prdok"
           }
         },
@@ -1759,6 +1818,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No upcoming planned shifts"
+          }
+        }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem"
+          }
+        }
+      }
+    },
+    "upload to calendar" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nahrát do kalendáře"
+          }
+        }
+      }
+    },
+    "Weekend hours" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Víkendových hodin"
           }
         }
       }

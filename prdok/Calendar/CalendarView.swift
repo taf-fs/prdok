@@ -221,12 +221,18 @@ struct CalendarView: View {
                     }
                     
                     HStack {
-                        Button("navolit směny") {
+                        Button {
                             offerShiftSheetIsPresented = true
+                        } label: {
+                            Text("offer shifts")
+                                .frame(maxWidth: .infinity)
                         }
                         
-                        Button("nahrát do kalendáře") {
+                        Button {
                             exportSheetIsPresented = true
+                        } label: {
+                            Text("upload to calendar")
+                                .frame(maxWidth: .infinity)
                         }
                     }
                     .buttonStyle(.borderedProminent)
@@ -253,6 +259,14 @@ struct CalendarView: View {
                         .presentationDetents([.large])
                     }
                     .aspectRatio(7, contentMode: .fit)
+                    
+                    if let displayedMonthDate = displayedMonthDate {
+                        ShiftStatisticsView(
+                            shifts: vm.displayedMonthShifts,
+                            displayedMonth: displayedMonthDate
+                        )
+                        .padding(.top, 8)
+                    }
                     
                     Spacer()
                 }
