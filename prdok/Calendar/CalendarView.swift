@@ -16,6 +16,7 @@ let calendar = Calendar.current
 final class CalendarViewModel: ObservableObject {
     @Published var plannedDays: Set<Date> = []
     @Published var offeredDays: Set<Date> = []
+    @Published var displayedMonthShifts: [Shift] = []
     
     let repo = ShiftRepository()
     var loadedYear: Int?
@@ -46,6 +47,22 @@ final class CalendarViewModel: ObservableObject {
         
         if let date = calendar.date(from: displayedMonthAndYear) {
             loadShiftsForYear(dateContainingYear: date)
+        }
+    }
+    
+    func loadShiftsForMonth(dateContainingMonth: Date) {
+        Task {
+            do {
+                let shifts = try await repo.getShifts(for: dateContainingMonth)
+                await MainActor.run {
+                    displayedMonthShifts = shifts
+                }
+            } catch {
+                // TODO: some error handling
+                await MainActor.run {
+                    displayedMonthShifts = []
+                }
+            }
         }
     }
 }
@@ -180,6 +197,7 @@ struct CalendarView: View {
                         displayedMonth = visibleDayRange.lowerBound.components
                         if let dateContainingMonth = calendar.date(from: displayedMonth) {
                             setVisibleRange(around: dateContainingMonth)
+                            vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth)
                         }
                         vm.checkYear(displayedMonthAndYear: displayedMonth)
                     }
@@ -273,6 +291,9 @@ struct CalendarView: View {
             // then recompute day dots across the year (keeps current behavior consistent)
             vm.loadShiftsForYear(dateContainingYear: date)
             
+            // refresh the statistics
+            vm.loadShiftsForMonth(dateContainingMonth: date)
+            
             // minimum spinner duration (slow network won't be slowed further)
             let elapsed = startedAt.duration(to: clock.now)
             let remaining = minRefreshSpinnerDuration - elapsed
@@ -311,6 +332,7 @@ struct CalendarView: View {
             do {
                 try await vm.repo.refresh(for: selectedDate)
                 vm.loadShiftsForYear(dateContainingYear: selectedDate)
+                vm.loadShiftsForMonth(dateContainingMonth: selectedDate)
             } catch { // toast for failure to refresh shifts
                 await presentToast(success: false, message: error.localizedDescription)
             }
@@ -328,6 +350,7 @@ struct CalendarView: View {
             do {
                 try await vm.repo.refresh(for: monthDate)
                 vm.loadShiftsForYear(dateContainingYear: monthDate)
+                vm.loadShiftsForMonth(dateContainingMonth: monthDate)
             } catch {
                 await presentToast(success: false, message: error.localizedDescription)
             }
@@ -386,6 +409,7 @@ struct CalendarView: View {
         }
         displayedMonth = calendar.dateComponents([.year, .month], from: dateContainingMonth)
         vm.checkYear(displayedMonthAndYear: displayedMonth)
+        vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth)
     }
     
     func dayOfWeekName(index: Int) -> String {
