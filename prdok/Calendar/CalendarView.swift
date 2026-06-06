@@ -467,8 +467,9 @@ private struct CalendarDayCell: View {
                     HStack {
                         Circle()
                             .frame(width: 5, height: 5)
-                            .opacity(hasOfferedShift ? 1 : 0)
-                            .foregroundStyle(.tint.opacity(hasPlannedShift ? 1 : 0.3))
+                            .opacity((hasPlannedShift || hasOfferedShift) ? 1 : 0)
+                            .opacity(hasPlannedShift ? 1 : 0.3)
+                            .foregroundStyle(.tint)
                     }
                 }
             }
