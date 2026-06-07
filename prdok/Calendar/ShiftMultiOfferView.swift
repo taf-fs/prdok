@@ -188,7 +188,7 @@ struct ShiftMultiOfferView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
+            VStack(spacing: 8) {
                 VStack(spacing: 4) {
                     Text("shiftMultiOffer.title")
                         .font(.title3)
@@ -202,7 +202,7 @@ struct ShiftMultiOfferView: View {
                 CalendarViewRepresentable(
                     calendar: calendar,
                     visibleDateRange: startOfMonth...endOfMonth,
-                    monthsLayout: .horizontal(options: HorizontalMonthsLayoutOptions()),
+                    monthsLayout: .vertical(options: VerticalMonthsLayoutOptions()),
                     dataDependency: (selectedDates)
                 )
                 .dayOfWeekHeaders { _, index in
@@ -233,9 +233,17 @@ struct ShiftMultiOfferView: View {
                 .monthHeaders { _ in
                     // empty view
                 }
+                .monthBackgrounds { _ in
+                    
+                }
+                
                 .onAppear {
                     vm.loadShifts(month: displayedMonth)
                 }
+                .aspectRatio(1, contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                
+                Spacer()
                 
                 VStack {
                     HStack {
@@ -332,8 +340,9 @@ struct ShiftMultiOfferView: View {
                 .disabled(selectedDates.isEmpty || vm.isSubmitting)
                 .padding(.vertical, 20)
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 24)
             .padding(.top, 24)
+            .background(Color(.secondarySystemBackground))
             
             if vm.isSubmitting {
                 Color.black.opacity(0.05)
@@ -393,6 +402,7 @@ private struct CalendarDayCell: View {
 }
 
 #Preview {
-    ShiftMultiOfferView(displayedMonth: Date())
+//    ShiftMultiOfferView(displayedMonth: Date())
+    CalendarView()
         .environment(\.locale, .init(identifier: "cs"))
 }
