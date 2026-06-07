@@ -211,12 +211,12 @@ private struct ShiftCountdownBlock: View {
                 .font(.system(.subheadline, design: .serif))
                 .fontWeight(.bold)
             
-            if !isLaterThanTomorrow(target: target) {
+            if isShiftUpcoming && !isLaterThanTomorrow(target: target) {
                 Text(isLaterThanToday(target: target) ? "today.countdown.tomorrow" : "today.countdown.today")
                     .font(.system(.largeTitle, design: .serif))
                     .fontWeight(.bold)
             } else {
-                Text("\(timeRemainingString(until: target, from: calendar.startOfDay(for: now)))")
+                Text(timeRemainingString(until: target, from: isShiftUpcoming ? calendar.startOfDay(for: now) : now))
                     .font(.system(.largeTitle, design: .serif))
                     .fontWeight(.bold)
             }
