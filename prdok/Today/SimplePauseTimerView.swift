@@ -144,7 +144,7 @@ private struct TimerButton: View {
                     HStack {
                         Image(systemName: "bell")
                             .font(.headline)
-                        Text("\(length) min")
+                        Text(verbatim: "\(length) min")
                             .font(.system(.subheadline))
                             .fontWeight(.semibold)
                     }

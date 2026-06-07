@@ -498,7 +498,7 @@ private struct CalendarDayCell: View {
                     .foregroundStyle(.tint.opacity(backgroundOpacity))
 
                 VStack(spacing: 5) {
-                    Text("\(dayNumber)")
+                    Text(verbatim: "\(dayNumber)")
                         .font(.system(size: 14, design: .monospaced))
                         .foregroundStyle(isToday ? Color.white : Color.primary)
 

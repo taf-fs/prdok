@@ -84,9 +84,9 @@ struct TempShiftView: View {
             if !vm.shifts.isEmpty {
                 List(vm.shifts, id: \.id) { shift in
                     VStack(alignment: .leading) {
-                        Text("\(shift.kind.rawValue.capitalized), \(String(describing:shift.id))")
+                        Text(verbatim: "\(shift.kind.rawValue.capitalized), \(String(describing:shift.id))")
                             .font(.headline)
-                        Text("\(df.string(from: shift.start)) → \(df.string(from: shift.end))")
+                        Text(verbatim: "\(df.string(from: shift.start)) → \(df.string(from: shift.end))")
                             .foregroundColor(.secondary)
                     }
                 }

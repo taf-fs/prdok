@@ -11,36 +11,7 @@
         }
       }
     },
-    "%@" : {
-      "shouldTranslate" : false
-    },
-    "%@ → %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ → %2$@"
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
-    "%@, %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@"
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
     "%lld" : {
-      "shouldTranslate" : false
-    },
-    "%lld min" : {
-      "comment" : "Amount of minutes for the notification timer",
       "shouldTranslate" : false
     },
     "bootstrap.loading" : {
@@ -262,7 +233,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "V kalendáři už jsou uložené směny z této aplikace. Můžeš je synchronizovat."
           }
         },
@@ -279,7 +250,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "směna cp_"
           }
         },
@@ -347,7 +318,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "směna cp_"
           }
         },
@@ -414,7 +385,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "1 hodinu předem"
           }
         },
@@ -430,7 +401,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "2 hodiny předem"
           }
         },
@@ -446,7 +417,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "6 hodin předem"
           }
         },
@@ -462,7 +433,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "12 hodin předem"
           }
         },
@@ -478,7 +449,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "24 hodin předem"
           }
         },
@@ -542,7 +513,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Oznámení"
           }
         },
@@ -867,17 +838,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nabídnout možnosti"
-          }
-        }
-      }
-    },
-    "offered" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "nab."
           }
         }
       }
