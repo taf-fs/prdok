@@ -225,6 +225,8 @@ struct CalendarView: View {
                             offerShiftSheetIsPresented = true
                         } label: {
                             Text("offer shifts")
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
                                 .frame(maxWidth: .infinity)
                         }
                         
@@ -232,6 +234,8 @@ struct CalendarView: View {
                             exportSheetIsPresented = true
                         } label: {
                             Text("upload to calendar")
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
                                 .frame(maxWidth: .infinity)
                         }
                     }

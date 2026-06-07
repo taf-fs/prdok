@@ -189,12 +189,16 @@ private struct OrRequirementRow: View {
         HStack {
             HStack(alignment: .bottom, spacing: 4) {
                 Text(label)
+                    .minimumScaleFactor(0.5)  // allows text to scale down to 50% of font size
+                    .lineLimit(1)
                     .font(.system(.body, design: .serif))
                     .fontWeight(.regular)
                     .foregroundStyle(isRequirementMet ? .green : .secondary)
                 
                 if let plannedCount {
                     Text("(\(plannedCount) planned)")
+                        .minimumScaleFactor(0.5)  // allows text to scale down to 50% of font size
+                        .lineLimit(1)
                         .font(.system(.caption, design: .monospaced))
                         .fontWeight(.regular)
                         .foregroundStyle(.secondary)
