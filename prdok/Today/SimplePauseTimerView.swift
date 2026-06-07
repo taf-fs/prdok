@@ -14,9 +14,24 @@ struct SimplePauseTimerView: View {
 
     // persisted active timer id (0 => none, 1/2 for each timer)
     @AppStorage("simplePause.activeTimerId") private var storedActiveTimerId: Int = 0
+    @AppStorage("simplePause.timer1.endDate") private var timer1EndDateTimestamp: Double = 0
+    @AppStorage("simplePause.timer2.endDate") private var timer2EndDateTimestamp: Double = 0
 
     private var persistedActiveTimerId: Int? {
         storedActiveTimerId == 0 ? nil : storedActiveTimerId
+    }
+
+    // If the recorded active timer has no end date or has already finished,
+    // clear the persisted active id so both buttons render again on launch.
+    private func reconcilePersistedActiveTimerId() {
+        guard let id = persistedActiveTimerId else { return }
+        let ts = (id == 1) ? timer1EndDateTimestamp : timer2EndDateTimestamp
+        let endDate = ts > 0 ? Date(timeIntervalSince1970: ts) : nil
+        if endDate == nil || endDate! <= Date() {
+            storedActiveTimerId = 0
+            if id == 1 { timer1EndDateTimestamp = 0 }
+            else { timer2EndDateTimestamp = 0 }
+        }
     }
 
     var body: some View {
@@ -33,6 +48,7 @@ struct SimplePauseTimerView: View {
         .aspectRatio(7, contentMode: .fit)
         .onAppear {
             // restore ui
+            reconcilePersistedActiveTimerId()
             activeTimerId = persistedActiveTimerId
         }
         .onChange(of: activeTimerId) { newValue in
