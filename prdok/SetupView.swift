@@ -17,7 +17,7 @@ struct SetupView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("setup.welcome.title")
                     .font(.system(.subheadline))
@@ -57,9 +57,6 @@ struct SetupView: View {
                                     .tint(.primary)
                             }
                     }
-                    NavigationLink(destination: PairWithLinkView(), isActive: $isActive) {
-                        EmptyView()
-                    }
                     
                     Button {
                         isSheetPresented = true
@@ -84,6 +81,9 @@ struct SetupView: View {
             .padding(.top, 128)
             .sheet(isPresented: $isSheetPresented) {
                 ScanQRView()
+            }
+            .navigationDestination(isPresented: $isActive) {
+                PairWithLinkView()
             }
             .navigationBarHidden(true) // ios 15 shenanigans
         }
