@@ -18,9 +18,16 @@ struct SettingsView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text("settings")
+                Text("settings.title")
+                    .font(.system(.largeTitle, design: .monospaced))
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 16)
+                
+                    .padding(.horizontal, 12)
+                    .padding(.top, 24)
                 List {
-                    Section(header: Text("settings.sectionHeader.notifications")) {
+                    Section(header: Text("settings.sectionHeader.notifications").font(.system(.body, design: .monospaced, weight: .bold))) {
                         Toggle("settings.notifications.toggle", isOn: $notificationsEnabled)
                             .onChange(of: notificationsEnabled) { newToggleValue in
                                 if newToggleValue == true {
@@ -76,6 +83,7 @@ struct SettingsView: View {
 //                    }
                 }
             }
+            .background(Color(.systemGroupedBackground))
             .alert(alertMessage, isPresented: $showUnpairErrorAlert) {
                 Button("OK", role: .cancel) { }
             }
