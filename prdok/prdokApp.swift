@@ -38,6 +38,7 @@ private func loadDevCredentials() {
     UserDefaults.standard.set(dict["klic"],     forKey: "klic")
     UserDefaults.standard.set(dict["id"],       forKey: "id")
     UserDefaults.standard.set(dict["ids"],      forKey: "ids")
+    UserDefaults.standard.set(dict["provoz"],  forKey: "provoz")
     UserDefaults.standard.set(dict["skladnik"], forKey: "skladnik")
 }
 #endif
