@@ -14,9 +14,9 @@ struct BootstrapWebView: UIViewControllerRepresentable {
     
     func getURL() -> URL {
         if let id = id, let ids = ids {
-            return URL(string: "https://streva.prostoru.cz/nasi/zamestnanci.php?ids=\(ids)&id=\(id)&provoz=cp")!
+            return URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php?ids=\(ids)&id=\(id)&provoz=cp")!
         } else {
-            return URL(string: "https://streva.prostoru.cz/nasi/zamestnanci.php")! // temporary solution, but it should never get to this else block
+            return URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php")! // temporary solution, but it should never get to this else block
         }
     }
     

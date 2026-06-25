@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>apiBaseURL</key>
+    <string>https://your-api-domain.example.com</string>
+    <key>employeePortalURL</key>
+    <string>https://your-employee-portal.example.com</string>
+    <key>pairingInitKey</key>
+    <string>your-pairing-init-key</string>
+</dict>
+</plist>

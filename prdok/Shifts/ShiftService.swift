@@ -38,7 +38,7 @@ struct ShiftService {
         guard let when = formatDateToYearAndMonthString(date: date) else {
             throw FetchShiftError.invalidDate(date)
         }
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else {
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
         
@@ -94,7 +94,7 @@ struct ShiftService {
         guard let key = UserDefaults.standard.string(forKey: "klic") else {
             throw PairingManager.PairingError.missingCredentials
         }
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else {
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
         
@@ -159,7 +159,7 @@ struct ShiftService {
         guard let key = UserDefaults.standard.string(forKey: "klic") else {
             throw PairingManager.PairingError.missingCredentials
         }
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else {
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
         

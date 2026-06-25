@@ -67,14 +67,14 @@ struct LinksView: View {
         .sheet(item: $activeSheet, onDismiss: dismissSheet) { sheet in
             switch sheet {
             case .contacts:
-                LinkWebView(url: URL(string: "https://streva.prostoru.cz/nasi/kontakty.php")!)
+                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/kontakty.php")!)
 //            case .waiter:
             case .meetingMinutes:
-                LinkWebView(url: URL(string: "https://streva.prostoru.cz/nasi/zapisyzporad.php")!)
+                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zapisyzporad.php")!)
             case .forum:
-                LinkWebView(url: URL(string: "https://zamestnanci.prostoru.cz/")!)
+                LinkWebView(url: URL(string: "\(AppConfig.employeePortalURL)/")!)
             case .employee:
-                LinkWebView(url: URL(string: "https://streva.prostoru.cz/nasi/zamestnanci.php")!)
+                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php")!)
             default:
                 Text("link.notImplementedYet")
             }

@@ -20,7 +20,7 @@ struct ShiftsListWebView: UIViewControllerRepresentable {
         df.dateFormat = "yyyy-MM-dd"
 
         let formattedDate = df.string(from: date)
-        let formattedString = "https://streva.prostoru.cz/nasi/dnes.php?den=\(formattedDate)"
+        let formattedString = "\(AppConfig.apiBaseURL)/nasi/dnes.php?den=\(formattedDate)"
         return URL(string: formattedString)
     }
 
@@ -29,7 +29,7 @@ struct ShiftsListWebView: UIViewControllerRepresentable {
         config.entersReaderIfAvailable = false
         config.barCollapsingEnabled = false
 
-        let url = getUrlFromDate(date: date) ?? URL(string: "https://streva.prostoru.cz/nasi/dnes.php")!
+        let url = getUrlFromDate(date: date) ?? URL(string: "\(AppConfig.apiBaseURL)/nasi/dnes.php")!
         let vc = SFSafariViewController(url: url, configuration: config)
         vc.dismissButtonStyle = .close
         return vc

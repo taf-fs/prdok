@@ -84,14 +84,14 @@ class PairingManager {
     /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx responses;
     ///           `PairingError.missingKeyInResponse` if the expected key is absent from the JSON.
     private func requestAndSaveKey(provoz: String) async throws -> String {
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL }
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else { throw PairingError.invalidURL }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         let bodyString = [
-            "klic=nemamklic123", // server returns the key to save when key doesn't exist in DB
+            "klic=\(AppConfig.pairingInitKey)",
             "akce=init",
             "parametr=",
             "provoz=\(provoz)"
@@ -132,7 +132,7 @@ class PairingManager {
     ///   - provoz: The facility identifier extracted from the link or QR code.
     /// - Throws: `PairingError.invalidURL` if the endpoint URL is invalid; `PairingError.invalidResponse` for non-2xx responses.
     private func connectKeyToAccount(id: String, ids: String, key: String, provoz: String) async throws {
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL }
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else { throw PairingError.invalidURL }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -176,7 +176,7 @@ class PairingManager {
             throw PairingError.missingCredentials
         }
 
-        guard let url = URL(string: "https://streva.prostoru.cz/zapp/hello.php") else { throw PairingError.invalidURL }
+        guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else { throw PairingError.invalidURL }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

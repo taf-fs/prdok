@@ -45,7 +45,7 @@ struct EbonyWebView: UIViewRepresentable {
     
     func getURL() -> URL {
         if let params = skladnik {
-            return URL(string: "https://streva.prostoru.cz/brana/ebony2.php?\(params)")!
+            return URL(string: "\(AppConfig.apiBaseURL)/brana/ebony2.php?\(params)")!
         } else {
             return URL(string: "about:blank")!
         }
