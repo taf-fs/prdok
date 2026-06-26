@@ -1021,6 +1021,22 @@
         }
       }
     },
+    "settings.developer.userdefaults" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přihlašovací údaje"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Details"
+          }
+        }
+      }
+    },
     "settings.notifications.toggle" : {
       "localizations" : {
         "cs" : {
@@ -1033,6 +1049,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send Notifications"
+          }
+        }
+      }
+    },
+    "settings.sectionHeader.developer" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vývojář"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Developer"
           }
         }
       }

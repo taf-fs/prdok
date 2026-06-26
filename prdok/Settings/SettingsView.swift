@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var isUnpairingInProgress = false
     
     var body: some View {
+        NavigationStack {
         ZStack {
             VStack {
                 Text("settings.title")
@@ -59,6 +60,14 @@ struct SettingsView: View {
                             }
                     }
                     
+                    Section(header: Text("settings.sectionHeader.developer").font(.system(.body, design: .monospaced, weight: .bold))) {
+                        NavigationLink {
+                            DeveloperSettingsView()
+                        } label: {
+                            Text("settings.developer.userdefaults")
+                        }
+                    }
+
                     Button {
                         Task {
                             isUnpairingInProgress = true
@@ -97,6 +106,7 @@ struct SettingsView: View {
                 if (setting == .denied || setting == .notDetermined) { notificationsEnabled = false }
             }
         }
+        } // NavigationStack
     }
 }
 
