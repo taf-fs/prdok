@@ -11,9 +11,12 @@ import AVFoundation
 
 struct ScanQRView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var scanResult: String? = nil
     @Environment(\.colorScheme) var colorScheme
-    
+
+    @State private var isLoading = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+
     private var gradientColor: Color {
         if colorScheme == .dark {
             return Color.black.opacity(0.8)
@@ -35,9 +38,21 @@ struct ScanQRView: View {
                 ) { response in
                     switch response {
                     case .success(let result):
-                        scanResult = result.string
+                        Task {
+                            isLoading = true
+                            defer { isLoading = false }
+                            do {
+                                try await PairingManager.shared.connectAccountUsingQR(result.string)
+                                UserDefaults.standard.set(true, forKey: "setupCompleted")
+                                UserDefaults.standard.set(true, forKey: "needsToBootstrap")
+                            } catch {
+                                alertMessage = error.localizedDescription
+                                showAlert = true
+                            }
+                        }
                     case .failure(let error):
-                        print("Scan error:", error.localizedDescription)
+                        alertMessage = error.localizedDescription
+                        showAlert = true
                     }
                 }
                 .ignoresSafeArea()
@@ -79,15 +94,13 @@ struct ScanQRView: View {
                         .offset(y: -(boxSize/2 + toolbarOffset))
                 }
                 .ignoresSafeArea()
-            }
-            .overlay(alignment: .bottom) {
-                if let scanResult {
-                    Text(scanResult)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
-                        .background(.thinMaterial, in: Capsule())
-                        .padding(.bottom, 32)
+
+                if isLoading {
+                    LoadingScreenView(text: "loading.connecting")
                 }
+            }
+            .alert(alertMessage, isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
             }
             .toolbar {
                 ToolbarItem(placement: .title) {
@@ -111,4 +124,3 @@ struct ScanQRView: View {
 #Preview {
     ScanQRView()
 }
-
