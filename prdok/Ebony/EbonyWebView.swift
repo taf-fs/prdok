@@ -44,7 +44,7 @@ struct EbonyWebView: UIViewRepresentable {
     @AppStorage("skladnik") private var skladnik: String?
     
     func getURL() -> URL {
-        if let params = skladnik {
+        if let params = skladnik, params != "" { //FIXME: an account on the test provoz doesn't return a skladnik. so an empty string will also navigate to blank.
             return URL(string: "\(AppConfig.apiBaseURL)/brana/ebony2.php?\(params)")!
         } else {
             return URL(string: "about:blank")!

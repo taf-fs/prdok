@@ -150,7 +150,8 @@ class PairingManager {
         let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any]
         let ulozsi = obj?["ulozsi"] as? [String: Any]
         guard let skladnik = ulozsi?["lidauths"] as? String else {
-            throw PairingError.missingSkladnik
+//            throw PairingError.missingSkladnik
+            return // FIXME: temporary workaround for missing skladnik
         }
         UserDefaults.standard.setValue(skladnik, forKey: "skladnik")
         print("Received and saving skladnik: \(key) to UserDefaults")
