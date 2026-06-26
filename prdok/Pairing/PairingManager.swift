@@ -109,14 +109,9 @@ class PairingManager {
             throw PairingError.missingKeyInResponse
         }
         
-        guard let skladnik = ulozsi?["lidauths"] as? String else {
-            throw PairingError.missingSkladnik
-        }
 
         UserDefaults.standard.setValue(key, forKey: "klic")
-        UserDefaults.standard.setValue(skladnik, forKey: "skladnik")
         print("Received and saving key: \(key) to UserDefaults")
-        print("Received and saving skladnik: \(key) to UserDefaults")
         return key
     }
     
@@ -147,10 +142,19 @@ class PairingManager {
         request.httpBody = bodyString.data(using: .utf8)
 
         // for now, fact that the request succeeded at the HTTP level is good enough, no need to work with the response data
-        let (_, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
             throw PairingError.invalidResponse
         }
+        
+        let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        let ulozsi = obj?["ulozsi"] as? [String: Any]
+        guard let skladnik = ulozsi?["lidauths"] as? String else {
+            throw PairingError.missingSkladnik
+        }
+        UserDefaults.standard.setValue(skladnik, forKey: "skladnik")
+        print("Received and saving skladnik: \(key) to UserDefaults")
+
 
         UserDefaults.standard.setValue(id, forKey: "id")
         UserDefaults.standard.setValue(ids, forKey: "ids")
