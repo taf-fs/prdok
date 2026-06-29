@@ -28,6 +28,15 @@ struct SettingsView: View {
                     .padding(.horizontal, 12)
                     .padding(.top, 24)
                 List {
+                    Section {
+                        Button {
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        } label: {
+                            Text("settings.language")
+                        }
+                        .foregroundStyle(.primary)
                     Section(header: Text("settings.sectionHeader.notifications").font(.system(.body, design: .monospaced, weight: .bold))) {
                         Toggle("settings.notifications.toggle", isOn: $notificationsEnabled)
                             .onChange(of: notificationsEnabled) { newToggleValue in
@@ -59,6 +68,8 @@ struct SettingsView: View {
                              Text("settings.alert.notisDenied.message")
                             }
                     }
+                    
+
                     
                     Section(header: Text("settings.sectionHeader.developer").font(.system(.body, design: .monospaced, weight: .bold))) {
                         NavigationLink {
