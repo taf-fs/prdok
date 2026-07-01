@@ -108,7 +108,7 @@ private struct TimerButton: View {
 
     var body: some View {
         ZStack {
-            Color.blue.opacity(0.2)
+            Color.cpBackgroundElevated
 
             if isActivated {
                 TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -142,7 +142,7 @@ private struct TimerButton: View {
                                 .font(.caption)
                                 .opacity(0.5)
                         }
-                        .foregroundColor(.primary)
+                        .foregroundColor(Color.cpForegroundPrimary)
                     }
                     .padding(.horizontal)
                     .onChange(of: remaining) { newValue in
@@ -164,7 +164,7 @@ private struct TimerButton: View {
                             .font(.system(.subheadline))
                             .fontWeight(.semibold)
                     }
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color.cpForegroundPrimary)
                 }
             }
         }

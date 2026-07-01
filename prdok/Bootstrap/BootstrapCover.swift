@@ -16,7 +16,7 @@ struct BootstrapCover: View {
                 isPresented = false
             }
 
-            Color(.systemBackground).ignoresSafeArea()
+            Color.cpBackgroundElevated.ignoresSafeArea()
             ProgressView("bootstrap.loading")
         }
     }

@@ -72,7 +72,7 @@ struct TodayView: View {
                                     ProgressView("today.countdown.loading")
                                 } else {
                                     Text("today.noUpcomingShifts")
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(Color.cpForegroundSecondary)
                                 }
                             }
                             
@@ -85,11 +85,10 @@ struct TodayView: View {
                                     .fontWeight(.semibold)
                                     .padding(.vertical, 8)
                                     .padding(.horizontal, 40)
-                                    .foregroundStyle(.background)
+                                    .foregroundStyle(Color.cpBackgroundPrimary)
                                     .background {
                                         RoundedRectangle(cornerRadius: 8)
-                                            .fill(.primary)
-                                            .tint(.primary)
+                                            .tint(Color.cpForegroundPrimary)
                                     }
                             }
                         }
@@ -101,7 +100,7 @@ struct TodayView: View {
                     .frame(height: proxy.size.height * 0.6, alignment: .top)
                     .frame(maxWidth: .infinity)
                     .background(
-                        Color.accentColor.opacity(0.1)
+                        Color.cpBackgroundPrimary
                             .ignoresSafeArea(edges: .top)
                     )
                     .sheet(isPresented: $showWebView) {
@@ -127,6 +126,10 @@ struct TodayView: View {
 //                    .fontWeight(.semibold)
                 
                 Spacer()
+            }
+            .background {
+                Color.cpBackgroundSecondary
+                    .ignoresSafeArea(edges: .bottom)
             }
         }
         .task {
