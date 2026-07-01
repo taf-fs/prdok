@@ -10,10 +10,12 @@ import SwiftUI
 struct SettingsView: View {
     
     @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = false
+    @AppStorage("colorTheme") private var colorTheme: Theme = .system
     @State private var showNotisDeniedAlert = false
     @State private var showUnpairErrorAlert = false
     @State private var alertMessage = ""
     @State private var isUnpairingInProgress = false
+    @State private var showThemeSheet = false
     
     var body: some View {
         NavigationStack {
@@ -36,7 +38,15 @@ struct SettingsView: View {
                         } label: {
                             Text("settings.language")
                         }
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Color.cpForegroundPrimary)
+                        Button {
+                            showThemeSheet = true
+                        } label: {
+                            Text("settings.colorTheme")
+                        }
+                        .foregroundStyle(Color.cpForegroundPrimary)
+                    }
+                    
                     Section(header: Text("settings.sectionHeader.notifications").font(.system(.body, design: .monospaced, weight: .bold))) {
                         Toggle("settings.notifications.toggle", isOn: $notificationsEnabled)
                             .onChange(of: notificationsEnabled) { newToggleValue in
@@ -102,8 +112,9 @@ struct SettingsView: View {
 //                        Text("go back to setup")
 //                    }
                 }
+//                .scrollContentBackground(.hidden)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.cpBackgroundPrimary)
             .alert(alertMessage, isPresented: $showUnpairErrorAlert) {
                 Button("OK", role: .cancel) { }
             }
@@ -116,6 +127,22 @@ struct SettingsView: View {
             NotificationManager.shared.getAuthorizationStatus { setting in
                 if (setting == .denied || setting == .notDetermined) { notificationsEnabled = false }
             }
+        }
+        .sheet(isPresented: $showThemeSheet) {
+            NavigationStack {
+                ThemeSelectorView(theme: $colorTheme)
+                    .padding()
+                    .navigationTitle("settings.colorTheme.sheetTitle")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button { showThemeSheet = false } label: {
+                                Image(systemName: "xmark")
+                            }
+                        }
+                    }
+            }
+            .presentationDetents([.medium])
         }
         } // NavigationStack
     }

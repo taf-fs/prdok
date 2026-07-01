@@ -1037,6 +1037,22 @@
         }
       }
     },
+    "settings.colorTheme.sheetTitle" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzhled aplikace"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color Theme"
+          }
+        }
+      }
+    },
     "settings.developer.userdefaults" : {
       "localizations" : {
         "cs" : {
@@ -1725,6 +1741,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Today"
+          }
+        }
+      }
+    },
+    "themePicker.dark" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tmavý"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        }
+      }
+    },
+    "themePicker.Light" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Světlý"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        }
+      }
+    },
+    "themePicker.system" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Výchozí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
           }
         }
       }

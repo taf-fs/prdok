@@ -18,6 +18,7 @@ enum ContentTab {
 struct ContentView: View {
     @AppStorage("setupCompleted") private var setupCompleted = false // false only when value doesn't exist
     @AppStorage("needsToBootstrap") private var needsToBootstrap = false
+    @AppStorage("colorTheme") private var colorTheme: Theme = .system
     @State private var selectedTab: ContentTab = .today
     private let brandColor = Color("cpCream")
 
@@ -52,14 +53,14 @@ struct ContentView: View {
                         //                    TempShiftView()
                         //                        .tabItem { Label("shifts", systemImage: "calendar") }
                     }
-                    .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : nil)
+                    .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : colorTheme.colorScheme)
                     //                .tabTint(brandColor)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .fullScreenCover(isPresented: $needsToBootstrap) {
                         BootstrapCover(isPresented: $needsToBootstrap)
                     }
                     if needsToBootstrap {
-                        Color(.systemBackground)
+                        Color.cpBackgroundPrimary
                             .ignoresSafeArea()
                     }
                 }
