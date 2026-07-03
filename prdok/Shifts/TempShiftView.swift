@@ -87,12 +87,12 @@ struct TempShiftView: View {
                         Text(verbatim: "\(shift.kind.rawValue.capitalized), \(String(describing:shift.id))")
                             .font(.headline)
                         Text(verbatim: "\(df.string(from: shift.start)) → \(df.string(from: shift.end))")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(Color.cpForegroundSecondary)
                     }
                 }
             } else if !vm.isLoading && vm.error == nil {
                 Text("No shifts loaded")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color.cpForegroundSecondary)
             }
         }
         .onAppear {

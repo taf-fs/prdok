@@ -54,9 +54,9 @@ struct LinksView: View {
                 LinkButton("link.forum") {
                     activeSheet = .forum
                 }
-//                LinkButton("link.collaborate") {
-//                    activeSheet = .collaborate
-//                }
+                //                LinkButton("link.collaborate") {
+                //                    activeSheet = .collaborate
+                //                }
                 LinkButton("link.employeeWeb") {
                     activeSheet = .employee
                 }
@@ -64,6 +64,7 @@ struct LinksView: View {
             .padding(.top, 24)
             .padding(.horizontal, 12)
         }
+        .background { (Color.cpBackgroundPrimary).ignoresSafeArea() }
         .sheet(item: $activeSheet, onDismiss: dismissSheet) { sheet in
             switch sheet {
             case .contacts:
@@ -102,7 +103,7 @@ struct LinkButton: View {
                 .font(.system(.title2, design: .monospaced))
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(.foreground)
+                .foregroundStyle(Color.cpForegroundPrimary)
         }
     }
 }

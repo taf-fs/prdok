@@ -41,7 +41,7 @@ struct PairWithLinkView: View {
                         .textContentType(.URL)
                         .keyboardType(.URL)
                     Rectangle()
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.cpForegroundSecondary)
                         .frame(maxWidth: .infinity, maxHeight: 1)
                 }
                 .offset(y: -toolbarOffset)
@@ -70,16 +70,15 @@ struct PairWithLinkView: View {
                         .bold()
                         .padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
-                        .foregroundStyle(.background)
+                        .foregroundStyle(Color.cpBackgroundPrimary)
                         .background {
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(.primary)
-                                .tint(.primary)
+                                .fill(Color.cpForegroundPrimary)
                         }
                         .overlay {
                             if !isURL {
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.gray.opacity(0.8))
+                                    .fill(.background.opacity(0.75))
                             }
                         }
                 }

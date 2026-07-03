@@ -46,6 +46,7 @@ struct SettingsView: View {
                         }
                         .foregroundStyle(Color.cpForegroundPrimary)
                     }
+                    .listRowBackground(Color.cpBackgroundSecondary)
                     
                     Section(header: Text("settings.sectionHeader.notifications").font(.system(.body, design: .monospaced, weight: .bold))) {
                         Toggle("settings.notifications.toggle", isOn: $notificationsEnabled)
@@ -78,6 +79,7 @@ struct SettingsView: View {
                              Text("settings.alert.notisDenied.message")
                             }
                     }
+                    .listRowBackground(Color.cpBackgroundSecondary)
                     
 
                     
@@ -88,6 +90,7 @@ struct SettingsView: View {
                             Text("settings.developer.userdefaults")
                         }
                     }
+                    .listRowBackground(Color.cpBackgroundSecondary)
 
                     Button {
                         Task {
@@ -105,6 +108,7 @@ struct SettingsView: View {
                         Text("settings.unpair")
                             .foregroundStyle(.red)
                     }
+                    .listRowBackground(Color.cpBackgroundSecondary)
                     
 //                    Button {
 //                        UserDefaults.standard.set(false, forKey: "setupCompleted")
@@ -112,7 +116,7 @@ struct SettingsView: View {
 //                        Text("go back to setup")
 //                    }
                 }
-//                .scrollContentBackground(.hidden)
+                .scrollContentBackground(.hidden)
             }
             .background(Color.cpBackgroundPrimary)
             .alert(alertMessage, isPresented: $showUnpairErrorAlert) {

@@ -53,6 +53,7 @@ struct ContentView: View {
                         //                    TempShiftView()
                         //                        .tabItem { Label("shifts", systemImage: "calendar") }
                     }
+                    .tint(Color.cpForegroundMuted)
                     .preferredColorScheme(selectedTab == ContentTab.ebony ? .light : colorTheme.colorScheme)
                     //                .tabTint(brandColor)
                     .transition(.move(edge: .bottom).combined(with: .opacity))

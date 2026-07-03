@@ -21,7 +21,7 @@ struct SetupView: View {
             VStack {
                 Text("setup.welcome.title")
                     .font(.system(.subheadline))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.cpForegroundSecondary)
                 
                 Text("setup.app.name")
                     .font(.system(.largeTitle, design: .monospaced))
@@ -39,7 +39,7 @@ struct SetupView: View {
                 
                 Text("setup.access.instructions")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.cpForegroundSecondary)
                     .multilineTextAlignment(.center)
                 
                 VStack(spacing: 4) {
@@ -53,7 +53,6 @@ struct SetupView: View {
                             .foregroundStyle(.background)
                             .background {
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(.primary)
                                     .tint(.primary)
                             }
                     }
@@ -65,8 +64,8 @@ struct SetupView: View {
                             .bold()
                             .padding(.vertical, 8)
                             .frame(maxWidth: .infinity)
-                            .foregroundStyle(.secondary)
-                            .tint(.primary)
+                            .foregroundStyle(Color.cpForegroundSecondary)
+                            .tint(Color.cpForegroundPrimary)
 //                            .background {
 //                                RoundedRectangle(cornerRadius: 16)
 //                                    .stroke(.secondary, lineWidth: 1)

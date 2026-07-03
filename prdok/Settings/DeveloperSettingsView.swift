@@ -31,7 +31,7 @@ struct DeveloperSettingsView: View {
                     Spacer()
                     Text(value)
                         .font(.system(.body, design: .monospaced))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.cpForegroundSecondary)
                         .lineLimit(1)
                         .truncationMode(.middle)
                     Button {
@@ -42,7 +42,7 @@ struct DeveloperSettingsView: View {
                         }
                     } label: {
                         Image(systemName: copiedKey == key ? "checkmark" : "doc.on.doc")
-                            .foregroundStyle(copiedKey == key ? .green : .secondary)
+                            .foregroundStyle(copiedKey == key ? Color.green : Color.cpForegroundSecondary)
                             .animation(.default, value: copiedKey)
                             .frame(width: 16)
                     }

@@ -90,7 +90,7 @@ struct ScanQRView: View {
                 VStack {
                     Text("connect.qr.instructions")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.cpForegroundSecondary)
                         .offset(y: -(boxSize/2 + toolbarOffset))
                 }
                 .ignoresSafeArea()
@@ -111,8 +111,8 @@ struct ScanQRView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .foregroundStyle(.secondary)
-                            .tint(.primary)
+                            .foregroundStyle(Color.cpForegroundSecondary)
+                            .tint(Color.cpForegroundPrimary)
                     }
                     
                 }
