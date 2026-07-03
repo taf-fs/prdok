@@ -218,7 +218,7 @@ struct CalendarDayDetailsView: View {
                             .font(.system(.footnote, design: .monospaced))
                             .fontWeight(.semibold)
                             .underline()
-                            .foregroundStyle(.foreground)
+                            .foregroundStyle(Color.cpForegroundPrimary)
                     }
                 }
                 ShiftIndicatorView(
@@ -248,12 +248,12 @@ struct CalendarDayDetailsView: View {
                         Text("calendarDayDetails.shiftOffer.picker.start")
                             .frame(maxWidth: .infinity)
                             .font(.system(.callout, design: .serif))
-                            .foregroundStyle(.primary.opacity(0.6))
+                            .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                         Spacer()
                         Text("calendarDayDetails.shiftOffer.picker.end")
                             .frame(maxWidth: .infinity)
                             .font(.system(.callout, design: .serif))
-                            .foregroundStyle(.primary.opacity(0.6))
+                            .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                         Spacer()
                     }
                     
@@ -267,7 +267,7 @@ struct CalendarDayDetailsView: View {
                         .pickerStyle(.wheel)
                         
                         RoundedRectangle(cornerRadius: 3)
-                            .foregroundStyle(.primary.opacity(0.7))
+                            .foregroundStyle(Color.cpForegroundPrimary.opacity(0.7))
                             .frame(maxWidth: 15, maxHeight: 2)
                         
                         Picker("calendarDayDetails.shiftOffer.picker.end", selection: $endHour) {
@@ -302,7 +302,7 @@ struct CalendarDayDetailsView: View {
                             } else {
                                 Text("calendarDayDetails.offerShift.button", comment: "submit offered shift button")
                                     .font(.headline)
-                                    .foregroundStyle(.primary)
+                                    .foregroundStyle(Color.cpForegroundPrimary)
                             }
                         }
                         .aspectRatio(7, contentMode: .fit)

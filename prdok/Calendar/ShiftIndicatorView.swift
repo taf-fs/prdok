@@ -73,12 +73,12 @@ struct ShiftIndicatorView: View {
         VStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.secondary.opacity(0.2))
+                    .fill(Color.cpForegroundSecondary.opacity(0.2))
                 
                 if shifts.isEmpty {
                     Text(verbatim: "–")
                         .font(.system(.footnote, design: .monospaced))
-                        .foregroundColor(.primary)
+                        .foregroundColor(Color.cpForegroundPrimary)
                 } else {
                     // All pills share the same geometry / timeline
                     GeometryReader { geo in

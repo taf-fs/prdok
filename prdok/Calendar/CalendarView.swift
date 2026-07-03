@@ -167,7 +167,7 @@ struct CalendarView: View {
                     .dayOfWeekHeaders { month, index in
                         Text(dayOfWeekName(index: index).uppercased())
                             .font(.system(size: 12, design: .monospaced))
-                            .foregroundStyle(Color.gray)
+                            .foregroundStyle(Color.cpForegroundMuted)
                     }
                     .days { day in
                         let date = calendar.date(from: day.components)!
@@ -201,6 +201,7 @@ struct CalendarView: View {
                         }
                         vm.checkYear(displayedMonthAndYear: displayedMonth)
                     }
+                    .backgroundColor(.cpBackgroundPrimary)
                     .disabled(isRefreshingMonth)
                     .onAppear {
                         selectedDate = Date()
@@ -240,6 +241,8 @@ struct CalendarView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent)
+                    .foregroundStyle(.cpBackgroundPrimary)
+                    .tint(.cpForegroundPrimary)
                     .sheet(isPresented: $offerShiftSheetIsPresented) {
                         if let displayedMonthDate = calendar.date(from: displayedMonth) {
                             ShiftMultiOfferView(
@@ -276,6 +279,9 @@ struct CalendarView: View {
                 }
                 .padding(.horizontal, 12)
                 .padding(.top, 24)
+            }
+            .background {
+                Color.cpBackgroundPrimary.ignoresSafeArea()
             }
             if toastIsPresented {
                 ToastBanner(message: toastMessage, isSuccess: toastIsSuccess)
@@ -499,19 +505,19 @@ private struct CalendarDayCell: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .padding(2)
-                    .foregroundStyle(.tint.opacity(backgroundOpacity))
+                    .foregroundStyle(.cpForegroundPrimary.opacity(backgroundOpacity))
 
                 VStack(spacing: 5) {
                     Text(verbatim: "\(dayNumber)")
                         .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(isToday ? Color.white : Color.primary)
+                        .foregroundStyle(isToday ? Color.cpBackgroundPrimary : Color.cpForegroundPrimary)
 
                     HStack {
                         Circle()
                             .frame(width: 5, height: 5)
                             .opacity((hasPlannedShift || hasOfferedShift) ? 1 : 0)
                             .opacity(hasPlannedShift ? 1 : 0.3)
-                            .foregroundStyle(.tint)
+                            .foregroundStyle(.cpForegroundSecondary)
                     }
                 }
             }

@@ -158,7 +158,7 @@ private struct RequirementRow: View {
         HStack(alignment: .bottom, spacing: 4) {
             Text(label)
                 .font(.system(.body, design: .serif))
-                .foregroundStyle(requirement.met ? .green : .secondary)
+                .foregroundStyle(requirement.met ? Color.green : Color.cpForegroundSecondary)
             
             
             Spacer()
@@ -166,11 +166,11 @@ private struct RequirementRow: View {
             Text(verbatim: "\(requirement.current)/\(requirement.required)")
                 .font(.system(.body, design: .monospaced))
                 .fontWeight(.regular)
-                .foregroundStyle(requirement.met ? .green : .primary)
+                .foregroundStyle(requirement.met ? Color.green : Color.cpForegroundPrimary)
             Text("off.")
                 .font(.system(.caption, design: .monospaced))
                 .fontWeight(.regular)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.cpForegroundPrimary)
         }
     }
 }
@@ -193,7 +193,7 @@ private struct OrRequirementRow: View {
                     .lineLimit(1)
                     .font(.system(.body, design: .serif))
                     .fontWeight(.regular)
-                    .foregroundStyle(isRequirementMet ? .green : .secondary)
+                    .foregroundStyle(isRequirementMet ? Color.green : Color.cpForegroundSecondary)
                 
                 if let plannedCount {
                     Text("(\(plannedCount) planned)")
@@ -201,7 +201,7 @@ private struct OrRequirementRow: View {
                         .lineLimit(1)
                         .font(.system(.caption, design: .monospaced))
                         .fontWeight(.regular)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.cpForegroundSecondary)
                 }
             }
             
@@ -211,27 +211,27 @@ private struct OrRequirementRow: View {
                 Text(verbatim: "\(actual.current)/\(actual.required)")
                     .font(.system(.body, design: .monospaced))
                     .fontWeight(.regular)
-                    .foregroundStyle(actual.met ? .green : .primary)
+                    .foregroundStyle(actual.met ? Color.green : Color.cpForegroundPrimary)
                 
                 Text("done")
                     .font(.system(.caption, design: .monospaced))
                     .fontWeight(.regular)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.cpForegroundPrimary)
                 
                 Text("or")
                     .font(.system(.caption, design: .serif))
                     .fontWeight(.regular)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.cpForegroundSecondary)
                 
                 Text(verbatim: "\(offered.current)/\(offered.required)")
                     .font(.system(.body, design: .monospaced))
                     .fontWeight(.regular)
-                    .foregroundStyle(offered.met ? .green : .primary)
+                    .foregroundStyle(offered.met ? Color.green : Color.cpForegroundPrimary)
                 
                 Text("off.")
                     .font(.system(.caption, design: .monospaced))
                     .fontWeight(.regular)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.cpForegroundPrimary)
             }
         }
     }

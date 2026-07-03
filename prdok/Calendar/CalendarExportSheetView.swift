@@ -176,7 +176,7 @@ struct CalendarExportSheetView: View {
                     .fontDesign(.serif)
                 Text(monthLabel)
                     .font(.system(size: 12, design: .monospaced))
-                    .foregroundStyle(.primary.opacity(0.6))
+                    .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
             }
 
             Form {
@@ -189,6 +189,8 @@ struct CalendarExportSheetView: View {
                     .fontWeight(.semibold)
                     .autocorrectionDisabled(false)
                 }
+                .listRowBackground(Color.cpBackgroundSecondary)
+                
                 Section("calendarExport.section.calendarSettings.title") {
                     if vm.isLoadingCalendars {
                         HStack {
@@ -197,15 +199,17 @@ struct CalendarExportSheetView: View {
                         }
                     } else if vm.writableCalendars.isEmpty {
                         Text("calendarExport.noCalendarsFound", comment: "No writable calendar found.")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.cpForegroundSecondary)
                     } else {
                         Picker("calendarExport.picker.calendar", selection: $vm.selectedCalendarIdentifier) {
                             Text(verbatim: "—").tag(Optional<String>.none)
+                                .listRowBackground(Color.cpBackgroundSecondary)
                             ForEach(vm.writableCalendars, id: \.calendarIdentifier) { cal in
                                 Text(truncated(cal.title)).tag(Optional(cal.calendarIdentifier))
                             }
                         }
                     }
+                    
                     Picker("calendarExport.picker.notification", selection: Binding(
                         get: { vm.alarmMinutesBefore ?? -1 },
                         set: { newValue in vm.alarmMinutesBefore = (newValue == -1 ? nil : newValue) }
@@ -219,6 +223,7 @@ struct CalendarExportSheetView: View {
                         Text("calendarExport.notificationOption.24h").tag(1440)
                     }
                 }
+                .listRowBackground(Color.cpBackgroundSecondary)
 
                 Section {
                     if vm.exportPlan?.shouldOfferSync == true {
@@ -256,6 +261,7 @@ struct CalendarExportSheetView: View {
                                 Spacer()
                             }
                         }
+                        .foregroundStyle(.cpForegroundPrimary)
                         .disabled(!vm.canRun(monthDate: monthDate))
                     }
                 } footer: {
@@ -267,10 +273,12 @@ struct CalendarExportSheetView: View {
                     } else if let exportPlan = vm.exportPlan, exportPlan.shouldOfferSync {
                         Text("calendarExport.button.sync.footer", comment: "V kalendáři už jsou uložené směny z této aplikace. Můžeš je synchronizovat.")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.cpForegroundSecondary)
                     }
                 }
+                .listRowBackground(Color.cpBackgroundSecondary)
             }
+            .scrollContentBackground(.hidden)
             .onAppear {
                 Task { @MainActor in
                     await vm.loadCalendarsIfNeeded()
@@ -284,7 +292,7 @@ struct CalendarExportSheetView: View {
             }
         }
         .padding(.top, 24)
-        .background(Color(.systemGroupedBackground))
+        .background(Color.cpBackgroundPrimary)
     }
 
     private func truncated(_ title: String, maxLength: Int = 18) -> String {

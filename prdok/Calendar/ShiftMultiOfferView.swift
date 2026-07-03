@@ -196,7 +196,7 @@ struct ShiftMultiOfferView: View {
                         .fontDesign(.serif)
                     Text(currentMonthLabel)
                         .font(.system(size: 12, design: .monospaced))
-                        .foregroundStyle(.primary.opacity(0.6))
+                        .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                 }
                 
                 CalendarViewRepresentable(
@@ -208,7 +208,7 @@ struct ShiftMultiOfferView: View {
                 .dayOfWeekHeaders { _, index in
                     Text(dayOfWeekName(index: index).uppercased())
                         .font(.system(size: 12, design: .monospaced))
-                        .foregroundStyle(.primary.opacity(0.6))
+                        .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                 }
                 .days { day in
                     let date = calendar.date(from: day.components)!
@@ -236,6 +236,7 @@ struct ShiftMultiOfferView: View {
                 .monthBackgrounds { _ in
                     
                 }
+                .backgroundColor(.cpBackgroundSecondary)
                 
                 .onAppear {
                     vm.loadShifts(month: displayedMonth)
@@ -251,12 +252,12 @@ struct ShiftMultiOfferView: View {
                         Text("shiftMultiOffer.picker.start")
                             .frame(maxWidth: .infinity)
                             .font(.system(.callout, design: .serif))
-                            .foregroundStyle(.primary.opacity(0.6))
+                            .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                         Spacer()
                         Text("shiftMultiOffer.picker.end")
                             .frame(maxWidth: .infinity)
                             .font(.system(.callout, design: .serif))
-                            .foregroundStyle(.primary.opacity(0.6))
+                            .foregroundStyle(Color.cpForegroundPrimary.opacity(0.6))
                         Spacer()
                     }
                 }
@@ -273,7 +274,7 @@ struct ShiftMultiOfferView: View {
                     .disabled(vm.isSubmitting)
                     
                     RoundedRectangle(cornerRadius: 3)
-                        .foregroundStyle(.primary.opacity(0.7))
+                        .foregroundStyle(Color.cpForegroundPrimary.opacity(0.7))
                         .frame(maxWidth: 15, maxHeight: 2)
                     
                     Picker("shiftMultiOffer.picker.end", selection: $endHour) {
@@ -309,7 +310,7 @@ struct ShiftMultiOfferView: View {
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 16)
-                            .foregroundStyle(.tint.opacity(0.1))
+                            .foregroundStyle(.cpForegroundPrimary.opacity(0.1))
                         
                         if vm.isSubmitting {
                             VStack(spacing: 10) {
@@ -319,7 +320,7 @@ struct ShiftMultiOfferView: View {
                                 
                                 Text(verbatim: "\(vm.submittedCount)/\(vm.totalToSubmit)")
                                     .font(.system(.footnote, design: .monospaced))
-                                    .foregroundStyle(.primary.opacity(0.7))
+                                    .foregroundStyle(Color.cpForegroundPrimary.opacity(0.7))
                             }
                             .padding(.vertical, 10)
                         } else {
@@ -332,7 +333,7 @@ struct ShiftMultiOfferView: View {
                             }
                             .font(.headline)
                             .opacity(selectedDates.isEmpty ? 0.5 : 1)
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(Color.cpForegroundPrimary)
                         }
                     }
                     .aspectRatio(7, contentMode: .fit)
@@ -342,7 +343,7 @@ struct ShiftMultiOfferView: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 24)
-            .background(Color(.secondarySystemBackground))
+            .background(Color.cpBackgroundPrimary)
             
             if vm.isSubmitting {
                 Color.black.opacity(0.05)
@@ -379,18 +380,18 @@ private struct CalendarDayCell: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .padding(3)
-                    .foregroundStyle(.tint.opacity(isSelected ? 0.8 : 0))
+                    .foregroundStyle(.cpForegroundPrimary.opacity(isSelected ? 0.8 : 0))
                 
                 VStack(spacing: 5) {
                     Text(verbatim: "\(dayNumber)")
                         .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(isSelected ? Color.white : Color.primary)
+                        .foregroundStyle(isSelected ? Color.cpBackgroundPrimary : Color.cpForegroundPrimary)
                     
                     HStack {
                         
                             Circle()
                                 .frame(width: 5, height: 5)
-                                .foregroundStyle(.tint)
+                                .foregroundStyle(.cpForegroundSecondary)
                                 .opacity(hasOfferedShift ? 0.3 : 0)
                         
                     }
