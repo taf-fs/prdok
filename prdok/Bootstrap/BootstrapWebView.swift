@@ -11,10 +11,11 @@ import SafariServices
 struct BootstrapWebView: UIViewControllerRepresentable {
     @AppStorage("id") private var id: String?
     @AppStorage("ids") private var ids: String?
+    @AppStorage("provoz") private var provoz: String?
     
     func getURL() -> URL {
-        if let id = id, let ids = ids {
-            return URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php?ids=\(ids)&id=\(id)&provoz=cp")!
+        if let id = id, let ids = ids, let provoz = provoz {
+            return URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php?ids=\(ids)&id=\(id)&provoz=\(provoz)")!
         } else {
             return URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php")! // temporary solution, but it should never get to this else block
         }
