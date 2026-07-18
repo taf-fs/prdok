@@ -11,6 +11,7 @@ import Combine
 final class TodayViewModel: ObservableObject {
     @Published var shifts: [Shift] = []
     @Published var error: String?
+    @Published var showErrorAlert = false
     @Published var isLoading = false
     
     let repo = ShiftRepository()
@@ -29,6 +30,7 @@ final class TodayViewModel: ObservableObject {
             } catch {
                 await MainActor.run {
                     self.error = error.localizedDescription
+                    self.showErrorAlert = true
                     self.isLoading = false
                 }
             }
@@ -37,6 +39,7 @@ final class TodayViewModel: ObservableObject {
 }
 
 struct TodayView: View {
+    @AppStorage("needsToBootstrap") private var needsToBootstrap = false
     @StateObject private var vm = TodayViewModel()
     @State var selectedDate: Date = Date()
     @State private var showWebView = false
@@ -111,10 +114,6 @@ struct TodayView: View {
                             ShiftsListWebView(date: Date())
                         }
                     }
-                    if let error = vm.error {
-                        Text("Error: \(error)")
-                            .foregroundStyle(.red)
-                    }
                 }
                 
                 SimplePauseTimerView()
@@ -132,7 +131,17 @@ struct TodayView: View {
             }
         }
         .task {
-            vm.fetch(date: Date())
+            if !needsToBootstrap {
+                vm.fetch(date: Date())
+            }
+        }
+        .onChange(of: needsToBootstrap) { isBootstrapping in
+            if !isBootstrapping {
+                vm.fetch(date: Date())
+            }
+        }
+        .alert(vm.error ?? "", isPresented: $vm.showErrorAlert) {
+            Button("OK", role: .cancel) { }
         }
     }
 }
