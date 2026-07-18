@@ -23,8 +23,7 @@ final class TodayViewModel: ObservableObject {
                 let currentMonthShifts = try await repo.getShifts(for: date)
                 let nextMonthShifts = try await repo.getShifts(for: Calendar.current.date(byAdding: .month, value: 1, to: date)!)
                 await MainActor.run {
-                    self.shifts.append(contentsOf: currentMonthShifts)
-                    self.shifts.append(contentsOf: nextMonthShifts)
+                    self.shifts = currentMonthShifts + nextMonthShifts
                     self.isLoading = false
                 }
             } catch {
