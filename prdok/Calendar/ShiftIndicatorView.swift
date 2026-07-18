@@ -63,70 +63,131 @@ struct ShiftTimelineLayout {
     }
 }
 
+/// A lightweight time interval the indicator can draw. Both `Shift` and `FreeShift`
+/// map onto this, so `ShiftIndicatorView` isn't tied to one model.
+struct ShiftInterval: Identifiable, Hashable {
+    let id: Int
+    let start: Date
+    let end: Date
+
+    var timeRangeString: String {
+        let df = DateFormatter()
+        df.dateFormat = "HH:mm"
+        return "\(df.string(from: start)) - \(df.string(from: end))"
+    }
+}
+
 struct ShiftIndicatorView: View {
-    let shifts: [Shift]
+    let intervals: [ShiftInterval]
     let color: Color
-    
+
+    /// Overall height of the bar. Defaults to the original 40; pass something small
+    /// (e.g. 6) for a thin indicator.
+    var height: CGFloat = 40
+    /// Whether each pill shows its time range. Turn off for a bare bar.
+    var showsTimeLabel: Bool = true
+    /// Corner radius of the background track.
+    var cornerRadius: CGFloat = 16
+    /// Whether to render a "–" placeholder when there are no intervals.
+    var showsEmptyPlaceholder: Bool = true
+
     private let layout = ShiftTimelineLayout()
-    
+
+    /// Convenience for the existing `[Shift]` call sites.
+    init(shifts: [Shift],
+         color: Color,
+         height: CGFloat = 40,
+         showsTimeLabel: Bool = true,
+         cornerRadius: CGFloat = 16,
+         showsEmptyPlaceholder: Bool = true) {
+        self.init(intervals: shifts.map { ShiftInterval(id: $0.id, start: $0.start, end: $0.end) },
+                  color: color,
+                  height: height,
+                  showsTimeLabel: showsTimeLabel,
+                  cornerRadius: cornerRadius,
+                  showsEmptyPlaceholder: showsEmptyPlaceholder)
+    }
+
+    init(intervals: [ShiftInterval],
+         color: Color,
+         height: CGFloat = 40,
+         showsTimeLabel: Bool = true,
+         cornerRadius: CGFloat = 16,
+         showsEmptyPlaceholder: Bool = true) {
+        self.intervals = intervals
+        self.color = color
+        self.height = height
+        self.showsTimeLabel = showsTimeLabel
+        self.cornerRadius = cornerRadius
+        self.showsEmptyPlaceholder = showsEmptyPlaceholder
+    }
+
     var body: some View {
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(Color.cpForegroundSecondary.opacity(0.2))
-                
-                if shifts.isEmpty {
-                    Text(verbatim: "–")
-                        .font(.system(.footnote, design: .monospaced))
-                        .foregroundColor(Color.cpForegroundPrimary)
+
+                if intervals.isEmpty {
+                    if showsEmptyPlaceholder {
+                        Text(verbatim: "–")
+                            .font(.system(.footnote, design: .monospaced))
+                            .foregroundColor(Color.cpForegroundPrimary)
+                    }
                 } else {
                     // All pills share the same geometry / timeline
                     GeometryReader { geo in
-                        ForEach(shifts) { shift in
+                        ForEach(intervals) { interval in
                             ShiftIndicatorPillView(
-                                shift: shift,
+                                interval: interval,
                                 layout: layout,
-                                color: color
+                                color: color,
+                                showsTimeLabel: showsTimeLabel
                             )
                         }
                     }
                 }
             }
-            .frame(height: 40)
+            .frame(height: height)
         }
     }
 }
 
 struct ShiftIndicatorPillView: View {
-    let shift: Shift
+    let interval: ShiftInterval
     let layout: ShiftTimelineLayout
     let color: Color
-    
+    var showsTimeLabel: Bool = true
+
     var body: some View {
         GeometryReader { geo in
-            let startNorm = layout.normalizedStartPosition(for: shift.start)
-            let endNorm   = layout.normalizedEndPosition(for: shift.end)
-            
+            let startNorm = layout.normalizedStartPosition(for: interval.start)
+            let endNorm   = layout.normalizedEndPosition(for: interval.end)
+
             let totalWidth = geo.size.width
             let pillX = startNorm * totalWidth
             let pillWidth = max((endNorm - startNorm) * totalWidth, 40)
-            
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
+            // Keep the pill a capsule at small heights, but cap roundness on tall bars.
+            let pillRadius = min(12, geo.size.height / 2)
+
+            RoundedRectangle(cornerRadius: pillRadius, style: .continuous)
                 .fill(color)
                 .frame(width: pillWidth, height: geo.size.height)
                 .position(
                     x: pillX + pillWidth / 2,
                     y: geo.size.height / 2
                 )
-            
-            Text(shift.timeRangeString)
-                .font(.system(.footnote, design: .monospaced))
-                .fontWeight(.semibold)
-                .frame(width: pillWidth)
-                .position(
-                    x: pillX + pillWidth / 2,
-                    y: geo.size.height / 2
-                )
+
+            if showsTimeLabel {
+                Text(interval.timeRangeString)
+                    .font(.system(.footnote, design: .monospaced))
+                    .fontWeight(.semibold)
+                    .frame(width: pillWidth)
+                    .position(
+                        x: pillX + pillWidth / 2,
+                        y: geo.size.height / 2
+                    )
+            }
         }
     }
 }
