@@ -99,7 +99,7 @@ struct TodayView: View {
                     }
                     .padding(.top, 16)
                     .padding(.horizontal, 16)
-                    .frame(height: proxy.size.height * 0.6, alignment: .top)
+                    .frame(height: proxy.size.height * 0.55, alignment: .top)
                     .frame(maxWidth: .infinity)
                     .background(
                         Color.cpBackgroundPrimary
@@ -118,12 +118,9 @@ struct TodayView: View {
                 
                 SimplePauseTimerView()
                     .padding(.horizontal, 16)
-                
-//                Text("Tvoje další směny")
-//                    .font(.system(.headline, design: .serif))
-//                    .fontWeight(.semibold)
-                
-                Spacer()
+
+                UpcomingShiftsListView(shifts: vm.shifts)
+                    .padding(.horizontal, 16)
             }
             .background {
                 Color.cpBackgroundSecondary
