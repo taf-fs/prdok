@@ -701,6 +701,38 @@
     "Fetch" : {
       "shouldTranslate" : false
     },
+    "freeShifts.role.barista" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "barista"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "barista"
+          }
+        }
+      }
+    },
+    "freeShifts.role.manager" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "vedoucí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "manager"
+          }
+        }
+      }
+    },
     "https://..." : {
       "shouldTranslate" : false
     },
@@ -909,13 +941,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "K odpárování nebyly nalezeny potřebné údaje."
+            "value" : "K dokončení akce nebyly nalezeny potřebné údaje."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The credentials required to unpair are missing."
+            "value" : "The credentials required to complete the action are missing."
           }
         }
       }
@@ -1781,7 +1813,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Výchozí"
           }
         },
@@ -1891,6 +1923,88 @@
         }
       }
     },
+    "today.error.dismiss" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "today.error.title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Něco se pokazilo"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        }
+      }
+    },
+    "today.freeShifts.empty" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádné volné směny k převzetí."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No free shifts to pick up."
+          }
+        }
+      }
+    },
+    "today.freeShifts.error" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volné směny se nepodařilo načíst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn’t load free shifts."
+          }
+        }
+      }
+    },
+    "today.freeShifts.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volné směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free shifts to pick up"
+          }
+        }
+      }
+    },
     "today.noUpcomingShifts" : {
       "localizations" : {
         "cs" : {
@@ -1903,6 +2017,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No upcoming planned shifts"
+          }
+        }
+      }
+    },
+    "today.plannedShifts.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadcházející směny"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming shifts"
           }
         }
       }

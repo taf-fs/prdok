@@ -275,6 +275,8 @@ struct CalendarView: View {
                         .padding(.top, 8)
                     }
                     
+                    FreeShiftsListView()
+                    
                     Spacer()
                 }
                 .padding(.horizontal, 12)

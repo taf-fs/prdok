@@ -59,6 +59,7 @@ struct UpcomingShiftsListView: View {
                     ForEach(upcoming) { shift in
                         UpcomingShiftRow(
                             title: Self.dayLabel(shift.start),
+                            roleLabel: nil,
                             timeText: shift.timeRangeString,
                             interval: ShiftInterval(id: shift.id, start: shift.start, end: shift.end),
                             color: barColor
@@ -81,6 +82,10 @@ struct UpcomingShiftsListView: View {
 
 struct UpcomingShiftRow: View {
     let title: String
+    // TODO: resolve shift roles from the JSON response
+    /// as of writing this, the upcoming planned shifts, i.e. shifts that are fetched from `ShiftRepository` don't have a role, since the docs for the JSON responses are sparse,
+    /// so the `Shift` struct doesn't have a role property but the shifts scraped from the web for `FreeShift` do have a role.
+    let roleLabel: LocalizedStringKey?
     let timeText: String
     let interval: ShiftInterval
     let color: Color
@@ -91,6 +96,14 @@ struct UpcomingShiftRow: View {
                 Text(title)
                     .font(.system(.subheadline, design: .serif))
                     .fontWeight(.semibold)
+
+                if let roleLabel {
+                    Text(roleLabel)
+                        .font(.system(.caption2))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.cpForegroundSecondary)
+                }
+
                 Spacer(minLength: 8)
 
                 Text(timeText)

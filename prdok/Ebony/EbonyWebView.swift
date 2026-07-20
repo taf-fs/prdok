@@ -80,7 +80,12 @@ struct EbonyWebView: UIViewRepresentable {
         
         // ✅ Called when the page finishes loading
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
+            let js = """
+            document.querySelectorAll('a.linka[href="mopos.php"]').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            """
+            webView.evaluateJavaScript(js, completionHandler: nil)
             withAnimation {
                 parent.isPageLoaded = true
             }
