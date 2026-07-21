@@ -38,6 +38,9 @@ struct ShiftService {
         guard let when = formatDateToYearAndMonthString(date: date) else {
             throw FetchShiftError.invalidDate(date)
         }
+        guard let provoz = UserDefaults.standard.string(forKey: "provoz") else {
+            throw PairingManager.PairingError.missingCredentials
+        }
         guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
@@ -51,7 +54,7 @@ struct ShiftService {
             "akce": "mojesmeny",
             "kdy": when,
             "parametr": "",
-            "provoz": "cp"
+            "provoz": provoz
         ]
         request.httpBody = params.formURLEncodedData()
 
@@ -94,6 +97,9 @@ struct ShiftService {
         guard let key = UserDefaults.standard.string(forKey: "klic") else {
             throw PairingManager.PairingError.missingCredentials
         }
+        guard let provoz = UserDefaults.standard.string(forKey: "provoz") else {
+            throw PairingManager.PairingError.missingCredentials
+        }
         guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
@@ -111,7 +117,7 @@ struct ShiftService {
             "od": startHour,         // hh:mm:ss
             "do": endHour,           // hh:mm:ss
             "parametr": "",
-            "provoz": "cp"
+            "provoz": provoz
         ]
 
         request.httpBody = params.formURLEncodedData()
@@ -159,6 +165,9 @@ struct ShiftService {
         guard let key = UserDefaults.standard.string(forKey: "klic") else {
             throw PairingManager.PairingError.missingCredentials
         }
+        guard let provoz = UserDefaults.standard.string(forKey: "provoz") else {
+            throw PairingManager.PairingError.missingCredentials
+        }
         guard let url = URL(string: "\(AppConfig.apiBaseURL)/zapp/hello.php") else {
             throw PairingManager.PairingError.invalidURL
         }
@@ -172,7 +181,7 @@ struct ShiftService {
             "akce": "smazatmoznost",
             "smenaid": String(shift.id),
             "parametr": "",
-            "provoz": "cp"
+            "provoz": provoz
         ]
         request.httpBody = params.formURLEncodedData()
         
