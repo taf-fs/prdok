@@ -136,7 +136,7 @@ class PairingManager {
         let bodyString = [
             "klic=\(key)",
             "akce=propojit_klicem",
-            "parametr=zapp|\(key)|cp_zamestnanci|\(id)|\(ids)|\(provoz)",
+            "parametr=zapp|\(key)|\(provoz)_zamestnanci|\(id)|\(ids)|\(provoz)",
             "provoz=\(provoz)"
         ].joined(separator: "&")
         request.httpBody = bodyString.data(using: .utf8)
