@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 struct ShiftService {
     /// Fetches shifts for the month containing the provided date.
@@ -58,13 +59,24 @@ struct ShiftService {
         ]
         request.httpBody = params.formURLEncodedData()
 
-        
+        let started = ContinuousClock.now
+        Log.shifts.info("[ShiftService] → akce=mojesmeny kdy=\(when, privacy: .public) provoz=\(provoz, privacy: .public)")
+
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            Log.shifts.error("[ShiftService] ← mojesmeny \(when, privacy: .public) HTTP \(status) — bad response")
             throw URLError(.badServerResponse)
         }
-        
-        return try ShiftParser.decodeShifts(from: data)
+
+        do {
+            let shifts = try ShiftParser.decodeShifts(from: data)
+            Log.shifts.info("[ShiftService] ← mojesmeny \(when, privacy: .public) HTTP \(http.statusCode), \(data.count) B, \(Log.ms(since: started)) ms — \(shifts.count) shift(s)")
+            return shifts
+        } catch {
+            Log.shifts.error("[ShiftService] ← mojesmeny \(when, privacy: .public) decode failed after \(data.count) B: \(error.localizedDescription, privacy: .public)")
+            throw error
+        }
     }
     
     /// Offers (publishes) a shift availability (“možnost”) to the backend for a given day and time range.
@@ -121,15 +133,21 @@ struct ShiftService {
         ]
 
         request.httpBody = params.formURLEncodedData()
-        
+
+        let started = ContinuousClock.now
+        Log.shifts.info("[ShiftService] → akce=pridatmoznost kdy=\(shiftDayOfYear, privacy: .public) od=\(startHour, privacy: .public) do=\(endHour, privacy: .public)")
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
+
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            Log.shifts.error("[ShiftService] ← pridatmoznost \(shiftDayOfYear, privacy: .public) HTTP \(status) — bad response")
             throw URLError(.badServerResponse)
         }
-        
+
         let decoded = try JSONDecoder().decode(ServerResponse.self, from: data)
         let message = decoded.err?.trimmingCharacters(in: .whitespacesAndNewlines)
+        Log.shifts.info("[ShiftService] ← pridatmoznost \(shiftDayOfYear, privacy: .public) in \(Log.ms(since: started)) ms — server said: \(message ?? "<none>", privacy: .public)")
 
         switch message {
         case "ukládám možnost.":
@@ -184,17 +202,22 @@ struct ShiftService {
             "provoz": provoz
         ]
         request.httpBody = params.formURLEncodedData()
-        
-        
+
+        let started = ContinuousClock.now
+        Log.shifts.info("[ShiftService] → akce=smazatmoznost smenaid=\(shift.id)")
+
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            Log.shifts.error("[ShiftService] ← smazatmoznost smenaid=\(shift.id) HTTP \(status) — bad response")
             throw URLError(.badServerResponse)
         }
 
         // Decode JSON and decide
         let decoded = try JSONDecoder().decode(ServerResponse.self, from: data)
-        
+
         let message = decoded.err?.trimmingCharacters(in: .whitespacesAndNewlines)
+        Log.shifts.info("[ShiftService] ← smazatmoznost smenaid=\(shift.id) in \(Log.ms(since: started)) ms — server said: \(message ?? "<none>", privacy: .public)")
 
         switch message {
         case "mažu možnost.":

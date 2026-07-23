@@ -45,7 +45,9 @@ enum FreeShiftParser {
             )
         }
 
-        Log.shifts.info("FreeShiftParser: decoded \(shifts.count) free shift(s).")
+        // The service logs the count; here we break it down by role, which it can't see.
+        let byRole = Dictionary(grouping: shifts, by: \.role)
+        Log.freeShifts.debug("[FreeShiftParser] decoded \(shifts.count) — regular \(byRole[.regular]?.count ?? 0), vedoucí \(byRole[.manager]?.count ?? 0), barista \(byRole[.barista]?.count ?? 0)")
         return shifts
     }
 }

@@ -31,7 +31,7 @@ final class FreeShiftsViewModel: ObservableObject {
             hasLoaded = true
         } catch {
             self.error = error.localizedDescription
-            Log.shifts.error("FreeShiftsViewModel: load failed: \(error.localizedDescription, privacy: .public)")
+            Log.freeShifts.error("[FreeShiftsVM] load failed: \(error.localizedDescription, privacy: .public)")
         }
         isLoading = false
     }

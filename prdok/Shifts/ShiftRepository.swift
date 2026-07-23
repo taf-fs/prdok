@@ -54,59 +54,58 @@ struct ShiftRepository {
     func getShifts(for date: Date, forceRefresh: Bool = false) async throws -> [Shift] {
         let y = year(from: date)
         let m = month(from: date)
-        let mm = String(format: "%02d", m)
+        let key = Log.month(y, m)
         let offset = monthOffset(from: Date(), to: date)
 
         if forceRefresh {
-            Log.shifts.notice("Force refresh: ignoring cache for \(y)-\(mm)")
-            let shifts = try await ShiftService.fetchShifts(date: date)
-            Log.shifts.info("Fetched \(shifts.count) shifts for \(y)-\(mm); saving cache")
-            do {
-                try ShiftCache.save(shifts: shifts, year: y, month: m)
-                Log.shifts.debug("Saved cache for \(y)-\(mm)")
-            } catch {
-                Log.shifts.error("Failed to save cache for \(y)-\(mm): \(error.localizedDescription, privacy: .public)")
-            }
-            return shifts
+            Log.shifts.notice("[ShiftRepo] \(key, privacy: .public) FORCE — bypassing cache")
+            return try await fetchAndCache(date: date, year: y, month: m, key: key)
         }
 
         // Policy: is this month allowed to refresh if stale?
         if refreshableMonthOffsets.contains(offset) {
-            Log.shifts.debug("Policy: \(y)-\(mm) is in refreshable window (offset \(offset)).")
-            if let cached = try ShiftCache.load(year: y, month: m),
-               !ShiftCache.isStale(cached, maxAge: maxCacheAge) {
-                Log.shifts.debug("Cache fresh for \(y)-\(mm); returning cached (\(cached.shifts.count))")
-                return cached.shifts
-            } else {
-                Log.shifts.debug("Cache missing/stale for \(y)-\(mm); fetching from network")
-                let shifts = try await ShiftService.fetchShifts(date: date)
-                Log.shifts.info("Fetched \(shifts.count) shifts for \(y)-\(mm); saving cache")
-                do {
-                    try ShiftCache.save(shifts: shifts, year: y, month: m)
-                    Log.shifts.debug("Saved cache for \(y)-\(mm)")
-                } catch {
-                    Log.shifts.error("Failed to save cache for \(y)-\(mm): \(error.localizedDescription, privacy: .public)")
-                }
-                return shifts
+            Log.shifts.debug("[ShiftRepo] \(key, privacy: .public) policy: refreshable (offset \(offset), max age \(Log.age(self.maxCacheAge), privacy: .public))")
+
+            let cached = try ShiftCache.load(year: y, month: m)
+            guard let cached else {
+                Log.shifts.info("[ShiftRepo] \(key, privacy: .public) cache MISS — fetching")
+                return try await fetchAndCache(date: date, year: y, month: m, key: key)
             }
+
+            let cacheAge = Date().timeIntervalSince(cached.fetchedAt)
+            guard !ShiftCache.isStale(cached, maxAge: maxCacheAge) else {
+                Log.shifts.info("[ShiftRepo] \(key, privacy: .public) cache STALE (age \(Log.age(cacheAge), privacy: .public) > \(Log.age(self.maxCacheAge), privacy: .public)) — fetching")
+                return try await fetchAndCache(date: date, year: y, month: m, key: key)
+            }
+
+            Log.shifts.info("[ShiftRepo] \(key, privacy: .public) cache HIT — \(cached.shifts.count) shift(s), age \(Log.age(cacheAge), privacy: .public)")
+            return cached.shifts
         } else {
-            Log.shifts.debug("Policy: \(y)-\(mm) is outside refreshable window (offset \(offset)).")
             // Immutable months: never refresh. Use cache if any; seed once if missing.
+            Log.shifts.debug("[ShiftRepo] \(key, privacy: .public) policy: immutable (offset \(offset))")
+
             if let cached = try ShiftCache.load(year: y, month: m) {
-                Log.shifts.debug("Cache exists for \(y)-\(mm); returning cached (\(cached.shifts.count))")
+                let cacheAge = Date().timeIntervalSince(cached.fetchedAt)
+                Log.shifts.info("[ShiftRepo] \(key, privacy: .public) cache HIT (immutable) — \(cached.shifts.count) shift(s), age \(Log.age(cacheAge), privacy: .public)")
                 return cached.shifts
-            } else {
-                Log.shifts.debug("Cache missing for \(y)-\(mm); one-time fetch to seed cache")
-                let shifts = try await ShiftService.fetchShifts(date: date)
-                do {
-                    try ShiftCache.save(shifts: shifts, year: y, month: m)
-                    Log.shifts.debug("Saved cache for \(y)-\(mm)")
-                } catch {
-                    Log.shifts.error("Failed to save cache for \(y)-\(mm): \(error.localizedDescription, privacy: .public)")
-                }
-                return shifts
             }
+
+            Log.shifts.notice("[ShiftRepo] \(key, privacy: .public) cache MISS (immutable) — one-time fetch to seed")
+            return try await fetchAndCache(date: date, year: y, month: m, key: key)
         }
+    }
+
+    /// Fetches a month from the network and writes it to the cache. A cache-write
+    /// failure is logged but not fatal — the caller still gets the fetched shifts.
+    private func fetchAndCache(date: Date, year y: Int, month m: Int, key: String) async throws -> [Shift] {
+        let shifts = try await ShiftService.fetchShifts(date: date)
+        do {
+            try ShiftCache.save(shifts: shifts, year: y, month: m)
+            Log.shifts.info("[ShiftRepo] \(key, privacy: .public) SAVE — cached \(shifts.count) shift(s)")
+        } catch {
+            Log.shifts.error("[ShiftRepo] \(key, privacy: .public) SAVE failed: \(error.localizedDescription, privacy: .public)")
+        }
+        return shifts
     }
 
     
@@ -118,14 +117,13 @@ struct ShiftRepository {
     func clearCache(for date: Date) throws {
         let y = year(from: date)
         let m = month(from: date)
-        let mm = String(format: "%02d", m)
         try ShiftCache.purge(year: y, month: m)
-        Log.shifts.notice("Cleared cache for \(y)-\(mm)")
+        Log.shifts.notice("[ShiftRepo] \(Log.month(y, m), privacy: .public) cache CLEARED")
     }
 
     func clearAllCache() throws {
         try ShiftCache.purgeAll()
-        Log.shifts.notice("Cleared all cache.")
+        Log.shifts.notice("[ShiftRepo] all shift caches CLEARED")
     }
     // MARK: - Year helpers
 
@@ -136,6 +134,9 @@ struct ShiftRepository {
     func preloadYear(_ year: Int) async throws -> [Shift] {
         var all: [Shift] = []
         let cal = Calendar(identifier: .gregorian)
+        let started = ContinuousClock.now
+
+        Log.shifts.info("[ShiftRepo] preload \(year) — 12 months (each month logs its own cache decision below)")
 
         for month in 1...12 {
             guard let monthDate = cal.date(from: DateComponents(year: year, month: month, day: 1)) else { continue }
@@ -143,17 +144,21 @@ struct ShiftRepository {
             all.append(contentsOf: monthShifts)
         }
 
+        Log.shifts.info("[ShiftRepo] preload \(year) done — \(all.count) shift(s) in \(Log.ms(since: started)) ms")
         return all.sorted(by: { $0.start < $1.start })
     }
 
     /// Reads whatever is currently cached for the year, no network calls.
     func loadYearFromCache(_ year: Int) throws -> [Shift] {
         var all: [Shift] = []
+        var cachedMonths = 0
         for m in 1...12 {
             if let cached = try ShiftCache.load(year: year, month: m) {
                 all.append(contentsOf: cached.shifts)
+                cachedMonths += 1
             }
         }
+        Log.shifts.info("[ShiftRepo] \(year) cache-only read — \(all.count) shift(s) from \(cachedMonths)/12 cached month(s)")
         return all.sorted(by: { $0.start < $1.start })
     }
 }

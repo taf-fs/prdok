@@ -45,11 +45,23 @@ enum FreeShiftService {
         ]
         request.httpBody = params.formURLEncodedData()
 
+        let started = ContinuousClock.now
+        Log.freeShifts.info("[FreeShiftService] → akce=smeny_handl provoz=\(provoz, privacy: .public)")
+
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            Log.freeShifts.error("[FreeShiftService] ← smeny_handl HTTP \(status) — bad response")
             throw URLError(.badServerResponse)
         }
 
-        return try FreeShiftParser.decode(from: data)
+        do {
+            let shifts = try FreeShiftParser.decode(from: data)
+            Log.freeShifts.info("[FreeShiftService] ← smeny_handl HTTP \(http.statusCode), \(data.count) B, \(Log.ms(since: started)) ms — \(shifts.count) free shift(s)")
+            return shifts
+        } catch {
+            Log.freeShifts.error("[FreeShiftService] ← smeny_handl decode failed after \(data.count) B: \(error.localizedDescription, privacy: .public)")
+            throw error
+        }
     }
 }
