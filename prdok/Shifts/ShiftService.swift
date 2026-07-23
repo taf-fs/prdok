@@ -271,7 +271,7 @@ struct ShiftService {
 }
 
 /// encoder that turns [​String: ​String] into application/x-www-form-urlencoded body data
-private extension Dictionary where Key == String, Value == String {
+extension Dictionary where Key == String, Value == String {
     func formURLEncodedData() -> Data? {
         var allowed = CharacterSet.alphanumerics
         allowed.insert(charactersIn: "-._* ") // adding space manually so we can swap it later

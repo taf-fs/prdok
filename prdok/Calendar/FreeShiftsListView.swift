@@ -5,7 +5,7 @@
 //  Created by David Horňák on 17.07.2026.
 //
 //  Native list of free shifts ("Handlování směn") shown under the timer in TodayView.
-//  Data is scraped from the employee portal via `FreeShiftService`. Read-only for now
+//  Data comes from the `smeny_handl` API akce via `FreeShiftService`. Read-only for now.
 //
 
 import SwiftUI
