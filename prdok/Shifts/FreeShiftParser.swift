@@ -41,24 +41,11 @@ enum FreeShiftParser {
                 id: id,
                 start: start,
                 end: end,
-                rawDayText: dayLabel(for: start, timeZone: timeZone),
                 role: FreeShiftRole(marker: raw.typ)
             )
         }
 
         Log.shifts.info("FreeShiftParser: decoded \(shifts.count) free shift(s).")
         return shifts
-    }
-
-    // MARK: - Day label
-
-    /// The API returns only `kdy` (`"2026-07-25"`), so we build the Czech label the UI
-    /// shows (e.g. `"sobota 25.7."`) ourselves, matching what the portal used to render.
-    private static func dayLabel(for date: Date, timeZone: TimeZone) -> String {
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "cs_CZ")
-        df.timeZone = timeZone
-        df.dateFormat = "EEEE d.M."
-        return df.string(from: date)
     }
 }

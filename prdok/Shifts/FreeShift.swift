@@ -32,9 +32,6 @@ struct FreeShift: Identifiable, Hashable {
     let id: Int
     let start: Date
     let end: Date
-    /// The raw day label as rendered by the server, e.g. `"pondělí 20.7."`.
-    /// Kept verbatim so the UI can show exactly what the portal shows.
-    let rawDayText: String
     let role: FreeShiftRole
 
     var timeRangeString: String {

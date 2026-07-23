@@ -112,7 +112,7 @@ private struct FreeShiftRow: View {
 
     var body: some View {
         UpcomingShiftRow(
-            title: shift.rawDayText,
+            title: UpcomingShiftRow.dayLabel(shift.start),
             roleLabel: shift.role.labelKey,
             timeText: shift.timeRangeString,
             interval: shift.indicatorInterval,

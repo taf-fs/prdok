@@ -58,7 +58,7 @@ struct UpcomingShiftsListView: View {
                 LazyVStack(spacing: 8) {
                     ForEach(upcoming) { shift in
                         UpcomingShiftRow(
-                            title: Self.dayLabel(shift.start),
+                            title: UpcomingShiftRow.dayLabel(shift.start),
                             roleLabel: nil,
                             timeText: shift.timeRangeString,
                             interval: ShiftInterval(id: shift.id, start: shift.start, end: shift.end),
@@ -71,16 +71,18 @@ struct UpcomingShiftsListView: View {
         }
     }
 
-    /// `Shift` has no server-provided day label, so format one (e.g. "pondělí 20.7.").
-    private static func dayLabel(_ date: Date) -> String {
+}
+
+struct UpcomingShiftRow: View {
+    /// Neither `Shift` nor `FreeShift` carries a server-provided day label, so both
+    /// lists format one here, using `.current`
+    static func dayLabel(_ date: Date) -> String {
         let df = DateFormatter()
         df.locale = .current
         df.dateFormat = "EEEE d.M."
         return df.string(from: date)
     }
-}
 
-struct UpcomingShiftRow: View {
     let title: String
     // TODO: resolve shift roles from the JSON response
     /// as of writing this, the upcoming planned shifts, i.e. shifts that are fetched from `ShiftRepository` don't have a role, since the docs for the JSON responses are sparse,
