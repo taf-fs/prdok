@@ -14,7 +14,8 @@ final class TempShiftViewModel: ObservableObject {
     @Published var isLoading = false
     
     let repo = ShiftRepository()
-    
+    let openDaysRepo = OpenDaysRepository()
+
     func fetch(date: Date) {
         error = nil
         isLoading = true
@@ -43,6 +44,7 @@ final class TempShiftViewModel: ObservableObject {
         Task {
             do {
                 try repo.clearAllCache()
+                try openDaysRepo.clearAllCache()
                 await MainActor.run {
                     self.shifts = []
                 }

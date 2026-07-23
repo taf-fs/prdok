@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-// TODO: get the actual days open and amount of closing shifts from the API (or basically ask for that request endpoint to be made lul)
+// TODO: get the amount of closing shifts from the API (open days now come from `otevrene_dny`)
 struct ShiftStatisticsView: View {
     let shifts: [Shift]
     let displayedMonth: Date
-    
+    /// Days the provoz is actually open this month, from the `otevrene_dny` akce.
+    /// `nil` while loading or if the endpoint failed — we then fall back to the
+    /// calendar's day count, which is what this view used before the API existed.
+    var openDays: Int? = nil
+
     private var offeredShifts: [Shift] {
         shifts.filter { $0.kind == .offered }
     }
@@ -27,8 +31,8 @@ struct ShiftStatisticsView: View {
     private var monthCoefficient: Double {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: displayedMonth)
-        let daysInMonth = range?.count ?? 30
-        return Double(daysInMonth) / 30.0
+        let days = openDays ?? range?.count ?? 30
+        return Double(days) / 30.0
     }
     
     private var totalOfferedHours: Int {

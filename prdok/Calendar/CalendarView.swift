@@ -18,8 +18,10 @@ final class CalendarViewModel: ObservableObject {
     @Published var plannedDays: Set<Date> = []
     @Published var offeredDays: Set<Date> = []
     @Published var displayedMonthShifts: [Shift] = []
-    
+    @Published var displayedMonthOpenDays: Int?
+
     let repo = ShiftRepository()
+    let openDaysRepo = OpenDaysRepository()
     var loadedYear: Int?
     
     func year(_ date: Date ) -> Int {
@@ -66,6 +68,21 @@ final class CalendarViewModel: ObservableObject {
             }
         }
     }
+
+    /// Loads the open-day count backing the statistics' month coefficient.
+    /// On failure we clear it rather than keep a stale month's value — the statistics
+    /// then fall back to the calendar day count.
+    func loadOpenDaysForMonth(dateContainingMonth: Date, forceRefresh: Bool = false) async {
+        let key = OpenDaysService.monthString(from: dateContainingMonth)
+        do {
+            let openDays = try await openDaysRepo.getOpenDays(for: dateContainingMonth, forceRefresh: forceRefresh)
+            await MainActor.run {
+                displayedMonthOpenDays = openDays
+            }
+        } catch {
+            Log.openDays.error("[CalendarVM] \(key, privacy: .public) open days unavailable, statistics fall back to calendar days: \(error.localizedDescription, privacy: .public)")
+            await MainActor.run {
+                displayedMonthOpenDays = nil
             }
         }
     }
@@ -202,6 +219,7 @@ struct CalendarView: View {
                         if let dateContainingMonth = calendar.date(from: displayedMonth) {
                             setVisibleRange(around: dateContainingMonth)
                             Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
+                            Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
                         }
                         let month = displayedMonth
                         Task { await vm.checkYear(displayedMonthAndYear: month) }
@@ -277,6 +295,7 @@ struct CalendarView: View {
                         ShiftStatisticsView(
                             shifts: vm.displayedMonthShifts,
                             displayedMonth: displayedMonthDate,
+                            openDays: vm.displayedMonthOpenDays
                         )
                         .padding(.top, 8)
                     }
@@ -319,7 +338,11 @@ struct CalendarView: View {
         do {
             // force-refresh the displayed month cache
             _ = try await vm.repo.getShifts(for: date, forceRefresh: true)
-            
+
+            // force-refresh the open-day count backing the statistics coefficient.
+            // Swallows its own errors so this secondary endpoint can't fail the refresh.
+            await vm.loadOpenDaysForMonth(dateContainingMonth: date, forceRefresh: true)
+
             // then recompute day dots across the year (keeps current behavior consistent)
             await vm.loadShiftsForYear(dateContainingYear: date)
 
@@ -441,8 +464,11 @@ struct CalendarView: View {
         }
         displayedMonth = calendar.dateComponents([.year, .month], from: dateContainingMonth)
         let month = displayedMonth
+        // Separate tasks on purpose: the year preload is up to 12 fetches and must not
+        // hold up the displayed month's shifts or open-day count.
         Task { await vm.checkYear(displayedMonthAndYear: month) }
         Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
+        Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
     }
     
     func dayOfWeekName(index: Int) -> String {
