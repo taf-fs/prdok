@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		63145EA0300AADBB00901B2B /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 63145E9F300AADBB00901B2B /* SwiftSoup */; };
 		638A58C12E9BD9220040E591 /* HorizonCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 638A58C02E9BD9220040E591 /* HorizonCalendar */; };
 		63E7D5752E9EE5A100D8EC39 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 63E7D5742E9EE5A100D8EC39 /* CodeScanner */; };
 /* End PBXBuildFile section */
@@ -44,7 +43,6 @@
 			files = (
 				63E7D5752E9EE5A100D8EC39 /* CodeScanner in Frameworks */,
 				638A58C12E9BD9220040E591 /* HorizonCalendar in Frameworks */,
-				63145EA0300AADBB00901B2B /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +87,6 @@
 			packageProductDependencies = (
 				638A58C02E9BD9220040E591 /* HorizonCalendar */,
 				63E7D5742E9EE5A100D8EC39 /* CodeScanner */,
-				63145E9F300AADBB00901B2B /* SwiftSoup */,
 			);
 			productName = prdok;
 			productReference = 638A58B12E9BD8E90040E591 /* prdok.app */;
@@ -123,7 +120,6 @@
 			packageReferences = (
 				638A58BF2E9BD9220040E591 /* XCRemoteSwiftPackageReference "HorizonCalendar" */,
 				63E7D5732E9EE5A100D8EC39 /* XCRemoteSwiftPackageReference "CodeScanner" */,
-				63145E9E300AADBB00901B2B /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 638A58B22E9BD8E90040E591 /* Products */;
@@ -389,14 +385,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		63145E9E300AADBB00901B2B /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.13.6;
-			};
-		};
 		638A58BF2E9BD9220040E591 /* XCRemoteSwiftPackageReference "HorizonCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/HorizonCalendar.git";
@@ -416,11 +404,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		63145E9F300AADBB00901B2B /* SwiftSoup */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63145E9E300AADBB00901B2B /* XCRemoteSwiftPackageReference "SwiftSoup" */;
-			productName = SwiftSoup;
-		};
 		638A58C02E9BD9220040E591 /* HorizonCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 638A58BF2E9BD9220040E591 /* XCRemoteSwiftPackageReference "HorizonCalendar" */;
