@@ -10,6 +10,7 @@ import Combine
 import HorizonCalendar
 import UIKit
 import EventKit
+import os
 
 let calendar = Calendar.current
 
@@ -25,43 +26,46 @@ final class CalendarViewModel: ObservableObject {
         return calendar.component(.year, from: date)
     }
     
-    func loadShiftsForYear(dateContainingYear: Date) {
+    // The three `load…` methods are all `async` and none of them start a `Task` of their
+    // own: the caller decides whether to await (the refresh button, so its spinner covers
+    // the work) or to fire and forget (`Task { … }` from the calendar's scroll handlers).
+
+    func loadShiftsForYear(dateContainingYear: Date) async {
         let year = year(dateContainingYear)
-        Task {
-            do {
-                let result = try await repo.preloadYear(year)
-                await MainActor.run {
-                    plannedDays = result.plannedDaySet(using: calendar)
-                    offeredDays = result.offeredDaySet(using: calendar)
-                    loadedYear = year
-                }
-            } catch {
-                // TODO: some error handling
+        do {
+            let result = try await repo.preloadYear(year)
+            await MainActor.run {
+                plannedDays = result.plannedDaySet(using: calendar)
+                offeredDays = result.offeredDaySet(using: calendar)
+                loadedYear = year
+            }
+        } catch {
+            // TODO: some error handling
+        }
+    }
+
+    func checkYear(displayedMonthAndYear: DateComponents) async {
+        guard let displayedYear = displayedMonthAndYear.year else { return }
+        guard loadedYear != displayedYear else { return }
+
+        if let date = calendar.date(from: displayedMonthAndYear) {
+            await loadShiftsForYear(dateContainingYear: date)
+        }
+    }
+
+    func loadShiftsForMonth(dateContainingMonth: Date) async {
+        do {
+            let shifts = try await repo.getShifts(for: dateContainingMonth)
+            await MainActor.run {
+                displayedMonthShifts = shifts
+            }
+        } catch {
+            // TODO: some error handling
+            await MainActor.run {
+                displayedMonthShifts = []
             }
         }
     }
-    
-    func checkYear(displayedMonthAndYear: DateComponents) {
-        guard let displayedYear = displayedMonthAndYear.year else { return }
-        guard loadedYear != displayedYear else { return }
-        
-        if let date = calendar.date(from: displayedMonthAndYear) {
-            loadShiftsForYear(dateContainingYear: date)
-        }
-    }
-    
-    func loadShiftsForMonth(dateContainingMonth: Date) {
-        Task {
-            do {
-                let shifts = try await repo.getShifts(for: dateContainingMonth)
-                await MainActor.run {
-                    displayedMonthShifts = shifts
-                }
-            } catch {
-                // TODO: some error handling
-                await MainActor.run {
-                    displayedMonthShifts = []
-                }
             }
         }
     }
@@ -197,16 +201,18 @@ struct CalendarView: View {
                         displayedMonth = visibleDayRange.lowerBound.components
                         if let dateContainingMonth = calendar.date(from: displayedMonth) {
                             setVisibleRange(around: dateContainingMonth)
-                            vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth)
+                            Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
                         }
-                        vm.checkYear(displayedMonthAndYear: displayedMonth)
+                        let month = displayedMonth
+                        Task { await vm.checkYear(displayedMonthAndYear: month) }
                     }
                     .backgroundColor(.cpBackgroundPrimary)
                     .disabled(isRefreshingMonth)
                     .onAppear {
-                        selectedDate = Date()
-                        scrollToMonthAndUpdateState(dateContainingMonth: selectedDate!, animated: false)
-                        vm.loadShiftsForYear(dateContainingYear: selectedDate!)
+                        let today = Date()
+                        selectedDate = today
+                        scrollToMonthAndUpdateState(dateContainingMonth: today, animated: false)
+                        Task { await vm.loadShiftsForYear(dateContainingYear: today) }
                     }
                     .sheet(isPresented: $daySheetIsPresented) {
                         CalendarDayDetailsView(
@@ -270,7 +276,7 @@ struct CalendarView: View {
                     if let displayedMonthDate = displayedMonthDate {
                         ShiftStatisticsView(
                             shifts: vm.displayedMonthShifts,
-                            displayedMonth: displayedMonthDate
+                            displayedMonth: displayedMonthDate,
                         )
                         .padding(.top, 8)
                     }
@@ -315,10 +321,10 @@ struct CalendarView: View {
             _ = try await vm.repo.getShifts(for: date, forceRefresh: true)
             
             // then recompute day dots across the year (keeps current behavior consistent)
-            vm.loadShiftsForYear(dateContainingYear: date)
-            
+            await vm.loadShiftsForYear(dateContainingYear: date)
+
             // refresh the statistics
-            vm.loadShiftsForMonth(dateContainingMonth: date)
+            await vm.loadShiftsForMonth(dateContainingMonth: date)
             
             // minimum spinner duration (slow network won't be slowed further)
             let elapsed = startedAt.duration(to: clock.now)
@@ -357,8 +363,8 @@ struct CalendarView: View {
             guard success, let selectedDate else { return }  // refresh shifts after successful offer/removal
             do {
                 try await vm.repo.refresh(for: selectedDate)
-                vm.loadShiftsForYear(dateContainingYear: selectedDate)
-                vm.loadShiftsForMonth(dateContainingMonth: selectedDate)
+                await vm.loadShiftsForYear(dateContainingYear: selectedDate)
+                await vm.loadShiftsForMonth(dateContainingMonth: selectedDate)
             } catch { // toast for failure to refresh shifts
                 await presentToast(success: false, message: error.localizedDescription)
             }
@@ -375,8 +381,8 @@ struct CalendarView: View {
             guard let monthDate = calendar.date(from: displayedMonth) else { return }
             do {
                 try await vm.repo.refresh(for: monthDate)
-                vm.loadShiftsForYear(dateContainingYear: monthDate)
-                vm.loadShiftsForMonth(dateContainingMonth: monthDate)
+                await vm.loadShiftsForYear(dateContainingYear: monthDate)
+                await vm.loadShiftsForMonth(dateContainingMonth: monthDate)
             } catch {
                 await presentToast(success: false, message: error.localizedDescription)
             }
@@ -434,8 +440,9 @@ struct CalendarView: View {
             proxy.scrollToMonth(containing: dateContainingMonth, scrollPosition: .centered, animated: animated)
         }
         displayedMonth = calendar.dateComponents([.year, .month], from: dateContainingMonth)
-        vm.checkYear(displayedMonthAndYear: displayedMonth)
-        vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth)
+        let month = displayedMonth
+        Task { await vm.checkYear(displayedMonthAndYear: month) }
+        Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
     }
     
     func dayOfWeekName(index: Int) -> String {
