@@ -47,100 +47,113 @@ struct TodayView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
-            VStack(spacing: 20) {
-                ZStack {
-                    VStack(spacing: 0) {
-                        TopDateBar()
-                        
-                        Spacer()
-                        
-                        VStack(spacing: 20) {
-                            TimelineView(.periodic(from: .now, by: 60)) { context in
-                                let now = context.date
-                                
-                                if let current = vm.shifts.ongoingShift(at: now) {
-                                    ShiftCountdownBlock(
-                                        isShiftUpcoming: false,
-                                        target: current.end,
-                                        rangeText: current.timeRangeString,
-                                        now: now)
-                                } else if let next = vm.shifts.nextPlannedShift(after: now) {
-                                    ShiftCountdownBlock(
-                                        isShiftUpcoming: true,
-                                        target: next.start,
-                                        rangeText: next.timeRangeString,
-                                        now: now)
-                                } else if vm.isLoading {
-                                    ProgressView("today.countdown.loading")
-                                } else {
-                                    Text("today.noUpcomingShifts")
-                                        .foregroundStyle(Color.cpForegroundSecondary)
-                                }
-                            }
-                            
-                            
-                            Button {
-                                showWebView = true
-                            } label: {
-                                Text("shiftsListWebView.presentView.button")
-                                    .font(.system(.footnote))
-                                    .fontWeight(.semibold)
-                                    .padding(.vertical, 8)
-                                    .padding(.horizontal, 40)
-                                    .foregroundStyle(Color.cpBackgroundPrimary)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .tint(Color.cpForegroundPrimary)
-                                    }
-                            }
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding(.top, 16)
-                    .padding(.horizontal, 16)
-                    .frame(height: proxy.size.height * 0.55, alignment: .top)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        Color.cpBackgroundPrimary
-                            .ignoresSafeArea(edges: .top)
-                    )
-                    .sheet(isPresented: $showWebView) {
-                        if vm.shifts.ongoingShift() != nil {
-                            ShiftsListWebView(date: Date())
-                        } else if let nextPlannedShift = vm.shifts.nextPlannedShift() {
-                            ShiftsListWebView(date: nextPlannedShift.start)
-                        } else {
-                            ShiftsListWebView(date: Date())
-                        }
-                    }
-                }
-                
-                SimplePauseTimerView()
-                    .padding(.horizontal, 16)
+                VStack(spacing: 20) {
+                    headerCard(height: proxy.size.height * 0.55)
 
-                UpcomingShiftsListView(shifts: vm.shifts, bottomInset: proxy.safeAreaInsets.bottom)
-                    .padding(.horizontal, 16)
+                    SimplePauseTimerView()
+                        .padding(.horizontal, 16)
+
+                    UpcomingShiftsListView(shifts: vm.shifts, bottomInset: proxy.safeAreaInsets.bottom)
+                        .padding(.horizontal, 16)
+                }
+                .background {
+                    Color.cpBackgroundSecondary
+                        .ignoresSafeArea(edges: .bottom)
+                }
+                .ignoresSafeArea(.container, edges: .bottom)
             }
-            .background {
-                Color.cpBackgroundSecondary
-                    .ignoresSafeArea(edges: .bottom)
+            .task {
+                if !needsToBootstrap {
+                    vm.fetch(date: Date())
+                }
             }
-            .ignoresSafeArea(.container, edges: .bottom)
-        }
-        .task {
-            if !needsToBootstrap {
-                vm.fetch(date: Date())
+            .onChange(of: needsToBootstrap) { isBootstrapping in
+                if !isBootstrapping {
+                    vm.fetch(date: Date())
+                }
             }
-        }
-        .onChange(of: needsToBootstrap) { isBootstrapping in
-            if !isBootstrapping {
-                vm.fetch(date: Date())
+            .alert(vm.error ?? "", isPresented: $vm.showErrorAlert) {
+                Button("OK", role: .cancel) { }
             }
         }
-        .alert(vm.error ?? "", isPresented: $vm.showErrorAlert) {
-            Button("OK", role: .cancel) { }
+    }
+
+    private func headerCard(height: CGFloat) -> some View {
+        VStack(spacing: 0) {
+            TopDateBar()
+
+            Spacer()
+
+            VStack(spacing: 20) {
+                countdownTimeline
+                whoIsOnShiftButton
+            }
+
+            Spacer()
         }
+        .padding(.top, 16)
+        .padding(.horizontal, 16)
+        .frame(height: height, alignment: .top)
+        .frame(maxWidth: .infinity)
+        .background(
+            Color.cpBackgroundPrimary
+                .ignoresSafeArea(edges: .top)
+        )
+        .sheet(isPresented: $showWebView) {
+            webViewSheet
+        }
+    }
+
+    private var countdownTimeline: some View {
+        TimelineView(.periodic(from: .now, by: 60)) { context in
+            let now = context.date
+
+            if let current = vm.shifts.ongoingShift(at: now) {
+                ShiftCountdownBlock(
+                    isShiftUpcoming: false,
+                    target: current.end,
+                    rangeText: current.timeRangeString,
+                    now: now)
+            } else if let next = vm.shifts.nextPlannedShift(after: now) {
+                ShiftCountdownBlock(
+                    isShiftUpcoming: true,
+                    target: next.start,
+                    rangeText: next.timeRangeString,
+                    now: now)
+            } else if vm.isLoading {
+                ProgressView("today.countdown.loading")
+            } else {
+                Text("today.noUpcomingShifts")
+                    .foregroundStyle(Color.cpForegroundSecondary)
+            }
+        }
+    }
+
+    private var whoIsOnShiftButton: some View {
+        Button {
+            showWebView = true
+        } label: {
+            Text("shiftsListWebView.presentView.button")
+                .font(.system(.footnote))
+                .fontWeight(.semibold)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 40)
+                .foregroundStyle(Color.cpBackgroundPrimary)
+                .background {
+                    RoundedRectangle(cornerRadius: 8)
+                        .tint(Color.cpForegroundPrimary)
+                }
+        }
+    }
+
+    @ViewBuilder
+    private var webViewSheet: some View {
+        if vm.shifts.ongoingShift() != nil {
+            ShiftsListWebView(date: Date())
+        } else if let nextPlannedShift = vm.shifts.nextPlannedShift() {
+            ShiftsListWebView(date: nextPlannedShift.start)
+        } else {
+            ShiftsListWebView(date: Date())
         }
     }
 }
