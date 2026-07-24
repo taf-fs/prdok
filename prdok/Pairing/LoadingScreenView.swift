@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoadingScreenView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State var text: String?
+    @State var text: LocalizedStringKey?
     var isDarkMode: Bool { return colorScheme == .dark }
 
     
