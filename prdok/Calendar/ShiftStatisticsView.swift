@@ -35,38 +35,42 @@ struct ShiftStatisticsView: View {
         return Double(days) / 30.0
     }
     
+    /// Sums the durations first and only rounds the total. Rounding each shift
+    /// down on its own lost up to an hour per shift — attendance is punched at
+    /// times like 16:01–24:58, so a 9 hour shift used to count as 8.
+    private func totalHours(of shifts: [Shift]) -> Int {
+        let duration = shifts.reduce(0.0) { total, shift in
+            total + shift.end.timeIntervalSince(shift.start)
+        }
+        return Int((duration / 3600).rounded())
+    }
+
     private var totalOfferedHours: Int {
-        offeredShifts.reduce(0) { total, shift in
-            let duration = shift.end.timeIntervalSince(shift.start)
-            let hours = Int(duration / 3600)
-            return total + hours
-        }
+        totalHours(of: offeredShifts)
     }
-    
+
     private var totalActualHours: Int {
-        actualShifts.reduce(0) { total, shift in
-            let duration = shift.end.timeIntervalSince(shift.start)
-            let hours = Int(duration / 3600)
-            return total + hours
-        }
+        totalHours(of: actualShifts)
     }
-    
+
+
     private var weekendOfferedHours: Int {
         let calendar = Calendar.current
         return offeredShifts.reduce(0) { total, shift in
             let weekday = calendar.component(.weekday, from: shift.start)
             // weekday: 1 = Sunday, 7 = Saturday
-            let isWeekend = weekday == 1 || weekday == 7
-            
-            if isWeekend {
-                let duration = shift.end.timeIntervalSince(shift.start)
-                let hours = Int(duration / 3600)
-                return total + hours
-            }
-            return total
+            guard weekday == 1 || weekday == 7 else { return total }
+
+            // Only the 9:00–23:00 part of the shift counts; a shift running past
+            // midnight is clamped to 23:00 like any other late end.
+            let endsNextDay = !calendar.isDate(shift.start, inSameDayAs: shift.end)
+            let startHour = max(calendar.component(.hour, from: shift.start), 9)
+            let endHour = endsNextDay ? 23 : min(calendar.component(.hour, from: shift.end), 23)
+
+            return total + max(0, endHour - startHour)
         }
     }
-    
+
     private var offeredClosingShiftsCount: Int {
         offeredShifts.filter { isClosingShift($0) }.count
     }
