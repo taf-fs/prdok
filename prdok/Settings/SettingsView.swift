@@ -18,7 +18,6 @@ struct SettingsView: View {
     @State private var showThemeSheet = false
     
     var body: some View {
-        NavigationStack {
         ZStack {
             VStack {
                 Text("settings.title")
@@ -148,10 +147,12 @@ struct SettingsView: View {
             }
             .presentationDetents([.medium])
         }
-        } // NavigationStack
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    SettingsView()
+    NavigationStack {
+        SettingsView()
+    }
 }

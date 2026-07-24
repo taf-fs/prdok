@@ -43,14 +43,14 @@ struct TodayView: View {
     @StateObject private var vm = TodayViewModel()
     @State var selectedDate: Date = Date()
     @State private var showWebView = false
-    @Binding var selectedTab: ContentTab
-    
+
     var body: some View {
-        GeometryReader { proxy in
+        NavigationStack {
+            GeometryReader { proxy in
             VStack(spacing: 20) {
                 ZStack {
                     VStack(spacing: 0) {
-                        TopDateBar(selectedTab: $selectedTab)
+                        TopDateBar()
                         
                         Spacer()
                         
@@ -126,6 +126,7 @@ struct TodayView: View {
                 Color.cpBackgroundSecondary
                     .ignoresSafeArea(edges: .bottom)
             }
+            .ignoresSafeArea(.container, edges: .bottom)
         }
         .task {
             if !needsToBootstrap {
@@ -140,12 +141,11 @@ struct TodayView: View {
         .alert(vm.error ?? "", isPresented: $vm.showErrorAlert) {
             Button("OK", role: .cancel) { }
         }
+        }
     }
 }
 
 private struct TopDateBar: View {
-    @Binding var selectedTab: ContentTab
-    
     var body: some View {
         HStack {
             Button {
@@ -155,19 +155,19 @@ private struct TopDateBar: View {
                     .font(.system(.title))
             }
             .buttonStyle(.plain)
-            
+
             Spacer()
-            
+
             Text(currentDayAndMonth())
                 .font(.system(.caption, design: .monospaced))
                 .fontWeight(.semibold)
-            
+
             Spacer()
-            
-            Button {
-                selectedTab = .calendar
+
+            NavigationLink {
+                SettingsView()
             } label: {
-                Image(systemName: "calendar")
+                Image(systemName: "gear")
                     .font(.system(.title))
             }
             .buttonStyle(.plain)

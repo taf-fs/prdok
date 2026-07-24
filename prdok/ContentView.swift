@@ -12,7 +12,6 @@ enum ContentTab {
     case calendar
     case ebony
     case links
-    case settings
 }
 
 struct ContentView: View {
@@ -30,7 +29,7 @@ struct ContentView: View {
             } else {
                 ZStack {
                     TabView(selection: $selectedTab) {
-                        TodayView(selectedTab: $selectedTab)
+                        TodayView()
                             .tabItem { Label("tabitem.today", systemImage: "clock") }
                             .tag(ContentTab.today)
                         
@@ -45,11 +44,7 @@ struct ContentView: View {
                         LinksView()
                             .tabItem { Label("tabitem.links", systemImage: "link")}
                             .tag(ContentTab.links)
-                        
-                        SettingsView()
-                            .tabItem { Label("tabitem.settings", systemImage: "gear") }
-                            .tag(ContentTab.settings)
-                        
+
                         //                    TempShiftView()
                         //                        .tabItem { Label("shifts", systemImage: "calendar") }
                     }
