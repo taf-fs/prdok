@@ -13,6 +13,11 @@ struct UpcomingShiftsListView: View {
     /// All shifts already loaded by the parent; filtered to upcoming planned ones here.
     let shifts: [Shift]
 
+    /// Bottom safe-area inset (tab bar height) from the parent. The list extends behind the
+    /// transparent tab bar, and this is added as bottom scroll padding so the last row can
+    /// still be scrolled clear of the bar instead of being pinned behind it.
+    var bottomInset: CGFloat = 0
+
     private var upcoming: [Shift] {
         let now = Date()
         return shifts
@@ -66,7 +71,7 @@ struct UpcomingShiftsListView: View {
                         )
                     }
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 8 + bottomInset)
             }
         }
     }

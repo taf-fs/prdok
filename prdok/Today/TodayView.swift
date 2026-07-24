@@ -119,7 +119,7 @@ struct TodayView: View {
                 SimplePauseTimerView()
                     .padding(.horizontal, 16)
 
-                UpcomingShiftsListView(shifts: vm.shifts)
+                UpcomingShiftsListView(shifts: vm.shifts, bottomInset: proxy.safeAreaInsets.bottom)
                     .padding(.horizontal, 16)
             }
             .background {
