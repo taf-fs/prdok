@@ -17,6 +17,7 @@ let calendar = Calendar.current
 final class CalendarViewModel: ObservableObject {
     @Published var plannedDays: Set<Date> = []
     @Published var offeredDays: Set<Date> = []
+    @Published var actualDays: Set<Date> = []
     @Published var displayedMonthShifts: [Shift] = []
     @Published var displayedMonthOpenDays: Int?
 
@@ -39,6 +40,7 @@ final class CalendarViewModel: ObservableObject {
             await MainActor.run {
                 plannedDays = result.plannedDaySet(using: calendar)
                 offeredDays = result.offeredDaySet(using: calendar)
+                actualDays = result.actualDaySet(using: calendar)
                 loadedYear = year
             }
         } catch {
@@ -182,7 +184,7 @@ struct CalendarView: View {
                         calendar: calendar,
                         visibleDateRange: calendarStartBound...calendarEndBound,
                         monthsLayout: .horizontal(options: HorizontalMonthsLayoutOptions()),
-                        dataDependency: (selectedDate, vm.plannedDays, vm.offeredDays),
+                        dataDependency: (selectedDate, vm.plannedDays, vm.offeredDays, vm.actualDays),
                         proxy: proxy
                     )
                     .dayOfWeekHeaders { month, index in
@@ -198,12 +200,14 @@ struct CalendarView: View {
                         let dayKey = calendar.startOfDay(for: date)
                         let hasPlannedShift = vm.plannedDays.contains(dayKey)
                         let hasOfferedShift = vm.offeredDays.contains(dayKey)
+                        let hasActualShift = vm.actualDays.contains(dayKey)
 
                         CalendarDayCell(
                             dayNumber: day.day,
                             isToday: isToday,
                             hasPlannedShift: hasPlannedShift,
                             hasOfferedShift: hasOfferedShift,
+                            hasActualShift: hasActualShift,
                             backgroundOpacity: backgroundOpacity
                         ) {
                             selectedDate = date
@@ -532,6 +536,7 @@ private struct CalendarDayCell: View {
     let isToday: Bool
     let hasPlannedShift: Bool
     let hasOfferedShift: Bool
+    let hasActualShift: Bool
     let backgroundOpacity: Double
     let action: () -> Void
 
@@ -550,8 +555,8 @@ private struct CalendarDayCell: View {
                     HStack {
                         Circle()
                             .frame(width: 5, height: 5)
-                            .opacity((hasPlannedShift || hasOfferedShift) ? 1 : 0)
-                            .opacity(hasPlannedShift ? 1 : 0.3)
+                            .opacity((hasPlannedShift || hasOfferedShift || hasActualShift) ? 1 : 0)
+                            .opacity((hasPlannedShift || hasActualShift) ? 1 : 0.3)
                             .foregroundStyle(.cpForegroundSecondary)
                     }
                 }
@@ -613,6 +618,10 @@ extension Collection where Element == Shift {
     
     func offeredDaySet(using calendar: Calendar) -> Set<Date> {
         Set(self.filter { $0.kind == .offered }.map { calendar.startOfDay(for: $0.start) })
+    }
+
+    func actualDaySet(using calendar: Calendar) -> Set<Date> {
+        Set(self.filter { $0.kind == .actual }.map { calendar.startOfDay(for: $0.start) })
     }
 }
 
