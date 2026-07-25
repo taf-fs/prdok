@@ -186,8 +186,8 @@ final class ShiftCalendarSyncService {
         let exportedById = exportedEventsByShiftId(in: calendar, monthInterval: interval)
 
         var created = 0
-        var updated = 0
-        var deleted = 0
+        let updated = 0
+        let deleted = 0
         var skipped = 0
 
         for shift in planned {
