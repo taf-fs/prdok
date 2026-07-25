@@ -66,6 +66,7 @@ private struct TimerButton: View {
 
     // UI-only state
     @State private var isNotificationTimeTextShown: Bool = false
+    @State private var showNotisDeniedAlert: Bool = false
 
     // Persisted per-timer state
     @AppStorage("simplePause.timer1.endDate") private var timer1EndDateTimestamp: Double = 0
@@ -154,8 +155,7 @@ private struct TimerButton: View {
                 }
             } else {
                 Button {
-                    startTimer()
-                    toggleNotification(duration: length)
+                    attemptStartTimer()
                 } label: {
                     HStack {
                         Image(systemName: "bell")
@@ -169,6 +169,16 @@ private struct TimerButton: View {
             }
         }
         .cornerRadius(15)
+        .alert("settings.alert.notisDenied.title", isPresented: $showNotisDeniedAlert) {
+            Button("settings.alert.notisDenied.button.cancel", role: .cancel) { }
+            Button("settings.alert.notisDenied.button.openSettings") {
+                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(appSettings)
+                }
+            }
+        } message: {
+            Text("settings.alert.notisDenied.message")
+        }
         .onAppear {
             restoreStateIfNeeded()
         }
@@ -277,18 +287,30 @@ private struct TimerButton: View {
 
     // MARK: - Notification Handling
 
-    private func toggleNotification(duration: Int) {
-        if getStoredNotificationID() != nil {
-            cancelScheduledNotification()
-        } else {
-            NotificationManager.shared.requestAuthorization { granted in
-                notificationsEnabled = granted
-
-                NotificationManager.shared.getAuthorizationStatus { status in
-                    if status == .authorized && notificationsEnabled == true {
-                        scheduleNotification(duration)
-                    }
+    // Only launches the timer when notifications can actually fire. If the user
+    // has deliberately turned notifications off (denied at the OS level), the
+    // timer is pointless, so we block it and point them to Settings instead.
+    private func attemptStartTimer() {
+        NotificationManager.shared.getAuthorizationStatus { status in
+            switch status {
+            case .authorized, .provisional, .ephemeral:
+                notificationsEnabled = true
+                startTimer()
+                scheduleNotification(length)
+            case .notDetermined:
+                // Never asked yet: prompt, and only launch if the user allows.
+                NotificationManager.shared.requestAuthorization { granted in
+                    notificationsEnabled = granted
+                    guard granted else { return }
+                    startTimer()
+                    scheduleNotification(length)
                 }
+            case .denied:
+                notificationsEnabled = false
+                showNotisDeniedAlert = true
+            @unknown default:
+                notificationsEnabled = false
+                showNotisDeniedAlert = true
             }
         }
     }
