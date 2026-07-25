@@ -29,6 +29,7 @@ enum Log {
     static let shifts = Logger(subsystem: subsystem, category: "Shifts")
     static let freeShifts = Logger(subsystem: subsystem, category: "FreeShifts")
     static let openDays = Logger(subsystem: subsystem, category: "OpenDays")
+    static let profile = Logger(subsystem: subsystem, category: "Profile")
 
     // MARK: - Formatting helpers
 

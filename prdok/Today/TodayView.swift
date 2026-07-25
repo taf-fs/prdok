@@ -161,8 +161,8 @@ struct TodayView: View {
 private struct TopDateBar: View {
     var body: some View {
         HStack {
-            Button {
-                // TODO: profileview
+            NavigationLink {
+                ProfileView()
             } label: {
                 Image(systemName: "person.crop.circle")
                     .font(.system(.title))
