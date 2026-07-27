@@ -402,16 +402,17 @@ struct CalendarView: View {
         // cancel any hide-show sequence in progress and start a fresh one.
         toastPresentationTask?.cancel()
         toastPresentationTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 250_000_000) // wait for sheet to be closed in the UI
+
             await presentToast(success: success, message: message)
-            
-            guard success else { return }
             guard let monthDate = calendar.date(from: displayedMonth) else { return }
             do {
                 try await vm.repo.refresh(for: monthDate)
                 await vm.loadShiftsForYear(dateContainingYear: monthDate)
                 await vm.loadShiftsForMonth(dateContainingMonth: monthDate)
             } catch {
-                await presentToast(success: false, message: error.localizedDescription)
+                // there used to be a toast for refresh error, now deliberately silent: toasting here would replace the offer result the
+                // user is currently reading.
             }
         }
     }

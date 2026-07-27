@@ -176,6 +176,10 @@ struct ShiftMultiOfferView: View {
     @State var startHour: Int = 7
     @State var endHour: Int = 25
     
+    private var canSubmit: Bool {
+        !vm.isSubmitting && !selectedDates.isEmpty && startHour < endHour
+    }
+
     var startOfMonth: Date { calendar.dateInterval(of: .month, for: displayedMonth)!.start }
     var endOfMonth: Date { calendar.dateInterval(of: .month, for: displayedMonth)!.end.addingTimeInterval(-1) }
     var currentMonthLabel: String {
@@ -300,12 +304,13 @@ struct ShiftMultiOfferView: View {
                             displayedMonth: displayedMonth,
                             onToast: onToast
                         )
-                        
-                        // Dismiss only if everything succeeded
-                        if vm.totalToSubmit > 0, vm.submittedCount == vm.totalToSubmit {
-                            selectedDates.removeAll()
-                            dismiss()
-                        }
+
+                        // Always dismiss: the toast lives in CalendarView and can't be
+                        // seen from under this sheet. Partial/total failure is reported there.
+                        //
+                        // TODO: a partial batch loses detail here, the toast only reports how many failed plus the last error, never which days or why each one.
+                        selectedDates.removeAll()
+                        dismiss()
                     }
                 } label: {
                     ZStack {
@@ -332,13 +337,13 @@ struct ShiftMultiOfferView: View {
                                 }
                             }
                             .font(.headline)
-                            .opacity(selectedDates.isEmpty ? 0.5 : 1)
+                            .opacity(canSubmit ? 1 : 0.5)
                             .foregroundStyle(Color.cpForegroundPrimary)
                         }
                     }
                     .aspectRatio(7, contentMode: .fit)
                 }
-                .disabled(selectedDates.isEmpty || vm.isSubmitting)
+                .disabled(!canSubmit)
                 .padding(.vertical, 20)
             }
             .padding(.horizontal, 24)
