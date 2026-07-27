@@ -174,8 +174,6 @@ class PairingManager {
     private func unpairDeviceFromAccount() async throws {
         guard
             let key = UserDefaults.standard.string(forKey: "klic"),
-            let id = UserDefaults.standard.string(forKey: "id"),
-            let ids = UserDefaults.standard.string(forKey: "ids"),
             let provoz = UserDefaults.standard.string(forKey: "provoz")
         else {
             throw PairingError.missingCredentials
