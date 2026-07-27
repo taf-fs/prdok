@@ -32,6 +32,7 @@ struct LinksView: View {
     
     @AppStorage("id") private var id: String?
     @AppStorage("ids") private var ids: String?
+    @AppStorage("provoz") private var provoz: String?
     
     var body: some View {
         ScrollView {
@@ -42,23 +43,20 @@ struct LinksView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 16)
                 
+                LinkButton("link.employeeWeb") {
+                    activeSheet = .employee
+                }
                 LinkButton("link.contacts") {
                     activeSheet = .contacts
                 }
-                LinkButton("link.waiter") {
-                    activeSheet = .waiter
-                }
+//                LinkButton("link.waiter") {
+//                    activeSheet = .waiter
+//                }
                 LinkButton("link.meetingMinutes") {
                     activeSheet = .meetingMinutes
                 }
                 LinkButton("link.forum") {
                     activeSheet = .forum
-                }
-                //                LinkButton("link.collaborate") {
-                //                    activeSheet = .collaborate
-                //                }
-                LinkButton("link.employeeWeb") {
-                    activeSheet = .employee
                 }
             }
             .padding(.top, 24)
@@ -67,6 +65,8 @@ struct LinksView: View {
         .background { (Color.cpBackgroundPrimary).ignoresSafeArea() }
         .sheet(item: $activeSheet, onDismiss: dismissSheet) { sheet in
             switch sheet {
+            case .employee:
+                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php?ids=\(ids ?? "")&id=\(id ?? "")&provoz=\(provoz ?? "")")!)
             case .contacts:
                 LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/kontakty.php")!)
 //            case .waiter:
@@ -74,8 +74,6 @@ struct LinksView: View {
                 LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zapisyzporad.php")!)
             case .forum:
                 LinkWebView(url: URL(string: "\(AppConfig.employeePortalURL)/")!)
-            case .employee:
-                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zamestnanci.php")!)
             default:
                 Text("link.notImplementedYet")
             }

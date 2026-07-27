@@ -816,22 +816,6 @@
         }
       }
     },
-    "link.waiter" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Online vrchní"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Online waiter"
-          }
-        }
-      }
-    },
     "links.title" : {
       "localizations" : {
         "cs" : {
