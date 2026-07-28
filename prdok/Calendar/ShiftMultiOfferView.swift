@@ -17,7 +17,10 @@ final class ShiftMultiOfferViewModel: ObservableObject {
     @Published var totalToSubmit: Int = 0
     
     @Published var lastOfferErrorMessage: String? = nil
-    
+
+    // Set when the initial month load fails. The view reacts by dismissing itself and toasting from CalendarView.
+    @Published var loadErrorMessage: String? = nil
+
     var progress: Double {
         guard totalToSubmit > 0 else { return 0 }
         return Double(submittedCount) / Double(totalToSubmit)
@@ -25,7 +28,9 @@ final class ShiftMultiOfferViewModel: ObservableObject {
     
     let repo = ShiftRepository()
     
-    func loadShifts(month: Date) {
+    /// - Parameter reportFailure: when false, a failed load stays silent. Used for the post-submit reload,
+    ///   where the sheet is closing anyway and the offer result toast must not be replaced.
+    func loadShifts(month: Date, reportFailure: Bool = true) {
         Task {
             do {
                 let result = try await repo.getShifts(for: month, forceRefresh: true)
@@ -33,8 +38,16 @@ final class ShiftMultiOfferViewModel: ObservableObject {
                     offeredDays = result.offeredDaySet(using: calendar)
                 }
             } catch {
-                // TODO: some error handling, for server being down or something
-                // dismiss the sheet and show a toast explaining the error
+                guard reportFailure else { return }
+
+                let base = NSLocalizedString(
+                    "shiftMultiOffer.load.failure",
+                    comment: "Toast shown when the offered shifts for the month couldn't be loaded, so the sheet closes."
+                )
+                let detail = error.localizedDescription
+                await MainActor.run {
+                    loadErrorMessage = detail.isEmpty ? base : base + "\n" + detail
+                }
             }
         }
     }
@@ -104,7 +117,7 @@ final class ShiftMultiOfferViewModel: ObservableObject {
         // Refresh cache + reload offered day dots for the month after all attempts
         do {
             try await repo.refresh(for: displayedMonth)
-            loadShifts(month: displayedMonth)
+            loadShifts(month: displayedMonth, reportFailure: false)
         } catch {
             // If refresh fails, treat it as "last error", but don't override a more relevant offer error if we already have one.
             if lastOfferErrorMessage == nil {
@@ -244,6 +257,12 @@ struct ShiftMultiOfferView: View {
                 
                 .onAppear {
                     vm.loadShifts(month: displayedMonth)
+                }
+                .onChange(of: vm.loadErrorMessage) { message in
+                    // Nothing to offer against without the month's shifts: report it in CalendarView's toast and get out.
+                    guard let message, !vm.isSubmitting else { return }
+                    onToast(false, message)
+                    dismiss()
                 }
                 .aspectRatio(1, contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: 16))

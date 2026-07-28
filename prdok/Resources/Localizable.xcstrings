@@ -1725,6 +1725,9 @@
         }
       }
     },
+    "shiftMultiOffer.load.failure" : {
+      "comment" : "Toast shown when the offered shifts for the month couldn't be loaded, so the sheet closes."
+    },
     "shiftMultiOffer.picker.end" : {
       "localizations" : {
         "cs" : {
