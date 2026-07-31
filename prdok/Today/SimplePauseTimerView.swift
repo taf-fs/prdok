@@ -58,7 +58,6 @@ struct SimplePauseTimerView: View {
     }
 }
 
-// TODO: make timer persist through app kills and launches
 private struct TimerButton: View {
     let id: Int
     let length: Int // minutes
