@@ -20,7 +20,8 @@ struct PairWithLinkView: View {
     var isDarkMode: Bool { colorScheme == .dark }
     
     private let toolbarOffset: CGFloat = 60
-    
+    private let minSpinnerDuration: Duration = .milliseconds(600)
+
     var body: some View {
         ZStack {
             VStack {
@@ -48,19 +49,21 @@ struct PairWithLinkView: View {
                 
                 Spacer()
                 
-//                Button("complete setup") { UserDefaults.standard.set(true, forKey: "setupCompleted") }
-                
                 Button {
                     Task {
                         isTextFieldFocused = false
                         isLoading = true
                         defer { isLoading = false }
+
+                        let startedAt = ContinuousClock.now
+
                         do {
-                            // TODO: consider putting a second or something of delay here, ProgressView flashes so fast maybe it's bad ux
                             try await PairingManager.shared.connectAccountUsingLink(employeeLink)
+                            await holdSpinner(since: startedAt)
                             UserDefaults.standard.set(true, forKey: "setupCompleted")
                             UserDefaults.standard.set(true, forKey: "needsToBootstrap")
                         } catch {
+                            await holdSpinner(since: startedAt)
                             alertMessage = error.localizedDescription
                             showAlert = true
                         }
@@ -91,6 +94,15 @@ struct PairWithLinkView: View {
             if isLoading {
                 LoadingScreenView(text: "loading.connecting")
             }
+        }
+    }
+
+    /// Keeps the loading screen up for at least `minSpinnerDuration` to avoid flashing.
+    /// A slow connect won't be slowed further, only fast ones get padded.
+    private func holdSpinner(since startedAt: ContinuousClock.Instant) async {
+        let remaining = minSpinnerDuration - startedAt.duration(to: ContinuousClock.now)
+        if remaining > .zero {
+            try? await ContinuousClock().sleep(for: remaining)
         }
     }
 }
