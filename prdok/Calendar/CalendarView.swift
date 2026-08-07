@@ -392,8 +392,8 @@ struct CalendarView: View {
                 try await vm.repo.refresh(for: selectedDate)
                 await vm.loadShiftsForYear(dateContainingYear: selectedDate)
                 await vm.loadShiftsForMonth(dateContainingMonth: selectedDate)
-            } catch { // toast for failure to refresh shifts
-                await presentToast(success: false, message: error.localizedDescription)
+            } catch {
+             // same as handleMultiOfferFinished()
             }
         }
     }

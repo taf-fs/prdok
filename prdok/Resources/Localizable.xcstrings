@@ -1544,7 +1544,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " "
+            "value" : ""
           }
         },
         "en" : {
@@ -1726,7 +1726,21 @@
       }
     },
     "shiftMultiOffer.load.failure" : {
-      "comment" : "Toast shown when the offered shifts for the month couldn't be loaded, so the sheet closes."
+      "comment" : "Toast shown when the offered shifts for the month couldn't be loaded, so the sheet closes.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nelze načíst směny."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can’t load shifts."
+          }
+        }
+      }
     },
     "shiftMultiOffer.picker.end" : {
       "localizations" : {
