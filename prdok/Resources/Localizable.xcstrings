@@ -1245,6 +1245,70 @@
         }
       }
     },
+    "settings.alert.unpairConfirm.button.cancel" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "settings.alert.unpairConfirm.button.unpair" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpárovat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpair"
+          }
+        }
+      }
+    },
+    "settings.alert.unpairConfirm.message" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro další používání aplikace bude potřeba zařízení znovu spárovat."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will need to pair again to use the app."
+          }
+        }
+      }
+    },
+    "settings.alert.unpairConfirm.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpárovat zařízení?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpair device?"
+          }
+        }
+      }
+    },
     "settings.colorTheme" : {
       "localizations" : {
         "cs" : {

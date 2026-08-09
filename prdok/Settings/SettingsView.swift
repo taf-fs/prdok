@@ -13,6 +13,7 @@ struct SettingsView: View {
     @AppStorage("colorTheme") private var colorTheme: Theme = .system
     @State private var showNotisDeniedAlert = false
     @State private var showUnpairErrorAlert = false
+    @State private var showUnpairConfirmAlert = false
     @State private var alertMessage = ""
     @State private var isUnpairingInProgress = false
     @State private var showThemeSheet = false
@@ -92,17 +93,7 @@ struct SettingsView: View {
                     .listRowBackground(Color.cpBackgroundSecondary)
 
                     Button {
-                        Task {
-                            isUnpairingInProgress = true
-                            defer { isUnpairingInProgress = false }
-                            do {
-                                try await PairingManager.shared.unpairDevice()
-                                UserDefaults.standard.set(false, forKey: "setupCompleted")
-                            } catch {
-                                alertMessage = error.localizedDescription
-                                showUnpairErrorAlert = true
-                            }
-                        }
+                        showUnpairConfirmAlert = true
                     } label: {
                         Text("settings.unpair")
                             .foregroundStyle(.red)
@@ -120,6 +111,24 @@ struct SettingsView: View {
             .background(Color.cpBackgroundPrimary)
             .alert(alertMessage, isPresented: $showUnpairErrorAlert) {
                 Button("OK", role: .cancel) { }
+            }
+            .alert("settings.alert.unpairConfirm.title", isPresented: $showUnpairConfirmAlert) {
+                Button("settings.alert.unpairConfirm.button.cancel", role: .cancel) { }
+                Button("settings.alert.unpairConfirm.button.unpair", role: .destructive) {
+                    Task {
+                        isUnpairingInProgress = true
+                        defer { isUnpairingInProgress = false }
+                        do {
+                            try await PairingManager.shared.unpairDevice()
+                            UserDefaults.standard.set(false, forKey: "setupCompleted")
+                        } catch {
+                            alertMessage = error.localizedDescription
+                            showUnpairErrorAlert = true
+                        }
+                    }
+                }
+            } message: {
+                Text("settings.alert.unpairConfirm.message")
             }
             if isUnpairingInProgress {
                 LoadingScreenView()
