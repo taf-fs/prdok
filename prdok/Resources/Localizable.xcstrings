@@ -1543,14 +1543,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : ""
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CZ:"
+            "value" : "CZ: "
           }
         }
       }
@@ -1594,14 +1594,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nastala chyba při zapsání %d možností."
+            "state" : "needs_review",
+            "value" : "Nastala chyba při zapsání %d možností: "
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to offer %d shifts."
+            "value" : "Failed to offer %d shifts: "
           }
         }
       }
@@ -1628,14 +1628,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nastala chyba při zápisu %d možnosti."
+            "state" : "needs_review",
+            "value" : "Nastala chyba při zápisu možnosti: "
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to offer %d shift."
+            "value" : "Failed to offer shift: "
           }
         }
       }
@@ -1662,14 +1662,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nastala chyba při zápisu %d možností."
+            "state" : "needs_review",
+            "value" : "Nastala chyba při zápisu %d možností: "
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Failed to offer %d shifts."
+            "value" : "Failed to offer %d shifts: "
           }
         }
       }
