@@ -361,7 +361,7 @@ enum ShiftActionError: Error, LocalizedError, Equatable {
         case .serverRejected(let message):
             // Decision: message is server-provided (often Czech). Keep it, but prefix with a localized label.
             let prefix = NSLocalizedString("shiftAction.error.serverRejected.prefix", comment: "Prefix shown before server rejection message.")
-            return "\(prefix) \(message)"
+            return "\(prefix)\(message)"
         case .unexpectedServerResponse(let message):
             let base = NSLocalizedString("shiftAction.error.unexpectedServerResponse", comment: "Unexpected server response.")
             if let message, !message.isEmpty {

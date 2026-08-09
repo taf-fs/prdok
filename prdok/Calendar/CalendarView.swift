@@ -429,7 +429,22 @@ struct CalendarView: View {
     }
     
     // MARK: - Toast
-    
+
+    /// How long a toast stays up: a base reading time plus a bit per extra line, capped so a
+    /// long batch report can't sit on screen indefinitely.
+    ///
+    /// Counts explicit newlines only — soft wrapping isn't known until layout, so a single long
+    /// line that wraps gets the base duration. Good enough: the multi-line cases we build are
+    /// all `\n`-joined.
+    func toastVisibleDuration(for message: String) -> TimeInterval {
+        let base: TimeInterval = 2
+        let perExtraLine: TimeInterval = 1.2
+        let maxDuration: TimeInterval = 8
+
+        let extraLines = max(0, message.split(separator: "\n", omittingEmptySubsequences: false).count - 1)
+        return min(base + Double(extraLines) * perExtraLine, maxDuration)
+    }
+
     @MainActor
     func presentToast(success: Bool, message: String) async {
         toastHideTask?.cancel() // cancel hiding of a toast if there was one shown
@@ -451,8 +466,9 @@ struct CalendarView: View {
         }
         
         let myToken = toastToken
+        let visibleDuration = toastVisibleDuration(for: message)
         toastHideTask = Task { @MainActor in // schedule hiding
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            try? await Task.sleep(nanoseconds: UInt64(visibleDuration * 1_000_000_000))
             guard myToken == toastToken else { return }
             withAnimation(.easeInOut(duration: toastTransitionDuration)) {
                 toastIsPresented = false
@@ -511,16 +527,21 @@ private struct PlannedShiftsWebItem: Identifiable {
 }
 
 private struct ToastBanner: View {
+    /// Upper bound on toast height. Messages are expected to be pre-truncated to this
+    /// many lines by the caller (see `CalendarView.toastLineCount`); this is a backstop.
+    static let maxLines = 8
+
     let message: String
     let isSuccess: Bool
-    
+
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             Image(systemName: isSuccess ? "checkmark.circle.fill" : "xmark.octagon.fill")
                 .foregroundStyle(isSuccess ? .green : .red)
             Text(message)
                 .font(.system(.footnote, design: .monospaced))
-                .lineLimit(2)
+                .lineLimit(ToastBanner.maxLines)
+                .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
             Spacer(minLength: 0)
         }
