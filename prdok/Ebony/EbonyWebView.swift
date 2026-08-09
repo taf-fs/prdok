@@ -42,9 +42,13 @@ struct EbonyWebScreen: View {
 struct EbonyWebView: UIViewRepresentable {
     @Binding var isPageLoaded: Bool
     @AppStorage("skladnik") private var skladnik: String?
-    
+    @AppStorage("provoz") private var provoz: String?
+
+    /// The "integrace" facility gets a stripped-down, read-only version of the page.
+    var isIntegration: Bool { provoz == "integrace" }
+
     func getURL() -> URL {
-        if let params = skladnik, params != "" { //FIXME: an account on the test provoz doesn't return a skladnik. so an empty string will also navigate to blank.
+        if let params = skladnik, params != "" {
             return URL(string: "\(AppConfig.apiBaseURL)/brana/ebony2.php?\(params)")!
         } else {
             return URL(string: "about:blank")!
@@ -80,11 +84,28 @@ struct EbonyWebView: UIViewRepresentable {
         
         // ✅ Called when the page finishes loading
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            let js = """
+            var js = """
             document.querySelectorAll('a.linka[href="mopos.php"]').forEach(function(el) {
                 el.style.display = 'none';
             });
             """
+            if parent.isIntegration {
+                // #ebonydiv is filled in later by kusebony2.php over AJAX and refilled on every
+                // reloadebony(), so setting inline styles here would run before the panels exist
+                // and be wiped afterwards. A stylesheet keeps matching whatever lands in the div.
+                js += """
+
+                (function() {
+                    if (document.getElementById('nativeIntegraceStyle')) return;
+                    var style = document.createElement('style');
+                    style.id = 'nativeIntegraceStyle';
+                    style.textContent =
+                        '#ebonydiv > div:first-of-type { pointer-events: none !important; }' +
+                        '#ebonydiv > div[style*="solid green"] { display: none !important; }';
+                    document.head.appendChild(style);
+                })();
+                """
+            }
             webView.evaluateJavaScript(js, completionHandler: nil)
             withAnimation {
                 parent.isPageLoaded = true
