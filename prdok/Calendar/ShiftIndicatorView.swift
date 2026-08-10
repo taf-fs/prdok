@@ -22,44 +22,36 @@ struct ShiftTimelineLayout {
     }
     
     private var totalHours: Double { endHour - startHour }
-    
-    private func baseHour(for date: Date) -> Double {
-        let comps = calendar.dateComponents([.hour, .minute], from: date)
-        return Double(comps.hour ?? 0) + Double(comps.minute ?? 0) / 60.0
+
+    /// Hours since midnight of `start`'s day. Times past midnight keep counting up
+    /// (1:00 the next day == 25), the same way the portal writes them ("do":"25:00:00").
+    private func hours(of date: Date, sinceDayOf start: Date) -> Double {
+        date.timeIntervalSince(calendar.startOfDay(for: start)) / 3600
     }
-    
-    /// Start ≤ 7:00 → pinned to 7:00 (flush left)
-    func normalizedStartPosition(for date: Date) -> CGFloat {
-        var h = baseHour(for: date)
-        
-        // Anything before or at startHour goes to startHour
-        if h <= startHour {
-            h = startHour
-        }
-        // no +24 trick here – we want "7 or earlier" all flush left
-        
-        // Clamp to [startHour, endHour]
-        h = min(max(h, startHour), endHour)
-        
-        let t = (h - startHour) / totalHours
-        return CGFloat(t)
+
+    /// Clamp to [startHour, endHour] so early starts stay flush left and
+    /// anything beyond 1:00 (25h) stays flush right.
+    private func normalized(_ hour: Double) -> CGFloat {
+        let clamped = min(max(hour, startHour), endHour)
+        return CGFloat((clamped - startHour) / totalHours)
     }
-    
-    /// End < 7:00 → treated as after midnight (h + 24)
-    /// Anything beyond 1:00 (25h) is clamped to 25h (flush right)
-    func normalizedEndPosition(for date: Date) -> CGFloat {
-        var h = baseHour(for: date)
-        
-        // If time is before startHour, it's "after midnight" of next day
-        if h < startHour {
-            h += 24
+
+    /// Positions both ends of one interval on the same timeline.
+    ///
+    /// Both ends are measured from the same midnight, so the pill keeps its real
+    /// length instead of each end being placed from its wall-clock hour alone.
+    /// An interval that also *ends* before `startHour` is a post-midnight one
+    /// (the portal's 24:00 – 25:00), so it moves to the far end of the timeline.
+    func normalizedRange(start: Date, end: Date) -> (start: CGFloat, end: CGFloat) {
+        var startH = hours(of: start, sinceDayOf: start)
+        var endH = max(hours(of: end, sinceDayOf: start), startH)
+
+        if endH < startHour {
+            startH += 24
+            endH += 24
         }
-        
-        // Clamp to [startHour, endHour] so >1:00 stays flush right
-        h = min(max(h, startHour), endHour)
-        
-        let t = (h - startHour) / totalHours
-        return CGFloat(t)
+
+        return (normalized(startH), normalized(endH))
     }
 }
 
@@ -142,7 +134,8 @@ struct ShiftIndicatorView: View {
                                 interval: interval,
                                 layout: layout,
                                 color: color,
-                                showsTimeLabel: showsTimeLabel
+                                showsTimeLabel: showsTimeLabel,
+                                cornerRadius: cornerRadius
                             )
                         }
                     }
@@ -158,17 +151,23 @@ struct ShiftIndicatorPillView: View {
     let layout: ShiftTimelineLayout
     let color: Color
     var showsTimeLabel: Bool = true
+    /// Corner radius of the track behind the pill. The pill fills the track's full
+    /// height with no inset, so it has to match to sit flush in the rounded corners.
+    var cornerRadius: CGFloat = 16
+
+    /// Keeps short shifts wide enough to stay readable.
+    private let minPillWidth: CGFloat = 40
 
     var body: some View {
         GeometryReader { geo in
-            let startNorm = layout.normalizedStartPosition(for: interval.start)
-            let endNorm   = layout.normalizedEndPosition(for: interval.end)
+            let range = layout.normalizedRange(start: interval.start, end: interval.end)
 
             let totalWidth = geo.size.width
-            let pillX = startNorm * totalWidth
-            let pillWidth = max((endNorm - startNorm) * totalWidth, 40)
-            // Keep the pill a capsule at small heights, but cap roundness on tall bars.
-            let pillRadius = min(12, geo.size.height / 2)
+            let pillWidth = min(max((range.end - range.start) * totalWidth, minPillWidth), totalWidth)
+            // Keep the pill inside the track when the minimum width pushes it past an edge.
+            let pillX = min(max(range.start * totalWidth, 0), max(totalWidth - pillWidth, 0))
+            // Never round more than the pill's own half-extent, or the corners overlap.
+            let pillRadius = min(cornerRadius, min(pillWidth, geo.size.height) / 2)
 
             RoundedRectangle(cornerRadius: pillRadius, style: .continuous)
                 .fill(color)
@@ -210,7 +209,12 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
         Shift(id: 4, kind: .offered, start: at(17,59), end: at(18,40)),    // to 01:00
         Shift(id: 5, kind: .offered, start: at(20),    end: at(3))         // after 1:00, clamped
     ]
-    
+
+    /// 24:00 – 25:00 as the parser stores it: midnight to 1:00 of the shift's own day.
+    private static let exampleShiftsAfterMidnight: [Shift] = [
+        Shift(id: 6, kind: .offered, start: at(0), end: at(1))
+    ]
+
     static var previews: some View {
         VStack(spacing: 24) {
             Text("Zadaná možnost")
@@ -221,6 +225,11 @@ struct ShiftIndicatorView_Previews: PreviewProvider {
             Text("Více možností")
             ShiftIndicatorView(
                 shifts: exampleShifts,
+                color: Color(red: 102/255, green: 1, blue: 51/255)
+            )
+            Text("Po půlnoci (24:00 – 25:00)")
+            ShiftIndicatorView(
+                shifts: exampleShiftsAfterMidnight,
                 color: Color(red: 102/255, green: 1, blue: 51/255)
             )
             Text("Bez směny")
