@@ -1070,6 +1070,23 @@
         }
       }
     },
+    "pairingerror.pairingRejected" : {
+      "comment" : "Fallback when the server refused to pair without saying why",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propojení selhalo. Zkontroluj zadané údaje."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pairing failed. Check the values you entered."
+          }
+        }
+      }
+    },
     "profile.competencies.title" : {
       "localizations" : {
         "cs" : {
