@@ -57,6 +57,7 @@ struct PairWithCredentialsView: View {
                     } label: {
                         Text("setup.connect.link")
                             .font(.subheadline)
+                            .fontWeight(.semibold)
                             .padding(.top, 8)
                             .frame(maxWidth: .infinity)
                             .foregroundStyle(Color.cpForegroundSecondary)

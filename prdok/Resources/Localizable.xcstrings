@@ -1559,13 +1559,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "K získání přístupu do aplikace, je třeba propojit aplikaci se zaměstnaneckým webem."
+            "value" : "K získání přístupu do aplikace, je třeba propojit aplikaci se zaměstnaneckým účtem."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To access the app, you need to connect the device with the staff website."
+            "value" : "To access the app, you need to connect the device with your employee account."
           }
         }
       }
