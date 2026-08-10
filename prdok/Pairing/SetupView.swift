@@ -10,7 +10,7 @@ import SwiftUI
 struct SetupView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var isSheetPresented: Bool = false
-    @State private var isActive: Bool = false // navigates to PairWithLinkView
+    @State private var isActive: Bool = false // navigates to PairWithCredentialsView
     
     var isDarkMode: Bool {
         return colorScheme == .dark
@@ -46,7 +46,7 @@ struct SetupView: View {
                     Button { // wrote it like this in case i want to add more logic
                         isActive = true
                     } label: {
-                        Text("setup.connect.link")
+                        Text("setup.connect")
                             .bold()
                             .padding(.vertical, 8)
                             .frame(maxWidth: .infinity)
@@ -82,7 +82,7 @@ struct SetupView: View {
                 ScanQRView()
             }
             .navigationDestination(isPresented: $isActive) {
-                PairWithLinkView()
+                PairWithCredentialsView()
             }
             .navigationBarHidden(true) // ios 15 shenanigans
         }

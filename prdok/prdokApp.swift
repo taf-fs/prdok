@@ -11,7 +11,7 @@ import SwiftUI
 struct prdokApp: App {
     init() {
         #if DEBUG
-        loadDevCredentials()
+//        loadDevCredentials()
         #endif
 
         if UserDefaults.standard.bool(forKey: "setupCompleted") == false {

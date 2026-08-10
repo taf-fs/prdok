@@ -28,6 +28,11 @@ class PairingManager {
         return parameters.count == 6
     }
     
+    /// validateCredentials checks whether the credentials typed in by the user are all present, ignoring surrounding whitespace.
+    func validateCredentials(id: String, ids: String, provoz: String) -> Bool {
+        [id, ids, provoz].allSatisfy { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
     /// validateLink checks whether the link provided by the user is a valid URL, and contains the parameters id, ids, provoz.
     /// example URL: `https://lorem.ipsum.com/lorem/ipsum.php?ids=SECRET123&id=123&provoz=asd`
     func validateLink(_ link: String) -> Bool {
@@ -217,6 +222,27 @@ class PairingManager {
         }
         let key = try await requestAndSaveKey(provoz: parsed.provoz)
         try await connectKeyToAccount(id: parsed.id, ids: parsed.ids, key: key, provoz: parsed.provoz)
+    }
+
+    /// connectAccountUsingCredentials(id:ids:provoz:) requests/obtains a pairing key and associates it with the account,
+    /// using the credentials the user typed in by hand instead of a link or QR code.
+    ///
+    /// - Parameters:
+    ///   - id: Employee identifier.
+    ///   - ids: Secret token or secondary identifier.
+    ///   - provoz: The facility identifier.
+    /// - Throws: `PairingError.missingCredentials` if any of the values is empty; any error thrown by `requestAndSaveKey(provoz:)`
+    ///           or `connectKeyToAccount(id:ids:key:provoz:)`.
+    func connectAccountUsingCredentials(id: String, ids: String, provoz: String) async throws {
+        guard validateCredentials(id: id, ids: ids, provoz: provoz) else {
+            throw PairingError.missingCredentials
+        }
+        let id = id.trimmingCharacters(in: .whitespacesAndNewlines)
+        let ids = ids.trimmingCharacters(in: .whitespacesAndNewlines)
+        let provoz = provoz.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let key = try await requestAndSaveKey(provoz: provoz)
+        try await connectKeyToAccount(id: id, ids: ids, key: key, provoz: provoz)
     }
 
     /// connectAccountUsingQR(_:) validates a QR payload, requests/obtains a pairing key, and associates it with the account.

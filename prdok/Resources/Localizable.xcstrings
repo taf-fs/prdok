@@ -617,6 +617,90 @@
         }
       }
     },
+    "connect.credentials.button.connect" : {
+      "comment" : "Connect button label",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect"
+          }
+        }
+      }
+    },
+    "connect.credentials.field.id" : {
+      "comment" : "Placeholder of the id credential field, matches the portal parameter name",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaměstnanecké číslo"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Employee number"
+          }
+        }
+      }
+    },
+    "connect.credentials.field.ids" : {
+      "comment" : "Placeholder of the ids credential field, matches the portal parameter name",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heslo"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
+    },
+    "connect.credentials.field.provoz" : {
+      "comment" : "Placeholder of the provoz credential field, matches the portal parameter name",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provoz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workplace"
+          }
+        }
+      }
+    },
+    "connect.credentials.prompt" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tvé údaje?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your credentials?"
+          }
+        }
+      }
+    },
     "connect.link.button.connect" : {
       "comment" : "Connect button label",
       "localizations" : {
@@ -1481,6 +1565,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prdok_"
+          }
+        }
+      }
+    },
+    "setup.connect" : {
+      "comment" : "Primary button on the setup screen, opens the credentials screen",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect"
           }
         }
       }
