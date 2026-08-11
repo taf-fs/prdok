@@ -4,7 +4,7 @@
 
 <img src="github-assets/appIcon.png" width="128" alt="">
 
-**A native iOS app for workplace shift management, built entirely in Swift and SwiftUI.**
+**A native iOS app for workplace shift management, written in Swift and SwiftUI.**
 
 <br>
 
@@ -75,7 +75,7 @@ The app is built on MVVM. ViewModels drive async data fetching via Swift Concurr
 
 <img src="github-assets/appIcon.png" width="128" alt="">
 
-**Nativní iOS aplikace pro správu pracovních směn, napsaná celá ve Swift a SwiftUI.**
+**Nativní iOS aplikace pro správu pracovních směn, napsaná ve Swift a SwiftUI.**
 
 <br>
 
