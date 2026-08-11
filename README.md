@@ -1,6 +1,19 @@
-# Prdok
+<div align="center">
 
-A native iOS app for workplace shift management, built entirely in Swift and SwiftUI.
+# Prdok_
+
+<img src="github-assets/appIcon.png" width="128" alt="">
+
+**A native iOS app for workplace shift management, built entirely in Swift and SwiftUI.**
+
+<br>
+
+<img src="github-assets/screenshots/today_en.png" width="24%" alt="Today view with countdown to the next shift">
+<img src="github-assets/screenshots/calendar_en.png" width="24%" alt="Month calendar with shift indicators and statistics">
+<img src="github-assets/screenshots/details_en.png" width="24%" alt="Day detail sheet with offered, planned and actual shift">
+<img src="github-assets/screenshots/offer_en.png" width="24%" alt="Offering availability for an open slot">
+
+</div>
 
 ## What It Does
 
@@ -8,14 +21,14 @@ prdok connects employees to a shift scheduling backend via QR code or link pairi
 
 ## Key Features
 
-- **QR & Link Pairing** — first-time setup pairs the device to an employee account by scanning a QR code or pasting a link; credentials are validated and exchanged with the backend before being stored securely in UserDefaults
-- **Today View** — live-updating countdown (refreshes every minute via `TimelineView`) to the ongoing or next planned shift; adapts its copy based on how far away the shift is
-- **Calendar** — month view built on top of [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) with custom shift indicators, day detail sheets, shift statistics, and iCal export
-- **Shift Offering** — employees can submit or retract availability for open slots directly from the calendar
-- **Theming** — light / dark / system color scheme toggle with a custom accent color palette applied app-wide
-- **Localization** — English and Czech, driven by `Localizable.xcstrings`
-- **Notifications** — local notifications via `NotificationManager`
-- **Links tabs** — embedded WKWebView screens for internal tooling and quick-access workplace links
+- **QR & Link Pairing** - first-time setup pairs the device to an employee account by scanning a QR code or pasting a link; credentials are validated and exchanged with the backend before being stored securely in UserDefaults
+- **Today View** - live-updating countdown (refreshes every minute via `TimelineView`) to the ongoing or next planned shift; adapts its copy based on how far away the shift is
+- **Calendar** - month view built on top of [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) with custom shift indicators, day detail sheets, shift statistics, and iCal export
+- **Shift Offering** - employees can submit or retract availability for open slots directly from the calendar
+- **Theming** - light / dark / system color scheme toggle with a custom accent color palette applied app-wide
+- **Localization** - English and Czech, driven by `Localizable.xcstrings`
+- **Notifications** - local notifications via `NotificationManager`
+- **Links tabs** - embedded WKWebView screens for internal tooling and quick-access workplace links
 
 ## Tech Stack
 
@@ -40,11 +53,38 @@ The app is built on MVVM. ViewModels drive async data fetching via Swift Concurr
 - Xcode 16+
 - Access to the backend API (credentials configured via `Config.plist`)
 
+<div align="center">
+
+<br>
+
+<img src="github-assets/screenshots/setup_en.png" width="24%" alt="First-run setup">
+<img src="github-assets/screenshots/login_en.png" width="24%" alt="Pairing by QR code or link">
+
+<sub>Login - first run pairs the device by credentials, link or QR code.</sub>
+
+</div>
+
 ---
 
-# Prdok 🇨🇿
+<details>
+<summary><b>🇨🇿 Česky</b></summary>
 
-Nativní iOS aplikace pro správu pracovních směn, napsaná celá ve Swift a SwiftUI.
+<div align="center">
+
+# Prdok_
+
+<img src="github-assets/appIcon.png" width="128" alt="">
+
+**Nativní iOS aplikace pro správu pracovních směn, napsaná celá ve Swift a SwiftUI.**
+
+<br>
+
+<img src="github-assets/screenshots/today_cz.png" width="24%" alt="Dnešní pohled s odpočtem do další směny">
+<img src="github-assets/screenshots/calendar_cz.png" width="24%" alt="Měsíční kalendář s indikátory směn a statistikami">
+<img src="github-assets/screenshots/details_cz.png" width="24%" alt="Detail dne s nabídnutou, plánovanou a skutečnou směnou">
+<img src="github-assets/screenshots/offer_cz.png" width="24%" alt="Nabídnutí dostupnosti na volnou směnu">
+
+</div>
 
 ## Co dělá
 
@@ -52,14 +92,14 @@ prdok propojí zařízení se zaměstnaneckým účtem přes QR kód nebo odkaz 
 
 ## Hlavní funkce
 
-- **Párování přes QR a odkaz** — první spuštění propojí zařízení se zaměstnaneckým účtem; přihlašovací údaje jsou ověřeny a bezpečně uloženy
-- **Dnešní pohled** — odpočet aktualizovaný každou minutu (přes `TimelineView`) do probíhající nebo nadcházející směny; text se přizpůsobuje podle toho, jak daleko směna je
-- **Kalendář** — měsíční pohled postavený na [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) s vlastními indikátory směn, detailem dne, statistikami a exportem do iCal
-- **Nabídka směn** — zaměstnanci mohou přímo z kalendáře přidat nebo odebrat svou dostupnost
-- **Motivy** — přepínání světlého / tmavého / systémového motivu s vlastní barevnou paletou
-- **Lokalizace** — čeština a angličtina pomocí `Localizable.xcstrings`
-- **Notifikace** — lokální upozornění přes `NotificationManager`
-- **Odkazy na web** — vložené WKWebView pro interní nástroje a pracovní odkazy
+- **Párování přes QR a odkaz** - první spuštění propojí zařízení se zaměstnaneckým účtem; přihlašovací údaje jsou ověřeny a bezpečně uloženy
+- **Dnešní pohled** - odpočet aktualizovaný každou minutu (přes `TimelineView`) do probíhající nebo nadcházející směny; text se přizpůsobuje podle toho, jak daleko směna je
+- **Kalendář** - měsíční pohled postavený na [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) s vlastními indikátory směn, detailem dne, statistikami a exportem do iCal
+- **Nabídka směn** - zaměstnanci mohou přímo z kalendáře přidat nebo odebrat svou dostupnost
+- **Motivy** - přepínání světlého / tmavého / systémového motivu s vlastní barevnou paletou
+- **Lokalizace** - čeština a angličtina pomocí `Localizable.xcstrings`
+- **Notifikace** - lokální upozornění přes `NotificationManager`
+- **Odkazy na web** - vložené WKWebView pro interní nástroje a pracovní odkazy
 
 ## Technologie
 
@@ -83,3 +123,16 @@ Aplikace je postavena na MVVM. ViewModely řídí asynchronní načítání dat 
 - iOS 17+
 - Xcode 16+
 - Přístup k backendovému API (přihlašovací údaje nakonfigurovány v `Config.plist`)
+
+<div align="center">
+
+<br>
+
+<img src="github-assets/screenshots/setup_cz.png" width="24%" alt="První spuštění">
+<img src="github-assets/screenshots/login_cz.png" width="24%" alt="Párování přes QR kód nebo odkaz">
+
+<sub>Přihlášení - první spuštění spáruje zařízení přes odkaz, přihlašovací údaje nebo i QR kód.</sub>
+
+</div>
+
+</details>
