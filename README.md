@@ -49,7 +49,7 @@ The app is built on MVVM. ViewModels drive async data fetching via Swift Concurr
 
 ## Requirements
 
-- iOS 17+
+- iOS 16.6+
 - Xcode 16+
 - Access to the backend API (credentials configured via `Config.plist`)
 
@@ -120,7 +120,7 @@ Aplikace je postavena na MVVM. ViewModely řídí asynchronní načítání dat 
 
 ## Požadavky
 
-- iOS 17+
+- iOS 16.6+
 - Xcode 16+
 - Přístup k backendovému API (přihlašovací údaje nakonfigurovány v `Config.plist`)
 

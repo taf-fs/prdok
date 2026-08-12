@@ -7,5 +7,7 @@
 		<string>cs</string>
 		<string>en</string>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
