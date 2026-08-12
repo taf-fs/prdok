@@ -19,6 +19,8 @@
 		63A323EB2EA4693300B9ED5A /* Exceptions for "prdok" folder in "prdok" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Config.example.plist,
+				DevCredentials.plist,
 				Info.plist,
 			);
 			target = 638A58B02E9BD8E90040E591 /* prdok */;
@@ -75,6 +77,7 @@
 				638A58AD2E9BD8E90040E591 /* Sources */,
 				638A58AE2E9BD8E90040E591 /* Frameworks */,
 				638A58AF2E9BD8E90040E591 /* Resources */,
+				63C1D0012EA4700000B9ED5A /* Copy DevCredentials (Debug only) */,
 			);
 			buildRules = (
 			);
@@ -140,6 +143,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		63C1D0012EA4700000B9ED5A /* Copy DevCredentials (Debug only) */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/prdok/DevCredentials.plist",
+			);
+			name = "Copy DevCredentials (Debug only)";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/DevCredentials.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# DevCredentials.plist is excluded from target membership so it never ships\n# in a Release build. Copy it into the bundle for Debug builds only.\nif [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n    exit 0\nfi\n\nSRC=\"${SRCROOT}/prdok/DevCredentials.plist\"\n\nif [ ! -f \"${SRC}\" ]; then\n    echo \"warning: ${SRC} not found. Create it to auto-fill dev credentials.\"\n    exit 0\nfi\n\ncp \"${SRC}\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		638A58AD2E9BD8E90040E591 /* Sources */ = {
