@@ -872,6 +872,7 @@
       }
     },
     "link.meetingMinutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1446,6 +1447,7 @@
       }
     },
     "settings.developer.userdefaults" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1494,6 +1496,7 @@
       }
     },
     "settings.sectionHeader.developer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

@@ -52,9 +52,9 @@ struct LinksView: View {
 //                LinkButton("link.waiter") {
 //                    activeSheet = .waiter
 //                }
-                LinkButton("link.meetingMinutes") {
-                    activeSheet = .meetingMinutes
-                }
+//                LinkButton("link.meetingMinutes") {
+//                    activeSheet = .meetingMinutes
+//                }
                 LinkButton("link.forum") {
                     activeSheet = .forum
                 }
