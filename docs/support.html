@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>prdok — Support / Podpora</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1c1c1e;
+    --muted: #6b6b70;
+    --rule: #e3e3e6;
+    --accent: #8a6a3d;
+    --card: #f6f6f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131315;
+      --fg: #ececf0;
+      --muted: #9b9ba3;
+      --rule: #2c2c31;
+      --accent: #d3ad74;
+      --card: #1c1c20;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 44rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .25rem; letter-spacing: -0.02em; }
+  h2 {
+    font-size: 1.25rem; margin: 2.5rem 0 .75rem; letter-spacing: -0.01em;
+    padding-top: 1.25rem; border-top: 1px solid var(--rule);
+  }
+  h3 { font-size: 1rem; margin: 1.5rem 0 .4rem; }
+  p, li { color: var(--fg); }
+  ul { padding-left: 1.25rem; }
+  li { margin: .35rem 0; }
+  a { color: var(--accent); }
+  .lede { color: var(--muted); margin: 0 0 2rem; }
+  .langbar { font-size: .9rem; color: var(--muted); margin-bottom: 2.5rem; }
+  .langbar a { text-decoration: none; }
+  .contact {
+    background: var(--card); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0;
+  }
+  .contact p:first-child { margin-top: 0; }
+  .contact p:last-child { margin-bottom: 0; }
+  footer {
+    margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+    color: var(--muted); font-size: .875rem;
+  }
+  hr.section-break { border: 0; border-top: 3px double var(--rule); margin: 4.5rem 0 3rem; }
+</style>
+</head>
+<body>
+<main>
+
+<!-- ══════════════════════════════ ENGLISH ══════════════════════════════ -->
+
+<h1 id="en">prdok — Support</h1>
+<p class="lede">Shift management for employees.</p>
+<p class="langbar"><strong>English</strong> · <a href="#cs">Čeština ↓</a></p>
+
+<div class="contact">
+  <p><strong>Need help?</strong> Email <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a> and describe what happened, which screen you were on, and your iPhone’s iOS version.</p>
+</div>
+
+<h2>Requirements</h2>
+<ul>
+  <li>iPhone running iOS 16.6 or later</li>
+  <li>An existing employee account in your workplace’s shift scheduling system</li>
+</ul>
+
+<h2>Getting started</h2>
+<p>The app has to be paired to your employee account before it can show anything. You can pair in three ways: scan a QR code, open a pairing link, or enter your credentials directly.</p>
+<p><strong>Pairing codes and links come from your workplace, not from us.</strong> If you don’t have one, ask your shift coordinator or manager. We have no access to the scheduling system and cannot create accounts, reset credentials, or look up your shifts.</p>
+
+<h2>Common problems</h2>
+
+<h3>Pairing fails or the link doesn’t work</h3>
+<p>sk for a fresh link or QR code, and check that you have a working internet connection. If a freshly issued link still fails, email us with the error message shown.</p>
+
+<h3>My shifts are missing or out of date</h3>
+<p>The app caches your schedule so it opens quickly and works offline, which means it can briefly show older data. Tap on the arrow above the calendar to force a refresh. If a shift is missing after refreshing, check whether the schedule has actually been published in the scheduling system — the app can only show what the system returns.</p>
+
+<h3>I’m not getting notifications</h3>
+<p>Check that notifications are enabled both in the app’s own Settings screen and in iOS Settings → Prdok → Notifications. The break timer needs notification permission in order to alert you.</p>
+
+<h3>Calendar export isn’t working</h3>
+<p>Calendar export needs calendar access, which iOS asks for the first time you use it. If you declined, enable it in iOS Settings → Prdok → Calendars. Export also requires a calendar you can write to — read-only subscribed calendars can’t be used.</p>
+
+<h3>I want to sign out or move to a different device</h3>
+<p>Open Settings in the app and choose <strong>Unpair</strong>. This clears the stored credentials from your device. You’ll need a new pairing code or link to pair again.</p>
+
+<h2>Privacy</h2>
+<p>The app talks only to your workplace’s scheduling system. There is no analytics, advertising or tracking of any kind. Full details are in the <a href="./">privacy policy</a>.</p>
+
+<h2>Contact</h2>
+<p><a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<hr class="section-break">
+
+<!-- ══════════════════════════════ ČEŠTINA ══════════════════════════════ -->
+
+<h1 id="cs">prdok — Podpora</h1>
+<p class="lede">Správa pracovních směn pro zaměstnance.</p>
+<p class="langbar"><a href="#en">↑ English</a> · <strong>Čeština</strong></p>
+
+<div class="contact">
+  <p><strong>Potřebuješ pomoc?</strong> Napiš na <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a> a popiš, co se stalo, na které obrazovce a jakou verzi iOS máš.</p>
+</div>
+
+<h2>Požadavky</h2>
+<ul>
+  <li>iPhone s iOS 16.6 nebo novějším</li>
+  <li>Existující zaměstnanecký účet v systému plánování směn tvého pracoviště</li>
+</ul>
+
+<h2>První spuštění</h2>
+<p>Aby aplikace mohla něco zobrazit, musí být spárovaná s tvým zaměstnaneckým účtem. Spárovat se dá třemi způsoby: naskenováním QR kódu, otevřením párovacího odkazu, nebo zadáním přihlašovacích údajů.</p>
+<p><strong>Párovací kódy a odkazy vydává tvoje pracoviště, ne my.</strong> Pokud žádný nemáš, obrať se na svého koordinátora směn nebo vedoucího. Do systému plánování směn nemáme přístup — nemůžeme zakládat účty, obnovovat přihlašovací údaje ani dohledávat tvoje směny.</p>
+
+<h2>Časté problémy</h2>
+
+<h3>Párování se nepodaří nebo odkaz nefunguje</h3>
+<p>Vyžádej si nový odkaz či QR kód a zkontroluj připojení k internetu. Pokud selže i nově vydaný odkaz, napiš nám a přilož chybovou zprávu, která se zobrazila.</p>
+
+<h3>Chybí mi směny nebo jsou neaktuální</h3>
+<p>Aplikace si rozvrh ukládá do vyrovnávací paměti, aby se rychle otevírala a fungovala i offline — proto může krátce zobrazovat starší data. Klepnutím na šipku nad kalendářem vynutíš načtení znovu. Pokud směna chybí i po obnovení, zkontroluj, jestli je rozvrh v systému skutečně zveřejněný. Aplikace umí zobrazit jen to, co jí systém vrátí.</p>
+
+<h3>Nedostávám upozornění</h3>
+<p>Zkontroluj, že jsou upozornění zapnutá jak v Nastavení v aplikaci, tak v Nastavení iOS → Prdok → Oznámení. Časovač pauzy potřebuje povolená oznámení, aby tě mohl upozornit.</p>
+
+<h3>Nefunguje export do kalendáře</h3>
+<p>Export potřebuje přístup ke kalendáři, o který iOS požádá při prvním použití. Pokud jsi ho odmítl, povol ho v Nastavení iOS → Prdok → Kalendáře. Export také vyžaduje kalendář, do kterého lze zapisovat — do odebíraných kalendářů určených jen ke čtení to nejde.</p>
+
+<h3>Chci se odhlásit nebo přejít na jiné zařízení</h3>
+<p>V aplikaci otevři Nastavení a zvol <strong>Odpárovat</strong>. Tím se z tvého zařízení smažou uložené přihlašovací údaje. Pro nové spárování budeš potřebovat nový párovací kód nebo odkaz.</p>
+
+<h2>Ochrana osobních údajů</h2>
+<p>Aplikace komunikuje výhradně se systémem plánování směn tvého pracoviště. Neobsahuje žádnou analytiku, reklamu ani sledování. Podrobnosti najdeš v <a href="./">zásadách ochrany osobních údajů</a>.</p>
+
+<h2>Kontakt</h2>
+<p><a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<footer>
+  prdok · <a href="./">Privacy Policy / Zásady ochrany osobních údajů</a>
+</footer>
+
+</main>
+</body>
+</html>
