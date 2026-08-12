@@ -64,7 +64,12 @@ final class ShiftCalendarSyncService {
     /// Keep this on MainActor since it may trigger a system prompt and is UI-adjacent.
     @MainActor
     func requestAccessIfNeeded() async throws {
-        let granted = try await store.requestAccess(to: .event)
+        let granted: Bool
+        if #available(iOS 17.0, *) {
+            granted = try await store.requestFullAccessToEvents()
+        } else {
+            granted = try await store.requestAccess(to: .event)
+        }
         guard granted else { throw ShiftCalendarServiceError.accessDenied }
     }
 
