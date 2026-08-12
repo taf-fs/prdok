@@ -83,6 +83,8 @@ struct SettingsView: View {
                     
 
                     
+                    #if DEBUG
+                    // Dumps stored credentials in plaintext — never ship this.
                     Section(header: Text("settings.sectionHeader.developer").font(.system(.body, design: .monospaced, weight: .bold))) {
                         NavigationLink {
                             DeveloperSettingsView()
@@ -91,6 +93,7 @@ struct SettingsView: View {
                         }
                     }
                     .listRowBackground(Color.cpBackgroundSecondary)
+                    #endif
 
                     Button {
                         showUnpairConfirmAlert = true

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// Debug-only: reads DevCredentials.plist and shows stored credentials in plaintext. Kept out of release builds
+#if DEBUG
+
 struct DeveloperSettingsView: View {
 
     private let keys: [String]
@@ -60,3 +63,5 @@ struct DeveloperSettingsView: View {
         DeveloperSettingsView()
     }
 }
+
+#endif
