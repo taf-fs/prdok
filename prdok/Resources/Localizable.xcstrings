@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(%lld planned)" : {
       "localizations" : {
         "cs" : {
@@ -1071,7 +1074,7 @@
       }
     },
     "pairingerror.pairingRejected" : {
-      "comment" : "Fallback when the server refused to pair without saying why",
+      "comment" : "Server refused to pair",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
