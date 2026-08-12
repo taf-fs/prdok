@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>prdok — Privacy Policy / Zásady ochrany osobních údajů</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1c1c1e;
+    --muted: #6b6b70;
+    --rule: #e3e3e6;
+    --accent: #8a6a3d;
+    --card: #f6f6f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131315;
+      --fg: #ececf0;
+      --muted: #9b9ba3;
+      --rule: #2c2c31;
+      --accent: #d3ad74;
+      --card: #1c1c20;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 44rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .25rem; letter-spacing: -0.02em; }
+  h2 {
+    font-size: 1.25rem; margin: 2.5rem 0 .75rem; letter-spacing: -0.01em;
+    padding-top: 1.25rem; border-top: 1px solid var(--rule);
+  }
+  h3 { font-size: 1rem; margin: 1.5rem 0 .4rem; }
+  p, li { color: var(--fg); }
+  ul { padding-left: 1.25rem; }
+  li { margin: .35rem 0; }
+  a { color: var(--accent); }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .875em; background: var(--card); padding: .1em .35em; border-radius: 4px;
+  }
+  .lede { color: var(--muted); margin: 0 0 2rem; }
+  .langbar { font-size: .9rem; color: var(--muted); margin-bottom: 2.5rem; }
+  .langbar a { text-decoration: none; }
+  .summary {
+    background: var(--card); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0;
+  }
+  .summary p:first-child { margin-top: 0; }
+  .summary p:last-child { margin-bottom: 0; }
+  footer {
+    margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+    color: var(--muted); font-size: .875rem;
+  }
+  hr.section-break { border: 0; border-top: 3px double var(--rule); margin: 4.5rem 0 3rem; }
+</style>
+</head>
+<body>
+<main>
+
+<!-- ══════════════════════════════ ENGLISH ══════════════════════════════ -->
+
+<h1 id="en">prdok — Privacy Policy</h1>
+<p class="lede">Last updated: 12 August 2026</p>
+<p class="langbar"><strong>English</strong> · <a href="#cs">Čeština ↓</a></p>
+
+<div class="summary">
+  <p><strong>In short:</strong> prdok is a client for the shift scheduling system operated by Lumpenkavárna s.r.o. The app talks only to that system. It has no servers of its own, no analytics, no advertising, and no tracking of any kind. Nothing you do in the app is shared with anyone other than your employer’s scheduling system, which you already use directly.</p>
+</div>
+
+<h2>1. Who is responsible for your data</h2>
+<p>The shift scheduling system that prdok connects to is operated by Lumpenkavárna s.r.o., who is the data controller for your employment and scheduling data. Any questions about how that data is collected, used or retained should be directed to them.</p>
+<p>prdok is an iOS app developed and published by David Horňák (“we”, “the developer”). The app acts on your behalf: it signs in to your employer’s system with credentials you provide during setup, displays the data that system returns, and sends back only the actions you explicitly take, such as offering your availability for a shift. We do not operate any server, database or backend for prdok, and we have no ability to see, collect or retain your data.</p>
+<p>Contact for questions about this policy: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<h2>2. What data the app handles</h2>
+
+<h3>Pairing identifiers</h3>
+<p>When you first set up prdok, you pair the app to your employee account by scanning a QR code, opening a pairing link, or entering your credentials. Your employer’s system returns a set of identifiers that identify you and your workplace. The app stores these on your device and includes them with each request so the system knows who is asking.</p>
+
+<h3>Shift and schedule data</h3>
+<p>The app requests your planned, actual and offered shifts, open shift slots, and related statistics from your employer’s system, and displays them. When you offer or withdraw availability for a shift, that action is sent to the same system.</p>
+
+<h3>Profile information</h3>
+<p>The app requests basic profile details — your display name, start date and recorded competencies — from your employer’s system so it can show them on the profile screen.</p>
+
+<h3>App settings</h3>
+<p>Your appearance preference (light, dark or system) and whether notifications are enabled are stored on your device only.</p>
+
+<h3>Camera</h3>
+<p>The app asks for camera access only when you choose to pair by scanning a QR code. The camera feed is processed on your device solely to read the code. No photo or video is recorded, stored or transmitted.</p>
+
+<h3>Calendar</h3>
+<p>The app asks for calendar access only if you choose to export your shifts to a calendar. If you grant it, the app writes shift events to the calendar you select and can later update or remove the events it created. It identifies its own events by a marker it writes into the event notes, and it does not use, read or transmit any other calendar content.</p>
+
+<h3>Notifications</h3>
+<p>Any notifications are scheduled locally on your device. The app does not use push notifications and no notification data leaves your device.</p>
+
+<h3>Embedded web pages</h3>
+<p>Some screens display pages from your employer’s system inside the app. These pages behave as they would in a browser and are subject to your employer’s own privacy practices.</p>
+
+<h2>3. Where your data goes</h2>
+<p>Only to your employer’s scheduling system at cafe.prostoru.cz, over an encrypted HTTPS connection.</p>
+<p>The app contains no analytics, crash reporting, advertising or attribution SDKs. It does not contact any other service. It does not track you across apps or websites, and it does not sell or share your data with anyone. The two open source components it uses — HorizonCalendar for the calendar layout and CodeScanner for QR scanning — are user interface libraries that perform no networking and collect nothing.</p>
+
+<h2>4. What is stored on your device</h2>
+<ul>
+  <li>Your pairing identifiers and app settings, in the app’s private storage area.</li>
+  <li>A cache of recently viewed shift and open-day data, stored as files in the app’s cache directory so the app can display your schedule quickly and while offline.</li>
+</ul>
+<p>This data stays within the app’s private container, which iOS isolates from other apps. Note that it is stored unencrypted within that container and may be included in your device backups. Using <strong>Unpair</strong> in Settings clears the stored identifiers, and deleting the app removes everything the app has stored.</p>
+
+<h2>5. Legal basis for processing</h2>
+<p>Processing of your scheduling data by Lumpenkavárna s.r.o. takes place in the context of your employment relationship, and the legal basis for it is determined by them as controller — typically the performance of your employment contract or their legitimate interest in organising work schedules (Article 6(1)(b) and 6(1)(f) GDPR).</p>
+<p>The app itself processes data only on your device and only to carry out the actions you request, at your initiative.</p>
+
+<h2>6. Retention</h2>
+<p>Data held on your device stays there until you unpair or delete the app. Retention of data within your employer’s scheduling system is determined by Lumpenkavárna s.r.o. and is described in their own privacy information.</p>
+
+<h2>7. Your rights</h2>
+<p>Under the GDPR you have the right to access your personal data, to have it corrected or erased, to restrict or object to its processing, and to data portability. Because your scheduling data is held by your employer’s system, please direct these requests to Lumpenkavárna s.r.o.</p>
+<p>For anything relating to the app itself, contact us at <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a>. You also have the right to lodge a complaint with the Czech data protection authority, the Office for Personal Data Protection (Úřad pro ochranu osobních údajů, <a href="https://www.uoou.cz">uoou.cz</a>).</p>
+
+<h2>8. Children</h2>
+<p>prdok is a workplace tool intended for employees. It is not directed at children and we do not knowingly process children’s data.</p>
+
+<h2>9. Changes to this policy</h2>
+<p>If this policy changes, the updated version will be published at this address with a new “Last updated” date.</p>
+
+<h2>10. Contact</h2>
+<p>Questions about this policy or the app: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<hr class="section-break">
+
+<!-- ══════════════════════════════ ČEŠTINA ══════════════════════════════ -->
+
+<h1 id="cs">prdok — Zásady ochrany osobních údajů</h1>
+<p class="lede">Naposledy aktualizováno: 12. srpna 2026</p>
+<p class="langbar"><a href="#en">↑ English</a> · <strong>Čeština</strong></p>
+
+<div class="summary">
+  <p><strong>Stručně:</strong> prdok je klientská aplikace pro systém plánování směn, který provozuje Lumpenkavárna s.r.o. Aplikace komunikuje výhradně s tímto systémem. Nemá vlastní servery, neobsahuje žádnou analytiku ani reklamu a nijak vás nesleduje. Nic z toho, co v aplikaci děláte, se nepředává nikomu jinému než systému vašeho zaměstnavatele, který už tak jako tak používáte.</p>
+</div>
+
+<h2>1. Kdo za vaše údaje odpovídá</h2>
+<p>Systém plánování směn, ke kterému se prdok připojuje, provozuje Lumpenkavárna s.r.o., která je správcem vašich pracovních a rozvrhových údajů. Dotazy k tomu, jak jsou tyto údaje shromažďovány, používány a uchovávány, směřujte na ni.</p>
+<p>prdok je aplikace pro iOS, kterou vyvíjí a vydává David Horňák („vývojář“). Aplikace jedná vaším jménem: přihlásí se do systému vašeho zaměstnavatele pomocí údajů, které zadáte při prvním nastavení, zobrazí data, která systém vrátí, a odesílá zpět pouze akce, které sami provedete — například nabídnutí dostupnosti na směnu. Pro aplikaci prdok neprovozujeme žádný server, databázi ani backend a nemáme možnost vaše údaje vidět, shromažďovat ani uchovávat.</p>
+<p>Kontakt pro dotazy k těmto zásadám: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<h2>2. Jaké údaje aplikace zpracovává</h2>
+
+<h3>Párovací identifikátory</h3>
+<p>Při prvním nastavení spárujete aplikaci se svým zaměstnaneckým účtem naskenováním QR kódu, otevřením párovacího odkazu nebo zadáním přihlašovacích údajů. Systém zaměstnavatele vrátí sadu identifikátorů, které určují vás a vaše pracoviště. Aplikace je uloží do zařízení a přikládá je ke každému požadavku, aby systém věděl, kdo se ptá.</p>
+
+<h3>Údaje o směnách a rozvrhu</h3>
+<p>Aplikace si ze systému zaměstnavatele vyžádá vaše plánované, skutečné a nabídnuté směny, volné směny a související statistiky a zobrazí je. Když nabídnete nebo odeberete svou dostupnost, odešle se tato akce do téhož systému.</p>
+
+<h3>Profilové údaje</h3>
+<p>Aplikace si ze systému zaměstnavatele vyžádá základní profilové údaje — zobrazované jméno, datum nástupu a evidované kompetence — aby je mohla zobrazit na obrazovce profilu.</p>
+
+<h3>Nastavení aplikace</h3>
+<p>Volba vzhledu (světlý, tmavý nebo podle systému) a informace o tom, zda jsou zapnutá upozornění, se ukládají pouze do vašeho zařízení.</p>
+
+<h3>Fotoaparát</h3>
+<p>Aplikace požádá o přístup k fotoaparátu pouze tehdy, když se rozhodnete spárovat zařízení naskenováním QR kódu. Obraz se zpracovává přímo v zařízení výhradně za účelem načtení kódu. Žádná fotografie ani video se neukládá ani neodesílá.</p>
+
+<h3>Kalendář</h3>
+<p>Aplikace požádá o přístup ke kalendáři pouze tehdy, když si zvolíte export směn do kalendáře. Pokud přístup udělíte, zapíše aplikace události do kalendáře, který vyberete, a může je později aktualizovat nebo odstranit. Své vlastní události pozná podle značky, kterou si zapisuje do poznámky události; žádný jiný obsah kalendáře nepoužívá, nečte ani neodesílá.</p>
+
+<h3>Upozornění</h3>
+<p>Veškerá upozornění se plánují lokálně ve vašem zařízení. Aplikace nepoužívá push notifikace a žádná data o upozorněních zařízení neopouštějí.</p>
+
+<h3>Vložené webové stránky</h3>
+<p>Některé obrazovky zobrazují stránky ze systému vašeho zaměstnavatele přímo v aplikaci. Tyto stránky se chovají stejně jako v prohlížeči a vztahují se na ně zásady ochrany údajů vašeho zaměstnavatele.</p>
+
+<h2>3. Kam vaše údaje putují</h2>
+<p>Pouze do systému plánování směn vašeho zaměstnavatele na adrese cafe.prostoru.cz, a to prostřednictvím šifrovaného spojení HTTPS.</p>
+<p>Aplikace neobsahuje žádnou analytiku, hlášení pádů, reklamní ani atribuční SDK. Nekontaktuje žádnou jinou službu. Nesleduje vás napříč aplikacemi ani weby a vaše údaje nikomu neprodává ani nepředává. Dvě open source komponenty, které používá — HorizonCalendar pro rozvržení kalendáře a CodeScanner pro čtení QR kódů — jsou knihovny uživatelského rozhraní, které nekomunikují po síti a nic neshromažďují.</p>
+
+<h2>4. Co je uloženo ve vašem zařízení</h2>
+<ul>
+  <li>Párovací identifikátory a nastavení aplikace v soukromém úložišti aplikace.</li>
+  <li>Vyrovnávací paměť naposledy zobrazených směn a volných dnů, uložená jako soubory, aby se rozvrh zobrazoval rychle a fungoval i bez připojení.</li>
+</ul>
+<p>Tyto údaje zůstávají v soukromém kontejneru aplikace, který iOS odděluje od ostatních aplikací. Uvnitř tohoto kontejneru jsou uloženy nešifrovaně a mohou být součástí zálohy vašeho zařízení. Volbou <strong>Odpárovat</strong> v Nastavení se uložené identifikátory smažou; odinstalací aplikace se odstraní vše, co si aplikace uložila.</p>
+
+<h2>5. Právní základ zpracování</h2>
+<p>Zpracování údajů o vašem rozvrhu ze strany Lumpenkavárna s.r.o. probíhá v rámci vašeho pracovněprávního vztahu a právní základ určuje tento subjekt jako správce — zpravidla plnění pracovní smlouvy nebo oprávněný zájem na organizaci pracovních rozvrhů (čl. 6 odst. 1 písm. b) a f) GDPR).</p>
+<p>Samotná aplikace zpracovává údaje pouze ve vašem zařízení a pouze za účelem provedení akcí, o které sami požádáte.</p>
+
+<h2>6. Doba uchování</h2>
+<p>Údaje uložené ve vašem zařízení tam zůstávají, dokud zařízení neodpárujete nebo aplikaci nesmažete. Dobu uchování údajů v systému plánování směn určuje Lumpenkavárna s.r.o. a je popsána v jejích vlastních informacích o ochraně osobních údajů.</p>
+
+<h2>7. Vaše práva</h2>
+<p>Podle GDPR máte právo na přístup ke svým osobním údajům, na jejich opravu nebo výmaz, na omezení zpracování, na vznesení námitky proti zpracování a na přenositelnost údajů. Protože údaje o vašem rozvrhu jsou uloženy v systému zaměstnavatele, obracejte se s těmito žádostmi na Lumpenkavárna s.r.o.</p>
+<p>Ve věcech týkajících se samotné aplikace nás kontaktujte na <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a>. Máte rovněž právo podat stížnost u Úřadu pro ochranu osobních údajů (<a href="https://www.uoou.cz">uoou.cz</a>).</p>
+
+<h2>8. Děti</h2>
+<p>prdok je pracovní nástroj určený zaměstnancům. Není určen dětem a vědomě nezpracováváme údaje dětí.</p>
+
+<h2>9. Změny těchto zásad</h2>
+<p>Pokud se tyto zásady změní, bude na této adrese zveřejněna aktualizovaná verze s novým datem poslední aktualizace.</p>
+
+<h2>10. Kontakt</h2>
+<p>Dotazy k těmto zásadám nebo k aplikaci: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
+
+<footer>
+  prdok · <a href="https://github.com/taf-fs/prdok">github.com/taf-fs/prdok</a>
+</footer>
+
+</main>
+</body>
+</html>
