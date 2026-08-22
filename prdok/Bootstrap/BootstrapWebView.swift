@@ -8,6 +8,15 @@
 import SwiftUI
 import SafariServices
 
+/// Invisible one-shot load of `nasi/zamestnanci.php` with the full `ids`+`id`+`provoz`
+/// credentials, run behind `BootstrapCover` on every launch of a paired app.
+///
+/// Its purpose is the server-side session it establishes: portal pages opened later
+/// *without* credentials in the URL - `dnes.php` (the "who is on shift" sheet in
+/// `TodayView`) and other pages  are authorized only by that session token and
+/// show "access restricted" without it. The session cookie lives in Safari's cookie store,
+/// which is why this and other sheets must use `SFSafariViewController` instead of `WKWebView`.
+
 struct BootstrapWebView: UIViewControllerRepresentable {
     @AppStorage("id") private var id: String?
     @AppStorage("ids") private var ids: String?
