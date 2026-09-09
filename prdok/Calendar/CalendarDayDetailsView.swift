@@ -15,7 +15,11 @@ final class CalendarDayDetailsViewModel: ObservableObject {
     
     @Published var isRemovingOfferedShift: Bool = false
     @Published var isOfferingShift: Bool = false
-    
+
+    /// False until the day's shifts have been fetched at least once. Without it an empty
+    /// `offeredShifts` is ambiguous.
+    @Published var hasLoadedShifts: Bool = false
+
     var shifts: [Shift] = []
     let repo = ShiftRepository()
     
@@ -39,6 +43,7 @@ final class CalendarDayDetailsViewModel: ObservableObject {
                     self.actualShifts = allShifts.filter {
                         $0.kind == .actual && $0.dayStart == dayStart
                     }
+                    self.hasLoadedShifts = true
                 }
             } catch {
                 // TODO: you may want some error handling here
@@ -83,7 +88,13 @@ final class CalendarDayDetailsViewModel: ObservableObject {
         guard startHour < endHour else {
             return .failure(ShiftActionError.invalidTimeRange)
         }
-        
+        // The backend inserts without checking for an existing možnost on the day, so a second
+        // offer would silently create a duplicate the sheet can only remove one half of.
+        let dayStart = Calendar.current.startOfDay(for: date)
+        guard !offeredShifts.contains(where: { $0.kind == .offered && $0.dayStart == dayStart }) else {
+            return .failure(ShiftActionError.offeredShiftAlreadyExists)
+        }
+
         isOfferingShift = true
         defer { isOfferingShift = false }
         
@@ -130,9 +141,14 @@ struct CalendarDayDetailsView: View {
     private var canRemoveOfferedShift: Bool {
         offeredShiftForBoundDate != nil && !vm.isRemovingOfferedShift
     }
-    
+
+    /// A day accepts an offer only once, and only after we know what it already holds.
+    private var canOfferShift: Bool {
+        vm.hasLoadedShifts && offeredShiftForBoundDate == nil
+    }
+
     private var canSubmitOffer: Bool {
-        !vm.isOfferingShift && !vm.isRemovingOfferedShift && startHour < endHour && date != nil
+        canOfferShift && !vm.isOfferingShift && !vm.isRemovingOfferedShift && startHour < endHour && date != nil
     }
     
     var fulldate: String {
@@ -194,7 +210,7 @@ struct CalendarDayDetailsView: View {
                                 .fontWeight(.semibold)
                                 .underline()
                         }
-                        .disabled(selectedDetent == .large)
+                        .disabled(selectedDetent == .large || !vm.hasLoadedShifts)
                     }
                 }
                 ShiftIndicatorView(
@@ -317,14 +333,17 @@ struct CalendarDayDetailsView: View {
         .padding(24)
         .frame(maxWidth: .infinity)
         .onChange(of: selectedDetent) { newValue in
-            if selectedDetent == .medium {
-                withAnimation {
-                    isShiftSelectorShown = false
-                }
-            } else {
-                withAnimation {
-                    isShiftSelectorShown = true
-                }
+            // The detent is also user-draggable, so this runs without the offer button ever
+            // being tapped — hence the eligibility check rather than a plain toggle.
+            withAnimation {
+                isShiftSelectorShown = (selectedDetent != .medium) && canOfferShift
+            }
+        }
+        .onChange(of: vm.offeredShifts) { _ in
+            // A late fetch (or a removal) can change eligibility after the picker was opened.
+            guard !canOfferShift else { return }
+            withAnimation {
+                isShiftSelectorShown = false
             }
         }
         .onAppear {
@@ -342,6 +361,7 @@ enum ShiftActionError: Error, LocalizedError, Equatable {
     case noDateSelected
     case invalidTimeRange
     case noOfferedShiftToRemove
+    case offeredShiftAlreadyExists
     case shiftNotFoundOnServer
     case serverRejected(message: String)
     case unexpectedServerResponse(message: String?)
@@ -356,6 +376,8 @@ enum ShiftActionError: Error, LocalizedError, Equatable {
             return NSLocalizedString("shiftAction.error.invalidTimeRange", comment: "Start must be before end.")
         case .noOfferedShiftToRemove:
             return NSLocalizedString("shiftAction.error.noOfferedShiftToRemove", comment: "No offered shift exists for this day.")
+        case .offeredShiftAlreadyExists:
+            return NSLocalizedString("shiftAction.error.offeredShiftAlreadyExists", comment: "The day already has an offered shift.")
         case .shiftNotFoundOnServer:
             return NSLocalizedString("shiftAction.error.shiftNotFoundOnServer", comment: "Shift to remove was not found on server.")
         case .serverRejected(let message):
