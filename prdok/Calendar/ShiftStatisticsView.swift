@@ -135,13 +135,13 @@ struct ShiftStatisticsView: View {
         VStack(spacing: 12) {
             // Weekend hours requirement (single)
             RequirementRow(
-                label: "Weekend hours",
+                label: "shiftStats.weekendHours",
                 requirement: requirementWeekendOfferedHours
             )
             
             // Closing shifts requirement (OR)
             OrRequirementRow(
-                label: "Closing shifts",
+                label: "shiftStats.closingShifts",
                 offered: requirementClosingShifts.offered,
                 actual: requirementClosingShifts.actual,
                 plannedCount: plannedClosingShiftsCount
@@ -149,7 +149,7 @@ struct ShiftStatisticsView: View {
             
             // Total hours requirement (OR)
             OrRequirementRow(
-                label: "Total",
+                label: "shiftStats.totalHours",
                 offered: requirementTotalHours.offered,
                 actual: requirementTotalHours.actual
             )
@@ -175,7 +175,7 @@ private struct RequirementRow: View {
                 .font(.system(.body, design: .monospaced))
                 .fontWeight(.regular)
                 .foregroundStyle(requirement.met ? Color.green : Color.cpForegroundPrimary)
-            Text("off.")
+            Text("shiftStats.suffix.offered")
                 .font(.system(.caption, design: .monospaced))
                 .fontWeight(.regular)
                 .foregroundStyle(Color.cpForegroundPrimary)
@@ -204,7 +204,7 @@ private struct OrRequirementRow: View {
                     .foregroundStyle(isRequirementMet ? Color.green : Color.cpForegroundSecondary)
                 
                 if let plannedCount {
-                    Text("(\(plannedCount) planned)")
+                    Text("shiftStats.plannedInline\(plannedCount)")
                         .minimumScaleFactor(0.5)  // allows text to scale down to 50% of font size
                         .lineLimit(1)
                         .font(.system(.caption, design: .monospaced))
@@ -221,12 +221,12 @@ private struct OrRequirementRow: View {
                     .fontWeight(.regular)
                     .foregroundStyle(actual.met ? Color.green : Color.cpForegroundPrimary)
                 
-                Text("done")
+                Text("shiftStats.suffix.actual")
                     .font(.system(.caption, design: .monospaced))
                     .fontWeight(.regular)
                     .foregroundStyle(Color.cpForegroundPrimary)
                 
-                Text("or")
+                Text("shiftStats.or")
                     .font(.system(.caption, design: .serif))
                     .fontWeight(.regular)
                     .foregroundStyle(Color.cpForegroundSecondary)
@@ -236,7 +236,7 @@ private struct OrRequirementRow: View {
                     .fontWeight(.regular)
                     .foregroundStyle(offered.met ? Color.green : Color.cpForegroundPrimary)
                 
-                Text("off.")
+                Text("shiftStats.suffix.offered")
                     .font(.system(.caption, design: .monospaced))
                     .fontWeight(.regular)
                     .foregroundStyle(Color.cpForegroundPrimary)

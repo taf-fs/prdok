@@ -4,16 +4,6 @@
     "" : {
 
     },
-    "(%lld planned)" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(%lld plán.)"
-          }
-        }
-      }
-    },
     "bootstrap.loading" : {
       "localizations" : {
         "cs" : {
@@ -610,16 +600,6 @@
     "Clear all cache" : {
       "shouldTranslate" : false
     },
-    "Closing shifts" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zavíračky"
-          }
-        }
-      }
-    },
     "connect.credentials.button.connect" : {
       "comment" : "Connect button label",
       "localizations" : {
@@ -772,16 +752,6 @@
         }
       }
     },
-    "done" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "odp."
-          }
-        }
-      }
-    },
     "Error: %@" : {
       "shouldTranslate" : false
     },
@@ -920,6 +890,9 @@
         }
       }
     },
+    "Loading" : {
+
+    },
     "loading.connecting" : {
       "localizations" : {
         "cs" : {
@@ -939,16 +912,6 @@
     "No shifts loaded" : {
       "shouldTranslate" : false
     },
-    "off." : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "nab."
-          }
-        }
-      }
-    },
     "offer shifts" : {
       "localizations" : {
         "cs" : {
@@ -961,16 +924,6 @@
     },
     "OK" : {
       "shouldTranslate" : false
-    },
-    "or" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "nebo"
-          }
-        }
-      }
     },
     "pairingerror.invalidQR" : {
       "comment" : "Invalid QR error",
@@ -2045,6 +1998,118 @@
         }
       }
     },
+    "shiftStats.closingShifts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavíračky"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closing shifts"
+          }
+        }
+      }
+    },
+    "shiftStats.or" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nebo"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "or"
+          }
+        }
+      }
+    },
+    "shiftStats.plannedInline%lld" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld plán.)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld plan.)"
+          }
+        }
+      }
+    },
+    "shiftStats.suffix.actual" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "odp."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "done"
+          }
+        }
+      }
+    },
+    "shiftStats.suffix.offered" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nab."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "off."
+          }
+        }
+      }
+    },
+    "shiftStats.totalHours" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
+    },
+    "shiftStats.weekendHours" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Víkendových hodin"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weekend hours"
+          }
+        }
+      }
+    },
     "simplePause.notification.endTime %@" : {
       "localizations" : {
         "cs" : {
@@ -2401,32 +2466,12 @@
         }
       }
     },
-    "Total" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Celkem"
-          }
-        }
-      }
-    },
     "upload to calendar" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "nahrát do kalendáře"
-          }
-        }
-      }
-    },
-    "Weekend hours" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Víkendových hodin"
           }
         }
       }
