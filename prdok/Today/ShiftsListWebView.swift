@@ -8,6 +8,12 @@
 import SwiftUI
 import SafariServices
 
+/// Drives `.sheet(item:)` with the day to open, so the sheet never shows before its date is set.
+struct ShiftsListWebItem: Identifiable {
+    let id = UUID()
+    let date: Date
+}
+
 struct ShiftsListWebView: UIViewControllerRepresentable {
     let date: Date
     

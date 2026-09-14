@@ -106,7 +106,7 @@ struct CalendarView: View {
     @State var selectedDetent: PresentationDetent = .medium
     
     // Web sheet driven by the actual selected date (avoids race between Bool (day sheet) + payload)
-    @State private var plannedShiftsWebItem: PlannedShiftsWebItem?
+    @State private var plannedShiftsWebItem: ShiftsListWebItem?
     
     @State private var toastIsPresented: Bool = false
     @State private var toastMessage: String = ""
@@ -306,7 +306,7 @@ struct CalendarView: View {
                     }
                     
                     FreeShiftsListView(vm: freeShiftsVM) { date in
-                        plannedShiftsWebItem = PlannedShiftsWebItem(date: date)
+                        plannedShiftsWebItem = ShiftsListWebItem(date: date)
                     }
                     .padding(.top, 8)
 
@@ -431,7 +431,7 @@ struct CalendarView: View {
         // then drive web sheet with an item payload.
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 250_000_000)
-            plannedShiftsWebItem = PlannedShiftsWebItem(date: date)
+            plannedShiftsWebItem = ShiftsListWebItem(date: date)
         }
     }
     
@@ -526,11 +526,6 @@ struct CalendarView: View {
         calendarStartBound = start
         calendarEndBound = end
     }
-}
-
-private struct PlannedShiftsWebItem: Identifiable {
-    let id = UUID()
-    let date: Date
 }
 
 private struct ToastBanner: View {

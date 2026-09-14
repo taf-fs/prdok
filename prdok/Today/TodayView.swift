@@ -43,6 +43,8 @@ struct TodayView: View {
     @StateObject private var vm = TodayViewModel()
     @State var selectedDate: Date = Date()
     @State private var showWebView = false
+    /// A day tapped in the upcoming shifts; separate from `showWebView`, which picks its own date.
+    @State private var dayWebItem: ShiftsListWebItem?
 
     var body: some View {
         NavigationStack {
@@ -53,8 +55,10 @@ struct TodayView: View {
                     SimplePauseTimerView()
                         .padding(.horizontal, 16)
 
-                    UpcomingShiftsListView(shifts: vm.shifts, bottomInset: proxy.safeAreaInsets.bottom)
-                        .padding(.horizontal, 16)
+                    UpcomingShiftsListView(shifts: vm.shifts, bottomInset: proxy.safeAreaInsets.bottom) { date in
+                        dayWebItem = ShiftsListWebItem(date: date)
+                    }
+                    .padding(.horizontal, 16)
                 }
                 .background {
                     Color.cpBackgroundSecondary
@@ -71,6 +75,9 @@ struct TodayView: View {
                 if !isBootstrapping {
                     vm.fetch(date: Date())
                 }
+            }
+            .sheet(item: $dayWebItem) { item in
+                ShiftsListWebView(date: item.date)
             }
             .alert(vm.error ?? "", isPresented: $vm.showErrorAlert) {
                 Button("OK", role: .cancel) { }
