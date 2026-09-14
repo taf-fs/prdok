@@ -117,21 +117,35 @@ final class CalendarDayDetailsViewModel: ObservableObject {
 
 struct CalendarDayDetailsView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    @StateObject var vm = CalendarDayDetailsViewModel()
+
+    @StateObject var vm: CalendarDayDetailsViewModel
     @Binding var date: Date?
 
     @Binding var selectedDetent: PresentationDetent
     @State var isShiftSelectorShown: Bool = false
     @State var startHour: Int = 7
     @State var endHour: Int = 25
-    
+
     /// (success, message)
     var onActionFinished: (Bool, String) -> Void = { _, _ in }
-    
+
     /// Lifted action: parent will dismiss this sheet and present the web sheet separately.
     var onShowPlannedShifts: (Date) -> Void = { _ in }
-    
+
+    init(
+        vm: CalendarDayDetailsViewModel = CalendarDayDetailsViewModel(),
+        date: Binding<Date?>,
+        selectedDetent: Binding<PresentationDetent>,
+        onActionFinished: @escaping (Bool, String) -> Void = { _, _ in },
+        onShowPlannedShifts: @escaping (Date) -> Void = { _ in }
+    ) {
+        self._vm = StateObject(wrappedValue: vm)
+        self._date = date
+        self._selectedDetent = selectedDetent
+        self.onActionFinished = onActionFinished
+        self.onShowPlannedShifts = onShowPlannedShifts
+    }
+
     private var offeredShiftForBoundDate: Shift? {
         guard let date else { return nil }
         let dayStart = Calendar.current.startOfDay(for: date)
@@ -401,11 +415,20 @@ private struct CalendarDayDetailsSheetPreviewContainer: View {
     @State private var isPresented = true
     @State private var date: Date? = calendar.date(byAdding: .day, value: 60, to: Date())
     @State private var selectedDetent: PresentationDetent = .medium
-    
+
+    // The real view model gates the picker behind `hasLoadedShifts`,
+    // The preview environment has no session to do. Mark it loaded up front so the canvas can actually
+    // show the picker instead of getting stuck disabled.
+    private var previewViewModel: CalendarDayDetailsViewModel {
+        let vm = CalendarDayDetailsViewModel()
+        vm.hasLoadedShifts = true
+        return vm
+    }
+
     var body: some View {
         Color.clear
             .sheet(isPresented: $isPresented) {
-                CalendarDayDetailsView(date: $date, selectedDetent: $selectedDetent)
+                CalendarDayDetailsView(vm: previewViewModel, date: $date, selectedDetent: $selectedDetent)
                     .presentationDetents([.medium, .large], selection: $selectedDetent)
             }
     }
