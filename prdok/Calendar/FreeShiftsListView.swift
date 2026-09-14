@@ -64,7 +64,7 @@ struct FreeShiftsListView: View {
         } else if vm.shifts.isEmpty {
             centered { note("today.freeShifts.empty") }
         } else {
-            ShiftDayTimeline(entries: vm.shifts.map(\.timelineEntry), onOpenDay: onOpenDay)
+            ShiftDayTimeline(entries: vm.shifts.map(\.timelineEntry), background: .cpBackgroundSecondary, onOpenDay: onOpenDay)
         }
     }
 
@@ -143,9 +143,10 @@ private func previewShift(_ id: Int, day: Int, from: Int, to: Int, role: FreeShi
                 previewShift(11, day: 25, from: 16, to: 18),
                 previewShift(12, day: 25, from: 0, to: 1),
             ].map(\.timelineEntry),
+            background: .cpBackgroundSecondary,
             onOpenDay: { _ in }
         )
         .padding()
     }
-    .background(Color.cpBackgroundPrimary)
+    .background(Color.cpBackgroundSecondary)
 }

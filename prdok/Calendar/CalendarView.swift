@@ -143,180 +143,191 @@ struct CalendarView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 0) {
-                    Text("calendar.title")
-                        .font(.system(.largeTitle, design: .monospaced))
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 16)
-                    
-                    HStack {
-                        Text(currentMonthLabel)
-                            .font(.system(.title2, design: .monospaced))
+                    VStack(spacing: 0) {
+                        Text("calendar.title")
+                            .font(.system(.largeTitle, design: .monospaced))
                             .fontWeight(.semibold)
-                        Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom, 16)
+                    
                         HStack {
-                            PrevMonthButton {
-                                let baseComponents = displayedMonth
-                                if let baseDate = calendar.date(from: baseComponents) {
-                                    let target = calendar.date(byAdding: .month, value: -1, to: baseDate)!
-                                    scrollToMonthAndUpdateState(dateContainingMonth: target)
+                            Text(currentMonthLabel)
+                                .font(.system(.title2, design: .monospaced))
+                                .fontWeight(.semibold)
+                            Spacer()
+                            HStack {
+                                PrevMonthButton {
+                                    let baseComponents = displayedMonth
+                                    if let baseDate = calendar.date(from: baseComponents) {
+                                        let target = calendar.date(byAdding: .month, value: -1, to: baseDate)!
+                                        scrollToMonthAndUpdateState(dateContainingMonth: target)
+                                    }
                                 }
-                            }
-                            .disabled(isRefreshingMonth)
+                                .disabled(isRefreshingMonth)
                             
-                            NextMonthButton {
-                                let baseComponents = displayedMonth
-                                if let baseDate = calendar.date(from: baseComponents) {
-                                    let target = calendar.date(byAdding: .month, value: 1, to: baseDate)!
-                                    scrollToMonthAndUpdateState(dateContainingMonth: target)
+                                NextMonthButton {
+                                    let baseComponents = displayedMonth
+                                    if let baseDate = calendar.date(from: baseComponents) {
+                                        let target = calendar.date(byAdding: .month, value: 1, to: baseDate)!
+                                        scrollToMonthAndUpdateState(dateContainingMonth: target)
+                                    }
                                 }
-                            }
-                            .disabled(isRefreshingMonth)
+                                .disabled(isRefreshingMonth)
                             
-                            RefreshMonthButton(isRefreshing: isRefreshingMonth) {
-                                Task { @MainActor in
-                                    await refreshDisplayedMonth()
+                                RefreshMonthButton(isRefreshing: isRefreshingMonth) {
+                                    Task { @MainActor in
+                                        await refreshDisplayedMonth()
+                                    }
                                 }
                             }
                         }
-                    }
                     
-                    CalendarViewRepresentable(
-                        calendar: calendar,
-                        visibleDateRange: calendarStartBound...calendarEndBound,
-                        monthsLayout: .horizontal(options: HorizontalMonthsLayoutOptions()),
-                        dataDependency: (selectedDate, vm.plannedDays, vm.offeredDays, vm.actualDays),
-                        proxy: proxy
-                    )
-                    .dayOfWeekHeaders { month, index in
-                        Text(dayOfWeekName(index: index).uppercased())
-                            .font(.system(size: 12, design: .monospaced))
-                            .foregroundStyle(Color.cpForegroundMuted)
-                    }
-                    .days { day in
-                        let date = calendar.date(from: day.components)!
-                        let isToday = calendar.isDateInToday(date)
-                        let backgroundOpacity: Double = getBackgroundOpacity(date: date)
-
-                        let dayKey = calendar.startOfDay(for: date)
-                        let hasPlannedShift = vm.plannedDays.contains(dayKey)
-                        let hasOfferedShift = vm.offeredDays.contains(dayKey)
-                        let hasActualShift = vm.actualDays.contains(dayKey)
-
-                        CalendarDayCell(
-                            dayNumber: day.day,
-                            isToday: isToday,
-                            hasPlannedShift: hasPlannedShift,
-                            hasOfferedShift: hasOfferedShift,
-                            hasActualShift: hasActualShift,
-                            backgroundOpacity: backgroundOpacity
-                        ) {
-                            selectedDate = date
-                            selectedDetent = .medium
-                            daySheetIsPresented = true
-                        }
-                    }
-                    .monthHeaders { content in
-                        // empty view
-                    }
-                    .onDeceleratingEnd { visibleDayRange in
-                        displayedMonth = visibleDayRange.lowerBound.components
-                        if let dateContainingMonth = calendar.date(from: displayedMonth) {
-                            setVisibleRange(around: dateContainingMonth)
-                            Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
-                            Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
-                        }
-                        let month = displayedMonth
-                        Task { await vm.checkYear(displayedMonthAndYear: month) }
-                    }
-                    .backgroundColor(.cpBackgroundPrimary)
-                    .disabled(isRefreshingMonth)
-                    .onAppear {
-                        let today = Date()
-                        selectedDate = today
-                        scrollToMonthAndUpdateState(dateContainingMonth: today, animated: false)
-                        Task { await vm.loadShiftsForYear(dateContainingYear: today) }
-                    }
-                    .sheet(isPresented: $daySheetIsPresented) {
-                        CalendarDayDetailsView(
-                            date: $selectedDate,
-                            selectedDetent: $selectedDetent,
-                            onActionFinished: handleActionFinished(success:message:),
-                            onShowPlannedShifts: handleShowPlannedShifts(date:)
+                        CalendarViewRepresentable(
+                            calendar: calendar,
+                            visibleDateRange: calendarStartBound...calendarEndBound,
+                            monthsLayout: .horizontal(options: HorizontalMonthsLayoutOptions()),
+                            dataDependency: (selectedDate, vm.plannedDays, vm.offeredDays, vm.actualDays),
+                            proxy: proxy
                         )
-                        .presentationDetents([.medium, .large], selection: $selectedDetent)
-                    }
-                    .sheet(item: $plannedShiftsWebItem) { item in
-                        ShiftsListWebView(date: item.date)
-                    }
-                    
-                    HStack {
-                        Button {
-                            offerShiftSheetIsPresented = true
-                        } label: {
-                            Text("offer shifts")
-                                .minimumScaleFactor(0.5)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity)
+                        .dayOfWeekHeaders { month, index in
+                            Text(dayOfWeekName(index: index).uppercased())
+                                .font(.system(size: 12, design: .monospaced))
+                                .foregroundStyle(Color.cpForegroundMuted)
                         }
-                        
-                        Button {
-                            exportSheetIsPresented = true
-                        } label: {
-                            Text("upload to calendar")
-                                .minimumScaleFactor(0.5)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity)
+                        .days { day in
+                            let date = calendar.date(from: day.components)!
+                            let isToday = calendar.isDateInToday(date)
+                            let backgroundOpacity: Double = getBackgroundOpacity(date: date)
+
+                            let dayKey = calendar.startOfDay(for: date)
+                            let hasPlannedShift = vm.plannedDays.contains(dayKey)
+                            let hasOfferedShift = vm.offeredDays.contains(dayKey)
+                            let hasActualShift = vm.actualDays.contains(dayKey)
+
+                            CalendarDayCell(
+                                dayNumber: day.day,
+                                isToday: isToday,
+                                hasPlannedShift: hasPlannedShift,
+                                hasOfferedShift: hasOfferedShift,
+                                hasActualShift: hasActualShift,
+                                backgroundOpacity: backgroundOpacity
+                            ) {
+                                selectedDate = date
+                                selectedDetent = .medium
+                                daySheetIsPresented = true
+                            }
                         }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.cpBackgroundPrimary)
-                    .tint(.cpForegroundPrimary)
-                    .sheet(isPresented: $offerShiftSheetIsPresented) {
-                        if let displayedMonthDate = calendar.date(from: displayedMonth) {
-                            ShiftMultiOfferView(
-                                displayedMonth: displayedMonthDate,
-                                onToast: handleMultiOfferFinished(success:message:)
+                        .monthHeaders { content in
+                            // empty view
+                        }
+                        .onDeceleratingEnd { visibleDayRange in
+                            displayedMonth = visibleDayRange.lowerBound.components
+                            if let dateContainingMonth = calendar.date(from: displayedMonth) {
+                                setVisibleRange(around: dateContainingMonth)
+                                Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
+                                Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
+                            }
+                            let month = displayedMonth
+                            Task { await vm.checkYear(displayedMonthAndYear: month) }
+                        }
+                        .backgroundColor(.cpBackgroundPrimary)
+                        .disabled(isRefreshingMonth)
+                        .onAppear {
+                            let today = Date()
+                            selectedDate = today
+                            scrollToMonthAndUpdateState(dateContainingMonth: today, animated: false)
+                            Task { await vm.loadShiftsForYear(dateContainingYear: today) }
+                        }
+                        .sheet(isPresented: $daySheetIsPresented) {
+                            CalendarDayDetailsView(
+                                date: $selectedDate,
+                                selectedDetent: $selectedDetent,
+                                onActionFinished: handleActionFinished(success:message:),
+                                onShowPlannedShifts: handleShowPlannedShifts(date:)
                             )
+                            .presentationDetents([.medium, .large], selection: $selectedDetent)
+                        }
+                        .sheet(item: $plannedShiftsWebItem) { item in
+                            ShiftsListWebView(date: item.date)
+                        }
+                    
+                        HStack {
+                            Button {
+                                offerShiftSheetIsPresented = true
+                            } label: {
+                                Text("offer shifts")
+                                    .minimumScaleFactor(0.5)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        
+                            Button {
+                                exportSheetIsPresented = true
+                            } label: {
+                                Text("upload to calendar")
+                                    .minimumScaleFactor(0.5)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .foregroundStyle(.cpBackgroundPrimary)
+                        .tint(.cpForegroundPrimary)
+                        .sheet(isPresented: $offerShiftSheetIsPresented) {
+                            if let displayedMonthDate = calendar.date(from: displayedMonth) {
+                                ShiftMultiOfferView(
+                                    displayedMonth: displayedMonthDate,
+                                    onToast: handleMultiOfferFinished(success:message:)
+                                )
+                            }
+                        }
+                        .sheet(isPresented: $exportSheetIsPresented) {
+                            CalendarExportSheetView(
+                                monthLabel: currentMonthLabel,
+                                monthDate: displayedMonthDate,
+                                onDone: { success, message in
+                                    exportSheetIsPresented = false
+                                    Task { @MainActor in
+                                        UINotificationFeedbackGenerator().notificationOccurred(success ? .success : .error)
+                                        await presentToast(success: success, message: message)
+                                    }
+                                }
+                            )
+                            .presentationDetents([.large])
+                        }
+                        .aspectRatio(7, contentMode: .fit)
+                    
+                        if let displayedMonthDate = displayedMonthDate {
+                            ShiftStatisticsView(
+                                shifts: vm.displayedMonthShifts,
+                                displayedMonth: displayedMonthDate,
+                                openDays: vm.displayedMonthOpenDays
+                            )
+                            .padding(.top, 8)
                         }
                     }
-                    .sheet(isPresented: $exportSheetIsPresented) {
-                        CalendarExportSheetView(
-                            monthLabel: currentMonthLabel,
-                            monthDate: displayedMonthDate,
-                            onDone: { success, message in
-                                exportSheetIsPresented = false
-                                Task { @MainActor in
-                                    UINotificationFeedbackGenerator().notificationOccurred(success ? .success : .error)
-                                    await presentToast(success: success, message: message)
-                                }
-                            }
-                        )
-                        .presentationDetents([.large])
-                    }
-                    .aspectRatio(7, contentMode: .fit)
-                    
-                    if let displayedMonthDate = displayedMonthDate {
-                        ShiftStatisticsView(
-                            shifts: vm.displayedMonthShifts,
-                            displayedMonth: displayedMonthDate,
-                            openDays: vm.displayedMonthOpenDays
-                        )
-                        .padding(.top, 8)
-                    }
-                    
+                    .padding(.horizontal, 12)
+                    .padding(.top, 24)
+                    .padding(.bottom, 16)
+                    .background(Color.cpBackgroundPrimary)
+
+                    // Free shifts sit on the secondary background, like the upcoming shifts in TodayView.
                     FreeShiftsListView(vm: freeShiftsVM) { date in
                         plannedShiftsWebItem = ShiftsListWebItem(date: date)
                     }
-                    .padding(.top, 8)
-
-                    Spacer()
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 16)
+                    .background(Color.cpBackgroundSecondary)
                 }
-                .padding(.horizontal, 12)
-                .padding(.top, 24)
             }
             .background {
-                Color.cpBackgroundPrimary.ignoresSafeArea()
+                // Top half primary, bottom half secondary: whatever shows past the content
+                // (overscroll, the tab bar inset) matches the section it borders.
+                VStack(spacing: 0) {
+                    Color.cpBackgroundPrimary
+                    Color.cpBackgroundSecondary
+                }
+                .ignoresSafeArea()
             }
             if toastIsPresented {
                 ToastBanner(message: toastMessage, isSuccess: toastIsSuccess)
