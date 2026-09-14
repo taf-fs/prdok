@@ -97,6 +97,7 @@ struct CalendarView: View {
     
     @StateObject var vm = CalendarViewModel()
     @StateObject var proxy: CalendarViewProxy = .init()
+    @StateObject private var freeShiftsVM = FreeShiftsViewModel() // Owned here so the refresh button can reload it too.
     
     @State var selectedDate: Date?
     @State var displayedMonth: DateComponents = calendar.dateComponents([.year, .month], from: Date())
@@ -304,8 +305,11 @@ struct CalendarView: View {
                         .padding(.top, 8)
                     }
                     
-                    FreeShiftsListView()
-                    
+                    FreeShiftsListView(vm: freeShiftsVM) { date in
+                        plannedShiftsWebItem = PlannedShiftsWebItem(date: date)
+                    }
+                    .padding(.top, 8)
+
                     Spacer()
                 }
                 .padding(.horizontal, 12)
@@ -352,7 +356,10 @@ struct CalendarView: View {
 
             // refresh the statistics
             await vm.loadShiftsForMonth(dateContainingMonth: date)
-            
+
+            // reload free shifts list
+            await freeShiftsVM.load(force: true)
+
             // minimum spinner duration (slow network won't be slowed further)
             let elapsed = startedAt.duration(to: clock.now)
             let remaining = minRefreshSpinnerDuration - elapsed

@@ -53,6 +53,27 @@ struct ShiftTimelineLayout {
 
         return (normalized(startH), normalized(endH))
     }
+
+    /// Spreads `ranges` over as few lanes as possible, with no two ranges in a lane overlapping.
+    ///
+    /// Taken in order of start, each range joins the first lane whose last range has already
+    /// ended; only when every lane is still busy does a new one open. Because the earliest start
+    /// always goes first, a new lane opens only when that many ranges really run at the same
+    /// moment, so the lane count is the smallest possible. Ranges that merely touch share a lane.
+    ///
+    /// Takes anything that has a range, so the lanes can carry more than positions.
+    static func lanes<Item>(_ items: [Item], range: (Item) -> (start: CGFloat, end: CGFloat)) -> [[Item]] {
+        var lanes: [[Item]] = []
+        let sorted = items.sorted { (range($0).start, range($0).end) < (range($1).start, range($1).end) }
+        for item in sorted {
+            if let free = lanes.firstIndex(where: { range($0.last!).end <= range(item).start }) {
+                lanes[free].append(item)
+            } else {
+                lanes.append([item])
+            }
+        }
+        return lanes
+    }
 }
 
 /// A lightweight time interval the indicator can draw. Both `Shift` and `FreeShift`
