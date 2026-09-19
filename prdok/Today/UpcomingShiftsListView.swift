@@ -26,7 +26,7 @@ struct UpcomingShiftsListView: View {
         let now = Date()
         return shifts
             .filter { $0.kind == .planned && $0.start > now }
-            .map { ShiftTimelineEntry(start: $0.start, end: $0.end, accessibilityText: $0.timeRangeString) }
+            .map { ShiftTimelineEntry(start: $0.start, end: $0.end, role: $0.role, timeRangeString: $0.timeRangeString) }
     }
 
     var body: some View {
@@ -64,14 +64,14 @@ struct UpcomingShiftsListView: View {
 #Preview {
     let cal = Calendar.current
     let today = cal.startOfDay(for: Date())
-    func shift(_ id: Int, inDays days: Int, from: Int, hours: Int) -> Shift {
+    func shift(_ id: Int, inDays days: Int, from: Int, hours: Int, role: ShiftRole = .regular) -> Shift {
         let start = cal.date(byAdding: .hour, value: days * 24 + from, to: today)!
-        return Shift(id: id, kind: .planned, start: start, end: cal.date(byAdding: .hour, value: hours, to: start)!)
+        return Shift(id: id, kind: .planned, start: start, end: cal.date(byAdding: .hour, value: hours, to: start)!, role: role)
     }
     return UpcomingShiftsListView(shifts: [
         shift(1, inDays: 1, from: 8, hours: 8),
-        shift(2, inDays: 3, from: 16, hours: 9),
-        shift(3, inDays: 4, from: 7, hours: 4),
+        shift(2, inDays: 3, from: 16, hours: 9, role: .manager),
+        shift(3, inDays: 4, from: 7, hours: 4, role: .barista),
         shift(4, inDays: 4, from: 17, hours: 6),
     ])
     .padding()
