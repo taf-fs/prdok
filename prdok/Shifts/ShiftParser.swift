@@ -83,7 +83,9 @@ struct ShiftParser {
                 throw ShiftParseError.couldNotParseID(id: raw.id)
             }
             
-            return Shift(id: id, kind: kind, start: start, end: end)
+            // Only roster rows carry a role in `typ`.
+            let role = kind == .planned ? ShiftRole(marker: raw.typ) : .regular
+            return Shift(id: id, kind: kind, start: start, end: end, role: role)
         }
         
         var shifts: [Shift] = []

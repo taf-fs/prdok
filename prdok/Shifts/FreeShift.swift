@@ -10,29 +10,11 @@
 
 import Foundation
 
-/// What kind of role the free shift is for. In the API this is the `typ` field:
-/// a single character (`"-"`, `"v"`, `"b"`).
-enum FreeShiftRole: String, Hashable {
-    case regular   // "-"  — ordinary shift, needs no extra label
-    case manager   // "v"  — vedoucí
-    case barista   // "b"
-
-    /// Maps the raw `typ` marker character to a role. Anything unexpected (including
-    /// the dash) is treated as a regular shift.
-    init(marker: String) {
-        switch marker.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
-        case "v": self = .manager
-        case "b": self = .barista
-        default:  self = .regular
-        }
-    }
-}
-
 struct FreeShift: Identifiable, Hashable {
     let id: Int
     let start: Date
     let end: Date
-    let role: FreeShiftRole
+    let role: ShiftRole
 
     var timeRangeString: String {
         let df = DateFormatter()

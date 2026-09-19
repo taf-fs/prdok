@@ -21,6 +21,38 @@ struct ShiftTimelineEntry {
     let accessibilityText: String
 }
 
+extension ShiftTimelineEntry {
+    /// A shift tagged with its role: the letter goes in the bar, the spelled-out role to VoiceOver.
+    init(start: Date, end: Date, role: ShiftRole, timeRangeString: String) {
+        self.init(
+            start: start,
+            end: end,
+            letter: role.letter,
+            accessibilityText: [timeRangeString, role.label].compactMap { $0 }.joined(separator: " ")
+        )
+    }
+}
+
+private extension ShiftRole {
+    /// The portal's own `typ` marker, shown inside the bar. The screen reader gets `label` instead.
+    var letter: String? {
+        switch self {
+        case .regular: return nil
+        case .manager: return "v"
+        case .barista: return "b"
+        }
+    }
+
+    /// Localized label for the screen reader. Regular shifts get none.
+    var label: String? {
+        switch self {
+        case .regular: return nil
+        case .manager: return String(localized: "shift.role.manager")
+        case .barista: return String(localized: "shift.role.barista")
+        }
+    }
+}
+
 /// Axis and day rows together, for a parent that scrolls the whole thing.
 struct ShiftDayTimeline: View {
     let entries: [ShiftTimelineEntry]

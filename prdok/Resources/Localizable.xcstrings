@@ -758,38 +758,6 @@
     "Fetch" : {
       "shouldTranslate" : false
     },
-    "freeShifts.role.barista" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "barista"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "barista"
-          }
-        }
-      }
-    },
-    "freeShifts.role.manager" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "vedoucí"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "manager"
-          }
-        }
-      }
-    },
     "https://..." : {
       "shouldTranslate" : false
     },
@@ -825,6 +793,22 @@
         }
       }
     },
+    "link.files" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubory"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files"
+          }
+        }
+      }
+    },
     "link.forum" : {
       "localizations" : {
         "cs" : {
@@ -842,12 +826,11 @@
       }
     },
     "link.meetingMinutes" : {
-      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zápisy z porad"
+            "value" : "Zápisy"
           }
         },
         "en" : {
@@ -1623,6 +1606,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Welcome to"
+          }
+        }
+      }
+    },
+    "shift.role.barista" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "barista"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "barista"
+          }
+        }
+      }
+    },
+    "shift.role.manager" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vedoucí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "manager"
           }
         }
       }

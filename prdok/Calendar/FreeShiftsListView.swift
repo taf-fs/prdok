@@ -83,38 +83,13 @@ struct FreeShiftsListView: View {
 
 private extension FreeShift {
     var timelineEntry: ShiftTimelineEntry {
-        ShiftTimelineEntry(
-            start: start,
-            end: end,
-            letter: role.letter,
-            accessibilityText: [timeRangeString, role.label].compactMap { $0 }.joined(separator: " ")
-        )
-    }
-}
-
-private extension FreeShiftRole {
-    /// The portal's own `typ` marker, shown inside the bar. The screen reader gets `label` instead.
-    var letter: String? {
-        switch self {
-        case .regular: return nil
-        case .manager: return "v"
-        case .barista: return "b"
-        }
-    }
-
-    /// Localized label for the screen reader. Regular shifts get none.
-    var label: String? {
-        switch self {
-        case .regular: return nil
-        case .manager: return String(localized: "freeShifts.role.manager")
-        case .barista: return String(localized: "freeShifts.role.barista")
-        }
+        ShiftTimelineEntry(start: start, end: end, role: role, timeRangeString: timeRangeString)
     }
 }
 
 // MARK: - Previews
 
-private func previewShift(_ id: Int, day: Int, from: Int, to: Int, role: FreeShiftRole = .regular) -> FreeShift {
+private func previewShift(_ id: Int, day: Int, from: Int, to: Int, role: ShiftRole = .regular) -> FreeShift {
     let cal = Calendar.current
     let start = cal.date(from: DateComponents(year: 2026, month: 9, day: day, hour: from))!
     let end = to > from

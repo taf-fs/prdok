@@ -41,7 +41,7 @@ enum FreeShiftParser {
                 id: id,
                 start: start,
                 end: end,
-                role: FreeShiftRole(marker: raw.typ)
+                role: ShiftRole(marker: raw.typ)
             )
         }
 
