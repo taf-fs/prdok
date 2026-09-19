@@ -14,6 +14,7 @@ enum LinkKind: Identifiable { // .sheet(item:) requires Identifiable
     case forum
     case collaborate
     case employee
+    case files
     
     var id: Int {
         switch self {
@@ -23,6 +24,7 @@ enum LinkKind: Identifiable { // .sheet(item:) requires Identifiable
         case .forum: return 3
         case .collaborate: return 4
         case .employee: return 5
+        case .files: return 6
         }
     }
 }
@@ -52,9 +54,12 @@ struct LinksView: View {
 //                LinkButton("link.waiter") {
 //                    activeSheet = .waiter
 //                }
-//                LinkButton("link.meetingMinutes") {
-//                    activeSheet = .meetingMinutes
-//                }
+                    LinkButton("link.meetingMinutes") {
+                        activeSheet = .meetingMinutes
+                    }
+                    LinkButton("link.files") {
+                        activeSheet = .files
+                    }
                 LinkButton("link.forum") {
                     activeSheet = .forum
                 }
@@ -72,6 +77,8 @@ struct LinksView: View {
 //            case .waiter:
             case .meetingMinutes:
                 LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/zapisyzporad.php")!)
+            case .files:
+                LinkWebView(url: URL(string: "\(AppConfig.apiBaseURL)/nasi/soubory.php?provoz=\(provoz ?? "")&id=\(id ?? "")&ids=\(ids ?? "")")!)
             case .forum:
                 LinkWebView(url: URL(string: "\(AppConfig.employeePortalURL)/")!)
             default:
