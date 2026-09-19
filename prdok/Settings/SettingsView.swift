@@ -30,7 +30,7 @@ struct SettingsView: View {
                     .padding(.horizontal, 12)
                     .padding(.top, 24)
                 List {
-                    Section {
+                    Section(header: Text("settings.sectionHeader.general").font(.system(.body, design: .monospaced, weight: .bold))) {
                         Button {
                             if let url = URL(string: UIApplication.openSettingsURLString) {
                                 UIApplication.shared.open(url)

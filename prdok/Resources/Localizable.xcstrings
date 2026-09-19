@@ -1465,6 +1465,22 @@
         }
       }
     },
+    "settings.sectionHeader.general" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obecné"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
     "settings.sectionHeader.notifications" : {
       "localizations" : {
         "cs" : {
