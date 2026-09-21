@@ -167,7 +167,7 @@ private struct TimerButton: View {
                 }
             }
         }
-        .cornerRadius(15)
+        .cornerRadius(16)
         .alert("settings.alert.notisDenied.title", isPresented: $showNotisDeniedAlert) {
             Button("settings.alert.notisDenied.button.cancel", role: .cancel) { }
             Button("settings.alert.notisDenied.button.openSettings") {

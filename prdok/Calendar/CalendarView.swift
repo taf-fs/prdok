@@ -295,6 +295,9 @@ struct CalendarView: View {
                             }
                         }
                         .buttonStyle(.borderedProminent)
+                        // Pinned rather than left to the style: iOS 26 makes a prominent button a
+                        // capsule, which at this height sits too close to the bonus card below.
+                        .buttonBorderShape(.roundedRectangle(radius: 12))
                         .foregroundStyle(.cpBackgroundPrimary)
                         .tint(.cpForegroundPrimary)
                         .sheet(isPresented: $offerShiftSheetIsPresented) {

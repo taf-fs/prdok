@@ -147,7 +147,7 @@ struct TodayView: View {
                 .padding(.horizontal, 40)
                 .foregroundStyle(Color.cpBackgroundPrimary)
                 .background {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 12)
                         .tint(Color.cpForegroundPrimary)
                 }
         }
