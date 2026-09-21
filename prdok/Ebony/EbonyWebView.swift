@@ -29,8 +29,8 @@ struct EbonyWebScreen: View {
             ZStack {
                 Color(red: 255/255, green: 255/255, blue: 179/255)
                     .ignoresSafeArea(.container, edges: .bottom)
-                ProgressView()
-                    .controlSize(.large)
+                DripLoadingAnimation(ink: .black)
+                    .frame(width: 95, height: 101)
             }
             .opacity(isPageLoaded ? 0 : 1)
             .animation(.easeOut(duration: 0.3), value: isPageLoaded)

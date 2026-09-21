@@ -17,7 +17,13 @@ struct BootstrapCover: View {
             }
 
             Color.cpBackgroundElevated.ignoresSafeArea()
-            ProgressView("bootstrap.loading")
+
+            VStack(spacing: 16) {
+                DripLoadingAnimation()
+                    .frame(width: 95, height: 101)
+                Text("bootstrap.loading")
+                    .foregroundStyle(Color.cpForegroundSecondary)
+            }
         }
     }
 }

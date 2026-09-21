@@ -8,28 +8,25 @@
 import SwiftUI
 
 struct LoadingScreenView: View {
-    @Environment(\.colorScheme) var colorScheme
     @State var text: LocalizedStringKey?
-    var isDarkMode: Bool { return colorScheme == .dark }
 
-    
     var body: some View {
         ZStack {
             Color.black.opacity(0.3)
                 .ignoresSafeArea()
-            
-            VStack {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: isDarkMode ? .white : .black))
-                    .controlSize(.large)
+
+            VStack(spacing: 12) {
+                DripLoadingAnimation()
+                    .frame(width: 95, height: 101)
                 if let loadingText = text {
                     Text(loadingText)
+                        .foregroundStyle(Color.cpForegroundSecondary)
                 }
             }
             .padding(30)
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.white.opacity(0.4))
+                    .foregroundStyle(Color.cpBackgroundElevated)
             }
         }
     }
