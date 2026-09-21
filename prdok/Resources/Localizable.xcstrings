@@ -2029,6 +2029,22 @@
         }
       }
     },
+    "shiftStats.bonus.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Příplatek"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonus"
+          }
+        }
+      }
+    },
     "shiftStats.closingShifts" : {
       "localizations" : {
         "cs" : {
@@ -2041,6 +2057,118 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Closing shifts"
+          }
+        }
+      }
+    },
+    "shiftStats.competencies" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kompetence"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Competencies"
+          }
+        }
+      }
+    },
+    "shiftStats.deadlineInline%@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(do %@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(by %@)"
+          }
+        }
+      }
+    },
+    "shiftStats.earlyOffers" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Možnosti včas"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offers in time"
+          }
+        }
+      }
+    },
+    "shiftStats.mark.met" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✓"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✓"
+          }
+        }
+      }
+    },
+    "shiftStats.mark.unmet" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✗"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✗"
+          }
+        }
+      }
+    },
+    "shiftStats.meeting" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schůze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting"
+          }
+        }
+      }
+    },
+    "shiftStats.newCompetencyInline%@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(+%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(+%@)"
           }
         }
       }
@@ -2089,6 +2217,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "done"
+          }
+        }
+      }
+    },
+    "shiftStats.suffix.competencies" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "komp."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "comp."
+          }
+        }
+      }
+    },
+    "shiftStats.suffix.hours" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "h"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "h"
           }
         }
       }

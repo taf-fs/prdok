@@ -20,16 +20,18 @@ final class CalendarViewModel: ObservableObject {
     @Published var actualDays: Set<Date> = []
     @Published var displayedMonthShifts: [Shift] = []
     @Published var displayedMonthOpenDays: Int?
+    @Published var displayedMonthBonus: MonthBonus?
 
     let repo = ShiftRepository()
     let openDaysRepo = OpenDaysRepository()
+    let bonusRepo = BonusRepository()
     var loadedYear: Int?
     
     func year(_ date: Date ) -> Int {
         return calendar.component(.year, from: date)
     }
     
-    // The three `load…` methods are all `async` and none of them start a `Task` of their
+    // The `load…` methods are all `async` and none of them start a `Task` of their
     // own: the caller decides whether to await (the refresh button, so its spinner covers
     // the work) or to fire and forget (`Task { … }` from the calendar's scroll handlers).
 
@@ -71,7 +73,9 @@ final class CalendarViewModel: ObservableObject {
         }
     }
 
-    /// Loads the open-day count backing the statistics' month coefficient.
+    /// Loads the open-day count backing the statistics' month coefficient — which only
+    /// scales anything when `loadBonusForMonth` came back empty, the pay structure
+    /// carrying the same limits itself.
     /// On failure we clear it rather than keep a stale month's value — the statistics
     /// then fall back to the calendar day count.
     func loadOpenDaysForMonth(dateContainingMonth: Date, forceRefresh: Bool = false) async {
@@ -85,6 +89,25 @@ final class CalendarViewModel: ObservableObject {
             Log.openDays.error("[CalendarVM] \(key, privacy: .public) open days unavailable, statistics fall back to calendar days: \(error.localizedDescription, privacy: .public)")
             await MainActor.run {
                 displayedMonthOpenDays = nil
+            }
+        }
+    }
+
+    /// Loads the month's pay structure — the six bonus conditions and the server's
+    /// verdict on each. On failure we clear it: the statistics then score the three
+    /// conditions they can compute themselves and dash the rest, which is honest,
+    /// where a stale month's verdict would not be.
+    func loadBonusForMonth(dateContainingMonth: Date, forceRefresh: Bool = false) async {
+        let key = BonusService.monthString(from: dateContainingMonth)
+        do {
+            let bonus = try await bonusRepo.getBonus(for: dateContainingMonth, forceRefresh: forceRefresh)
+            await MainActor.run {
+                displayedMonthBonus = bonus
+            }
+        } catch {
+            Log.bonus.error("[CalendarVM] \(key, privacy: .public) bonus unavailable, statistics fall back to local math: \(error.localizedDescription, privacy: .public)")
+            await MainActor.run {
+                displayedMonthBonus = nil
             }
         }
     }
@@ -226,6 +249,7 @@ struct CalendarView: View {
                                 setVisibleRange(around: dateContainingMonth)
                                 Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
                                 Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
+                                Task { await vm.loadBonusForMonth(dateContainingMonth: dateContainingMonth) }
                             }
                             let month = displayedMonth
                             Task { await vm.checkYear(displayedMonthAndYear: month) }
@@ -301,7 +325,8 @@ struct CalendarView: View {
                             ShiftStatisticsView(
                                 shifts: vm.displayedMonthShifts,
                                 displayedMonth: displayedMonthDate,
-                                openDays: vm.displayedMonthOpenDays
+                                openDays: vm.displayedMonthOpenDays,
+                                bonus: vm.displayedMonthBonus
                             )
                             .padding(.top, 8)
                         }
@@ -361,6 +386,9 @@ struct CalendarView: View {
             // force-refresh the open-day count backing the statistics coefficient.
             // Swallows its own errors so this secondary endpoint can't fail the refresh.
             await vm.loadOpenDaysForMonth(dateContainingMonth: date, forceRefresh: true)
+
+            // force-refresh the bonus conditions
+            await vm.loadBonusForMonth(dateContainingMonth: date, forceRefresh: true)
 
             // then recompute day dots across the year (keeps current behavior consistent)
             await vm.loadShiftsForYear(dateContainingYear: date)
@@ -508,6 +536,7 @@ struct CalendarView: View {
         Task { await vm.checkYear(displayedMonthAndYear: month) }
         Task { await vm.loadShiftsForMonth(dateContainingMonth: dateContainingMonth) }
         Task { await vm.loadOpenDaysForMonth(dateContainingMonth: dateContainingMonth) }
+        Task { await vm.loadBonusForMonth(dateContainingMonth: dateContainingMonth) }
     }
     
     func dayOfWeekName(index: Int) -> String {

@@ -7,7 +7,7 @@
 //  Logging conventions for the shift/open-days stack, so the console reads
 //  consistently and can be filtered per area in Console.app:
 //
-//    Categories  — "Shifts", "FreeShifts", "OpenDays" (all under the app's subsystem).
+//    Categories  — "Shifts", "FreeShifts", "OpenDays", "Bonus" (all under the app's subsystem).
 //    Prefix      — every message starts with the layer, e.g. `[ShiftRepo]`.
 //    Direction   — `→` a request leaving the app, `←` a response coming back.
 //    Cache verbs — HIT / MISS / STALE / FORCE / SAVE, always with the month key.
@@ -30,6 +30,7 @@ enum Log {
     static let freeShifts = Logger(subsystem: subsystem, category: "FreeShifts")
     static let openDays = Logger(subsystem: subsystem, category: "OpenDays")
     static let profile = Logger(subsystem: subsystem, category: "Profile")
+    static let bonus = Logger(subsystem: subsystem, category: "Bonus")
 
     // MARK: - Formatting helpers
 

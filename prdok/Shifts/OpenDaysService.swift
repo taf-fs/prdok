@@ -5,8 +5,12 @@
 //  Created by David Horňák on 24.07.2026.
 //
 //  Fetches how many days the provoz is actually open in a given month via the
-//  `otevrene_dny` API akce. `ShiftStatisticsView` uses this instead of the raw
-//  calendar day count when scaling the monthly requirements.
+//  `otevrene_dny` API akce, which `ShiftStatisticsView` scales the monthly requirements
+//  by instead of the raw calendar day count.
+//
+//  That scaling is now a fallback path. Since `mzdastruktura` landed, the statistics take
+//  every limit straight from that payload, and the count fetched here is only consulted
+//  when it is missing.
 //
 
 import Foundation
