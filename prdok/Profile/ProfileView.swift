@@ -101,7 +101,7 @@ struct ProfileView: View {
                 .frame(width: 56, height: 56)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 24)
         .padding(.top, 24)
         .padding(.bottom, 16)
     }
