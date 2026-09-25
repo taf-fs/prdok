@@ -68,16 +68,16 @@
 <!-- ══════════════════════════════ ENGLISH ══════════════════════════════ -->
 
 <h1 id="en">prdok — Privacy Policy</h1>
-<p class="lede">Last updated: 12 August 2026</p>
+<p class="lede">Last updated: 25 September 2026</p>
 <p class="langbar"><strong>English</strong> · <a href="#cs">Čeština ↓</a></p>
 
 <div class="summary">
-  <p><strong>In short:</strong> prdok is a client for the shift scheduling system operated by Lumpenkavárna s.r.o. The app talks only to that system. It has no servers of its own, no analytics, no advertising, and no tracking of any kind. Nothing you do in the app is shared with anyone other than your employer’s scheduling system, which you already use directly.</p>
+  <p><strong>In short:</strong> prdok is a client for the shift scheduling system operated by Lumpenkavárna s.r.o. The app talks only to that system. It has no servers of its own, no advertising, and no tracking of any kind. Nothing you do in the app is shared with anyone other than your employer’s scheduling system, which you already use directly. The one exception is technical: on Android, the Google component that reads QR codes sends Google diagnostics about its own performance (see section 3).</p>
 </div>
 
 <h2>1. Who is responsible for your data</h2>
 <p>The shift scheduling system that prdok connects to is operated by Lumpenkavárna s.r.o., who is the data controller for your employment and scheduling data. Any questions about how that data is collected, used or retained should be directed to them.</p>
-<p>prdok is an iOS app developed and published by David Horňák (“we”, “the developer”). The app acts on your behalf: it signs in to your employer’s system with credentials you provide during setup, displays the data that system returns, and sends back only the actions you explicitly take, such as offering your availability for a shift. We do not operate any server, database or backend for prdok, and we have no ability to see, collect or retain your data.</p>
+<p>prdok is an app for iOS and Android developed and published by David Horňák (“we”, “the developer”). The app acts on your behalf: it signs in to your employer’s system with credentials you provide during setup, displays the data that system returns, and sends back only the actions you explicitly take, such as offering your availability for a shift. We do not operate any server, database or backend for prdok, and we have no ability to see, collect or retain your data.</p>
 <p>Contact for questions about this policy: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
 
 <h2>2. What data the app handles</h2>
@@ -92,10 +92,10 @@
 <p>The app requests basic profile details — your display name, start date and recorded competencies — from your employer’s system so it can show them on the profile screen.</p>
 
 <h3>App settings</h3>
-<p>Your appearance preference (light, dark or system) and whether notifications are enabled are stored on your device only.</p>
+<p>Your appearance preference (light, dark or system), your language choice and whether notifications are enabled are stored on your device only.</p>
 
 <h3>Camera</h3>
-<p>The app asks for camera access only when you choose to pair by scanning a QR code. The camera feed is processed on your device solely to read the code. No photo or video is recorded, stored or transmitted.</p>
+<p>The app asks for camera access only when you choose to pair by scanning a QR code. The camera feed is processed on your device solely to read the code. No photo or video is recorded, stored or transmitted. On Android, the code is read by Google’s ML Kit library, which sends Google the technical diagnostics described in section 3 — never the camera image.</p>
 
 <h3>Calendar</h3>
 <p>The app asks for calendar access only if you choose to export your shifts to a calendar. If you grant it, the app writes shift events to the calendar you select and can later update or remove the events it created. It identifies its own events by a marker it writes into the event notes, and it does not use, read or transmit any other calendar content.</p>
@@ -104,18 +104,25 @@
 <p>Any notifications are scheduled locally on your device. The app does not use push notifications and no notification data leaves your device.</p>
 
 <h3>Embedded web pages</h3>
-<p>Some screens display pages from your employer’s system inside the app. These pages behave as they would in a browser and are subject to your employer’s own privacy practices.</p>
+<p>Some screens display pages from your employer’s system inside the app. These pages behave as they would in a browser and are subject to your employer’s own privacy practices. On Android, files you download from these pages are saved to the Downloads folder on your device.</p>
 
 <h2>3. Where your data goes</h2>
-<p>Only to your employer’s scheduling system at cafe.prostoru.cz, over an encrypted HTTPS connection.</p>
-<p>The app contains no analytics, crash reporting, advertising or attribution SDKs. It does not contact any other service. It does not track you across apps or websites, and it does not sell or share your data with anyone. The two open source components it uses — HorizonCalendar for the calendar layout and CodeScanner for QR scanning — are user interface libraries that perform no networking and collect nothing.</p>
+<p>Only to your employer’s scheduling system at cafe.prostoru.cz, over an encrypted HTTPS connection. The one exception is the QR scanner on Android, described below.</p>
+<p>The app contains no advertising or attribution SDKs, and no analytics or crash reporting of its own. It does not track you across apps or websites, and it does not sell or share your data with anyone.</p>
+
+<h3>On iPhone</h3>
+<p>The app does not contact any other service. The two open source components it uses — HorizonCalendar for the calendar layout and CodeScanner for QR scanning — are user interface libraries that perform no networking and collect nothing.</p>
+
+<h3>On Android</h3>
+<p>QR codes are read with Google’s ML Kit barcode scanning library. The camera image is processed entirely on your device and is never sent anywhere. ML Kit does, however, send Google technical data about its own operation — device and app information, performance metrics, the scanner’s configuration and error codes — which Google uses for diagnostics and usage analytics of ML Kit, encrypts in transit and does not share with third parties. Details are in <a href="https://developers.google.com/ml-kit/android-data-disclosure">Google’s ML Kit data disclosure</a>.</p>
+<p>The app’s other components — Android Jetpack libraries, OkHttp (which carries the app’s requests to your employer’s system), and Kizitonwose Calendar and a date picker for the calendar interface — collect nothing. Embedded web pages are displayed by Android System WebView; the app turns off its Safe Browsing feature, so the pages you open are not checked against Google’s servers.</p>
 
 <h2>4. What is stored on your device</h2>
 <ul>
   <li>Your pairing identifiers and app settings, in the app’s private storage area.</li>
   <li>A cache of recently viewed shift and open-day data, stored as files in the app’s cache directory so the app can display your schedule quickly and while offline.</li>
 </ul>
-<p>This data stays within the app’s private container, which iOS isolates from other apps. Note that it is stored unencrypted within that container and may be included in your device backups. Using <strong>Unpair</strong> in Settings clears the stored identifiers, and deleting the app removes everything the app has stored.</p>
+<p>This data stays within the app’s private storage, which the operating system isolates from other apps. Note that it is stored unencrypted there and may be included in your device backups (iCloud on iPhone, your Google account on Android). Using <strong>Unpair</strong> in Settings clears the stored identifiers, and deleting the app removes everything the app has stored.</p>
 
 <h2>5. Legal basis for processing</h2>
 <p>Processing of your scheduling data by Lumpenkavárna s.r.o. takes place in the context of your employment relationship, and the legal basis for it is determined by them as controller — typically the performance of your employment contract or their legitimate interest in organising work schedules (Article 6(1)(b) and 6(1)(f) GDPR).</p>
@@ -142,16 +149,16 @@
 <!-- ══════════════════════════════ ČEŠTINA ══════════════════════════════ -->
 
 <h1 id="cs">prdok — Zásady ochrany osobních údajů</h1>
-<p class="lede">Naposledy aktualizováno: 12. srpna 2026</p>
+<p class="lede">Naposledy aktualizováno: 25. září 2026</p>
 <p class="langbar"><a href="#en">↑ English</a> · <strong>Čeština</strong></p>
 
 <div class="summary">
-  <p><strong>Stručně:</strong> prdok je klientská aplikace pro systém plánování směn, který provozuje Lumpenkavárna s.r.o. Aplikace komunikuje výhradně s tímto systémem. Nemá vlastní servery, neobsahuje žádnou analytiku ani reklamu a nijak vás nesleduje. Nic z toho, co v aplikaci děláte, se nepředává nikomu jinému než systému vašeho zaměstnavatele, který už tak jako tak používáte.</p>
+  <p><strong>Stručně:</strong> prdok je klientská aplikace pro systém plánování směn, který provozuje Lumpenkavárna s.r.o. Aplikace komunikuje výhradně s tímto systémem. Nemá vlastní servery, neobsahuje žádnou reklamu a nijak vás nesleduje. Nic z toho, co v aplikaci děláte, se nepředává nikomu jinému než systému vašeho zaměstnavatele, který už tak jako tak používáte. Jedinou výjimkou je technická drobnost: na Androidu posílá komponenta Googlu, která čte QR kódy, společnosti Google diagnostické údaje o svém vlastním fungování (viz oddíl 3).</p>
 </div>
 
 <h2>1. Kdo za vaše údaje odpovídá</h2>
 <p>Systém plánování směn, ke kterému se prdok připojuje, provozuje Lumpenkavárna s.r.o., která je správcem vašich pracovních a rozvrhových údajů. Dotazy k tomu, jak jsou tyto údaje shromažďovány, používány a uchovávány, směřujte na ni.</p>
-<p>prdok je aplikace pro iOS, kterou vyvíjí a vydává David Horňák („vývojář“). Aplikace jedná vaším jménem: přihlásí se do systému vašeho zaměstnavatele pomocí údajů, které zadáte při prvním nastavení, zobrazí data, která systém vrátí, a odesílá zpět pouze akce, které sami provedete — například nabídnutí dostupnosti na směnu. Pro aplikaci prdok neprovozujeme žádný server, databázi ani backend a nemáme možnost vaše údaje vidět, shromažďovat ani uchovávat.</p>
+<p>prdok je aplikace pro iOS a Android, kterou vyvíjí a vydává David Horňák („vývojář“). Aplikace jedná vaším jménem: přihlásí se do systému vašeho zaměstnavatele pomocí údajů, které zadáte při prvním nastavení, zobrazí data, která systém vrátí, a odesílá zpět pouze akce, které sami provedete — například nabídnutí dostupnosti na směnu. Pro aplikaci prdok neprovozujeme žádný server, databázi ani backend a nemáme možnost vaše údaje vidět, shromažďovat ani uchovávat.</p>
 <p>Kontakt pro dotazy k těmto zásadám: <a href="mailto:taf.fs.dev@gmail.com">taf.fs.dev@gmail.com</a></p>
 
 <h2>2. Jaké údaje aplikace zpracovává</h2>
@@ -166,10 +173,10 @@
 <p>Aplikace si ze systému zaměstnavatele vyžádá základní profilové údaje — zobrazované jméno, datum nástupu a evidované kompetence — aby je mohla zobrazit na obrazovce profilu.</p>
 
 <h3>Nastavení aplikace</h3>
-<p>Volba vzhledu (světlý, tmavý nebo podle systému) a informace o tom, zda jsou zapnutá upozornění, se ukládají pouze do vašeho zařízení.</p>
+<p>Volba vzhledu (světlý, tmavý nebo podle systému), volba jazyka a informace o tom, zda jsou zapnutá upozornění, se ukládají pouze do vašeho zařízení.</p>
 
 <h3>Fotoaparát</h3>
-<p>Aplikace požádá o přístup k fotoaparátu pouze tehdy, když se rozhodnete spárovat zařízení naskenováním QR kódu. Obraz se zpracovává přímo v zařízení výhradně za účelem načtení kódu. Žádná fotografie ani video se neukládá ani neodesílá.</p>
+<p>Aplikace požádá o přístup k fotoaparátu pouze tehdy, když se rozhodnete spárovat zařízení naskenováním QR kódu. Obraz se zpracovává přímo v zařízení výhradně za účelem načtení kódu. Žádná fotografie ani video se neukládá ani neodesílá. Na Androidu kód čte knihovna ML Kit od Googlu, která společnosti Google odesílá technické diagnostické údaje popsané v oddílu 3 — nikdy ne obraz z fotoaparátu.</p>
 
 <h3>Kalendář</h3>
 <p>Aplikace požádá o přístup ke kalendáři pouze tehdy, když si zvolíte export směn do kalendáře. Pokud přístup udělíte, zapíše aplikace události do kalendáře, který vyberete, a může je později aktualizovat nebo odstranit. Své vlastní události pozná podle značky, kterou si zapisuje do poznámky události; žádný jiný obsah kalendáře nepoužívá, nečte ani neodesílá.</p>
@@ -178,18 +185,25 @@
 <p>Veškerá upozornění se plánují lokálně ve vašem zařízení. Aplikace nepoužívá push notifikace a žádná data o upozorněních zařízení neopouštějí.</p>
 
 <h3>Vložené webové stránky</h3>
-<p>Některé obrazovky zobrazují stránky ze systému vašeho zaměstnavatele přímo v aplikaci. Tyto stránky se chovají stejně jako v prohlížeči a vztahují se na ně zásady ochrany údajů vašeho zaměstnavatele.</p>
+<p>Některé obrazovky zobrazují stránky ze systému vašeho zaměstnavatele přímo v aplikaci. Tyto stránky se chovají stejně jako v prohlížeči a vztahují se na ně zásady ochrany údajů vašeho zaměstnavatele. Na Androidu se soubory stažené z těchto stránek ukládají do složky Stažené soubory ve vašem zařízení.</p>
 
 <h2>3. Kam vaše údaje putují</h2>
-<p>Pouze do systému plánování směn vašeho zaměstnavatele na adrese cafe.prostoru.cz, a to prostřednictvím šifrovaného spojení HTTPS.</p>
-<p>Aplikace neobsahuje žádnou analytiku, hlášení pádů, reklamní ani atribuční SDK. Nekontaktuje žádnou jinou službu. Nesleduje vás napříč aplikacemi ani weby a vaše údaje nikomu neprodává ani nepředává. Dvě open source komponenty, které používá — HorizonCalendar pro rozvržení kalendáře a CodeScanner pro čtení QR kódů — jsou knihovny uživatelského rozhraní, které nekomunikují po síti a nic neshromažďují.</p>
+<p>Pouze do systému plánování směn vašeho zaměstnavatele na adrese cafe.prostoru.cz, a to prostřednictvím šifrovaného spojení HTTPS. Jedinou výjimkou je čtečka QR kódů na Androidu, popsaná níže.</p>
+<p>Aplikace neobsahuje žádné reklamní ani atribuční SDK ani vlastní analytiku či hlášení pádů. Nesleduje vás napříč aplikacemi ani weby a vaše údaje nikomu neprodává ani nepředává.</p>
+
+<h3>Na iPhonu</h3>
+<p>Aplikace nekontaktuje žádnou jinou službu. Dvě open source komponenty, které používá — HorizonCalendar pro rozvržení kalendáře a CodeScanner pro čtení QR kódů — jsou knihovny uživatelského rozhraní, které nekomunikují po síti a nic neshromažďují.</p>
+
+<h3>Na Androidu</h3>
+<p>QR kódy čte knihovna ML Kit od Googlu. Obraz z fotoaparátu se zpracovává výhradně ve vašem zařízení a nikam se neodesílá. ML Kit ale odesílá společnosti Google technické údaje o svém vlastním fungování — informace o zařízení a aplikaci, údaje o výkonu, nastavení čtečky a chybové kódy. Google je používá k diagnostice a analýze používání knihovny ML Kit, při přenosu je šifruje a nepředává je třetím stranám. Podrobnosti najdete v <a href="https://developers.google.com/ml-kit/android-data-disclosure">informacích Googlu o datech v ML Kit</a>.</p>
+<p>Ostatní komponenty aplikace — knihovny Android Jetpack, OkHttp (přenáší požadavky aplikace do systému zaměstnavatele) a Kizitonwose Calendar s výběrem data pro rozhraní kalendáře — nic neshromažďují. Vložené webové stránky zobrazuje Android System WebView; aplikace v něm vypíná funkci Bezpečné prohlížení, takže se otevírané stránky neověřují na serverech Googlu.</p>
 
 <h2>4. Co je uloženo ve vašem zařízení</h2>
 <ul>
   <li>Párovací identifikátory a nastavení aplikace v soukromém úložišti aplikace.</li>
   <li>Vyrovnávací paměť naposledy zobrazených směn a volných dnů, uložená jako soubory, aby se rozvrh zobrazoval rychle a fungoval i bez připojení.</li>
 </ul>
-<p>Tyto údaje zůstávají v soukromém kontejneru aplikace, který iOS odděluje od ostatních aplikací. Uvnitř tohoto kontejneru jsou uloženy nešifrovaně a mohou být součástí zálohy vašeho zařízení. Volbou <strong>Odpárovat</strong> v Nastavení se uložené identifikátory smažou; odinstalací aplikace se odstraní vše, co si aplikace uložila.</p>
+<p>Tyto údaje zůstávají v soukromém úložišti aplikace, které operační systém odděluje od ostatních aplikací. Jsou v něm uloženy nešifrovaně a mohou být součástí zálohy vašeho zařízení (na iPhonu v iCloudu, na Androidu ve vašem účtu Google). Volbou <strong>Odpárovat</strong> v Nastavení se uložené identifikátory smažou; odinstalací aplikace se odstraní vše, co si aplikace uložila.</p>
 
 <h2>5. Právní základ zpracování</h2>
 <p>Zpracování údajů o vašem rozvrhu ze strany Lumpenkavárna s.r.o. probíhá v rámci vašeho pracovněprávního vztahu a právní základ určuje tento subjekt jako správce — zpravidla plnění pracovní smlouvy nebo oprávněný zájem na organizaci pracovních rozvrhů (čl. 6 odst. 1 písm. b) a f) GDPR).</p>
