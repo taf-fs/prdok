@@ -1222,6 +1222,54 @@
     "select.year" : {
       "shouldTranslate" : false
     },
+    "settings.alert.noMail.button.copy" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovat adresu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Address"
+          }
+        }
+      }
+    },
+    "settings.alert.noMail.message %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V telefonu není žádná e-mailová aplikace. Zpětnou vazbu můžeš poslat na tuto adresu:\n%@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's no email app on this phone. You can send your feedback to this address:\n%@"
+          }
+        }
+      }
+    },
+    "settings.alert.noMail.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádná e-mailová aplikace"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Email App"
+          }
+        }
+      }
+    },
     "settings.alert.notisDenied.button.cancel" : {
       "localizations" : {
         "cs" : {
@@ -1399,6 +1447,38 @@
         }
       }
     },
+    "settings.feedback" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poslat zpětnou vazbu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Feedback"
+          }
+        }
+      }
+    },
+    "settings.feedback.prompt" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Popiš problém nebo svůj nápad:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Describe the problem or your idea:"
+          }
+        }
+      }
+    },
     "settings.language" : {
       "localizations" : {
         "cs" : {
@@ -1476,6 +1556,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notifications"
+          }
+        }
+      }
+    },
+    "settings.sectionHeader.support" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpora"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
           }
         }
       }

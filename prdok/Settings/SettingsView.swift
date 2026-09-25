@@ -17,7 +17,9 @@ struct SettingsView: View {
     @State private var alertMessage = ""
     @State private var isUnpairingInProgress = false
     @State private var showThemeSheet = false
-    
+    @State private var showNoMailAlert = false
+    @Environment(\.openURL) private var openURL
+
     var body: some View {
         ZStack {
             VStack {
@@ -80,9 +82,21 @@ struct SettingsView: View {
                             }
                     }
                     .listRowBackground(Color.cpBackgroundSecondary)
-                    
 
-                    
+                    Section(header: Text("settings.sectionHeader.support").font(.system(.body, design: .monospaced, weight: .bold))) {
+                        Button {
+                            guard let url = Feedback.mailURL else { return }
+                            // not accepted = nothing on the phone handles mailto, so offer the address instead
+                            openURL(url) { accepted in
+                                if !accepted { showNoMailAlert = true }
+                            }
+                        } label: {
+                            Text("settings.feedback")
+                        }
+                        .foregroundStyle(Color.cpForegroundPrimary)
+                    }
+                    .listRowBackground(Color.cpBackgroundSecondary)
+
                     #if DEBUG
                     // Dumps stored credentials in plaintext — never ship this.
                     Section(header: Text("settings.sectionHeader.developer").font(.system(.body, design: .monospaced, weight: .bold))) {
@@ -132,6 +146,14 @@ struct SettingsView: View {
                 }
             } message: {
                 Text("settings.alert.unpairConfirm.message")
+            }
+            .alert("settings.alert.noMail.title", isPresented: $showNoMailAlert) {
+                Button("settings.alert.noMail.button.copy") {
+                    UIPasteboard.general.string = Feedback.address
+                }
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("settings.alert.noMail.message \(Feedback.address)")
             }
             if isUnpairingInProgress {
                 LoadingScreenView()
