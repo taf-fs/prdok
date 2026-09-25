@@ -94,6 +94,11 @@ struct SettingsView: View {
                             Text("settings.feedback")
                         }
                         .foregroundStyle(Color.cpForegroundPrimary)
+                        NavigationLink {
+                            AboutView()
+                        } label: {
+                            Text("settings.about")
+                        }
                     }
                     .listRowBackground(Color.cpBackgroundSecondary)
 

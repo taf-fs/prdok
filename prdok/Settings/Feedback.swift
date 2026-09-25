@@ -47,11 +47,11 @@ enum Feedback {
         """
     }
 
-    private static var appVersion: String {
+    static var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
     }
 
-    private static var buildNumber: String {
+    static var buildNumber: String {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
     }
 

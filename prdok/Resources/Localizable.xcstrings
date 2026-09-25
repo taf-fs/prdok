@@ -4,6 +4,102 @@
     "" : {
 
     },
+    "about.commonProblems" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Časté problémy"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Common Problems"
+          }
+        }
+      }
+    },
+    "about.credits" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vyvinul David H. ve spolupráci s Tomášem\ns láskou k lidem v Prostoru 🤎"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "developed by David H. in collaboration with Tomáš\nwith love for the people of Prostor 🤎"
+          }
+        }
+      }
+    },
+    "about.platform" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Prdok pro iOS"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prdok"
+          }
+        }
+      }
+    },
+    "about.privacyPolicy" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochrana soukromí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        }
+      }
+    },
+    "about.specialThanks" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zvláštní poděkování těm, kteří byli mojí inspirací, nebo se kterými byly super směny:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Special thanks to those who have been an inspiration or joy to work with:"
+          }
+        }
+      }
+    },
+    "about.version %@ %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verze %1$@ (%2$@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "bootstrap.loading" : {
       "localizations" : {
         "cs" : {
@@ -1221,6 +1317,22 @@
     },
     "select.year" : {
       "shouldTranslate" : false
+    },
+    "settings.about" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O aplikaci"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
     },
     "settings.alert.noMail.button.copy" : {
       "localizations" : {
