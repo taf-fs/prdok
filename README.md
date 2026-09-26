@@ -23,7 +23,7 @@ prdok connects employees to a shift scheduling backend via QR code or link pairi
 
 - **QR & Link Pairing** - first-time setup pairs the device to an employee account by scanning a QR code or pasting a link; credentials are validated and exchanged with the backend before being stored securely in UserDefaults
 - **Today View** - live-updating countdown (refreshes every minute via `TimelineView`) to the ongoing or next planned shift; adapts its copy based on how far away the shift is
-- **Calendar** - month view built on top of [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) with custom shift indicators, day detail sheets, shift statistics, and iCal export
+- **Calendar** - month view built on top of [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) with custom shift indicators, day detail sheets, shift statistics, monhtly bonus tracking and iCal export
 - **Shift Offering** - employees can submit or retract availability for open slots directly from the calendar
 - **Theming** - light / dark / system color scheme toggle with a custom accent color palette applied app-wide
 - **Localization** - English and Czech, driven by `Localizable.xcstrings`
@@ -94,7 +94,7 @@ prdok propojí zařízení se zaměstnaneckým účtem přes QR kód nebo odkaz 
 
 - **Párování přes QR a odkaz** - první spuštění propojí zařízení se zaměstnaneckým účtem; přihlašovací údaje jsou ověřeny a bezpečně uloženy
 - **Dnešní pohled** - odpočet aktualizovaný každou minutu (přes `TimelineView`) do probíhající nebo nadcházející směny; text se přizpůsobuje podle toho, jak daleko směna je
-- **Kalendář** - měsíční pohled postavený na [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) s vlastními indikátory směn, detailem dne, statistikami a exportem do iCal
+- **Kalendář** - měsíční pohled postavený na [HorizonCalendar](https://github.com/airbnb/HorizonCalendar) s vlastními indikátory směn, detailem dne, statistikami, měsíčním bonusem a exportem do iCal
 - **Nabídka směn** - zaměstnanci mohou přímo z kalendáře přidat nebo odebrat svou dostupnost
 - **Motivy** - přepínání světlého / tmavého / systémového motivu s vlastní barevnou paletou
 - **Lokalizace** - čeština a angličtina pomocí `Localizable.xcstrings`
